@@ -1,0 +1,84 @@
+package com.platform.kspace.model;
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@Entity
+@RequiredArgsConstructor
+public class Item {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    
+    @Column(nullable = false)
+    @NonNull
+    private String text;
+
+    @Column
+    private byte[] picture;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item")
+    private List<Answer> answers;
+
+    @ManyToOne
+    private Section section;
+
+    public Item(String text) {
+        this.text = text;
+    }
+
+    public Item(String text, byte[] picture) {
+        this.text = text;
+        this.picture = picture;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public Section getSection() {
+        return this.section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
+    public String getText() {
+        return this.text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public byte[] getPicture() {
+        return this.picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    public List<Answer> getAnswers() {
+        return this.answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
+
+}
