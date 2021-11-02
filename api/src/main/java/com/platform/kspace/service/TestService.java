@@ -1,28 +1,16 @@
 package com.platform.kspace.service;
 
+import com.platform.kspace.dto.ItemDTO;
+import com.platform.kspace.dto.WorkingTestDTO;
+import com.platform.kspace.model.Test;
+
 import java.util.List;
 
-import com.platform.kspace.model.Test;
-import com.platform.kspace.repository.TestRepository;
+public interface TestService {
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-@Service
-public class TestService {
-    
-    @Autowired
-    private TestRepository testRepository;
-
-    public List<Test> findAll() {
-        return (List<Test>)testRepository.findAll();
-    }
-
-    public Test findOne(int id) {
-        return testRepository.findById(id).orElseGet(null);
-    }
-
-    public Test save(Test test) {
-        return testRepository.save(test);
-    }
+    List<Test> findAll();
+    Test findOne(int id);
+    Test save(Test test);
+    WorkingTestDTO startTest(int testId, int studentId);
+    ItemDTO getNextQuestion(int takenTestId);
 }

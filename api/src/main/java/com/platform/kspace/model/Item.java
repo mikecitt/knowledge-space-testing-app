@@ -16,7 +16,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@RequiredArgsConstructor
 public class Item {
 
     @Id

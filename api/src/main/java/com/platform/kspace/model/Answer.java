@@ -22,4 +22,20 @@ public class Answer {
 
     @ManyToOne
     private Item item;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public Double getPoints() {
+        return points;
+    }
+
+    public Item getItem() {
+        return item;
+    }
 }

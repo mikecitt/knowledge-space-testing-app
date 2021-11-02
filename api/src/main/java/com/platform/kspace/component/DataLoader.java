@@ -2,10 +2,7 @@ package com.platform.kspace.component;
 
 import java.util.Date;
 
-import com.platform.kspace.model.Item;
-import com.platform.kspace.model.Professor;
-import com.platform.kspace.model.Section;
-import com.platform.kspace.model.Test;
+import com.platform.kspace.model.*;
 import com.platform.kspace.repository.ItemRepository;
 import com.platform.kspace.repository.SectionRepository;
 import com.platform.kspace.repository.TestRepository;
@@ -32,7 +29,10 @@ public class DataLoader {
 
     private void LoadData() {
         Professor p = new Professor("Petar Petrovic", "petar@example.com", "qwerty");
-        //p = this.userRepository.save(p);
+        // p = this.userRepository.save(p);
+
+        Student s = new Student("Mika Mikic", "mika@example.com", "qwerty");
+        this.userRepository.save(s);
         
         Item item1 = new Item("Item1");
         //item1 = itemRepository.save(item1);
