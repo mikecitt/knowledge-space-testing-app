@@ -1,5 +1,6 @@
 package com.platform.kspace.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,9 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 @Entity
 public class Item {
 
@@ -23,7 +21,6 @@ public class Item {
     private Integer id;
     
     @Column(nullable = false)
-    @NonNull
     private String text;
 
     @Column
@@ -35,13 +32,19 @@ public class Item {
     @ManyToOne
     private Section section;
 
+    public Item() {
+        this.answers = new ArrayList<>();
+    }
+
     public Item(String text) {
         this.text = text;
+        this.answers = new ArrayList<>();
     }
 
     public Item(String text, byte[] picture) {
         this.text = text;
         this.picture = picture;
+        this.answers = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -78,6 +81,10 @@ public class Item {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public void addAnswer(Answer answer) {
+        this.answers.add(answer);
     }
 
 }

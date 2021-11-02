@@ -11,6 +11,6 @@ public interface TestService {
     List<Test> findAll();
     Test findOne(int id);
     Test save(Test test);
-    WorkingTestDTO startTest(int testId, int studentId);
-    ItemDTO getNextQuestion(int takenTestId);
+    WorkingTestDTO startTest(Integer testId, Integer studentId);
+    ItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception;
 }

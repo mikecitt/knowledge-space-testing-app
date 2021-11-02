@@ -38,8 +38,14 @@ public class TestController {
     }
 
     @GetMapping("/question/next")
-    public ResponseEntity<ItemDTO> getNextQuestion(@RequestParam Integer workingTestId) {
-        // TODO: Finish this endpoint
-        return null;
+    public ResponseEntity<ItemDTO> getNextQuestion(
+            @RequestParam Integer workingTestId,
+            @RequestParam(required = false) Integer itemId) {
+        try {
+            return ResponseEntity.ok(testService.getNextQuestion(workingTestId, itemId));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

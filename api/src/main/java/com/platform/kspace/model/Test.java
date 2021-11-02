@@ -38,11 +38,11 @@ public class Test {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     private Set<Section> sections;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Professor createdBy;
 
     public Test() {
-        this.sections = new HashSet<Section>();
+        this.sections = new HashSet<>();
     }
 
     public Test(String name, Double timer, Date validFrom, Date validUntil) {
@@ -50,7 +50,7 @@ public class Test {
         this.timer = timer;
         this.validFrom = validFrom;
         this.validUntil = validUntil;
-        this.sections = new HashSet<Section>();
+        this.sections = new HashSet<>();
     }
 
     public Integer getId() {

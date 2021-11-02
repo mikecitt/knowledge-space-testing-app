@@ -23,6 +23,14 @@ public class Answer {
     @ManyToOne
     private Item item;
 
+    public Answer() {}
+
+    public Answer(String text, Double points, Item item) {
+        this.text = text;
+        this.points = points;
+        this.item = item;
+    }
+
     public Integer getId() {
         return id;
     }

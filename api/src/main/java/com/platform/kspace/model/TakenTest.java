@@ -36,6 +36,8 @@ public class TakenTest {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Answer> answers;
 
+    public TakenTest() {}
+
     public TakenTest(Date start, Student takenBy, Test test) {
         this.start = start;
         this.takenBy = takenBy;
