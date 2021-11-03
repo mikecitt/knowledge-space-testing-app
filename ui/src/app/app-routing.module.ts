@@ -8,7 +8,7 @@ const routes: Routes = [
       import('./modules/students/students.module').then(m => m.StudentsModule)
   },
   {
-    path: '',
+    path: '**',
     redirectTo: '',
     pathMatch: 'full'
   }

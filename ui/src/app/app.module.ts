@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { ProfessorsModule } from './modules/professors/professors.module';
 import { StudentsModule } from './modules/students/students.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './shared/material.module';
+import { CoreModule } from './core/core.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,8 +18,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     ProfessorsModule,
+    MaterialModule,
     StudentsModule,
     BrowserAnimationsModule,
+    CoreModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

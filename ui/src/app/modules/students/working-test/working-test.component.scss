@@ -1,0 +1,54 @@
+.answer-chkbox {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+mat-checkbox ::ng-deep .mat-checkbox-inner-container {
+    width: 25px;
+    height: 25px;
+}
+
+.mat-raised-button {
+    background-color: rgb(18, 84, 143);
+    width: 140px;
+    height: 60px;
+    font-size: 20px;
+}
+
+.inline-elem {
+    display: inline-block;
+}
+
+.next-btn {
+    margin-left: calc(100% - 200px);
+}
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index:99;
+    background-color: rgba($color: #000000, $alpha: 0.8);
+}
+
+.loading > mat-card {
+    margin-top: 20%;
+    margin-left: 10%;
+    width: 80%;
+    color: white;
+    font-size: 15px;
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+    background-color: #1E457C;
+}
+
+::ng-deep .mat-progress-bar-buffer {
+    background: #3568af;
+}
+
+::ng-deep .mat-progress-bar {
+    border-radius: 2px;
+}

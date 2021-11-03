@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/test")
+@RequestMapping("api/test")
 public class TestController {
     
     @Autowired
