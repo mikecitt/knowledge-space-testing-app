@@ -40,6 +40,6 @@ public class ItemMapper implements MapperInterface<Item, ItemDTO> {
 
     @Override
     public List<ItemDTO> toDtoList(List<Item> entityList) {
-        return null;
+        return entityList.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

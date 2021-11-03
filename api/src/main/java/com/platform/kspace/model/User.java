@@ -34,4 +34,8 @@ public abstract class User {
         this.password = password;
     }
 
+    public Integer getId() {
+        return this.id;
+    }
+
 }

@@ -4,19 +4,27 @@ import java.util.Date;
 import java.util.List;
 
 import com.platform.kspace.dto.ItemDTO;
+import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
 import com.platform.kspace.mapper.ItemMapper;
+import com.platform.kspace.mapper.TestMapper;
 import com.platform.kspace.mapper.WorkingTestMapper;
-import com.platform.kspace.model.*;
+import com.platform.kspace.model.Item;
+import com.platform.kspace.model.Professor;
+import com.platform.kspace.model.Student;
+import com.platform.kspace.model.TakenTest;
+import com.platform.kspace.model.Test;
 import com.platform.kspace.repository.ItemRepository;
+import com.platform.kspace.repository.ProfessorRepository;
+import com.platform.kspace.repository.StudentRepository;
 import com.platform.kspace.repository.TakenTestRepository;
 import com.platform.kspace.repository.TestRepository;
-
-import com.platform.kspace.repository.StudentRepository;
 import com.platform.kspace.service.TestService;
-import javassist.NotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javassist.NotFoundException;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -28,6 +36,9 @@ public class TestServiceImpl implements TestService {
     private StudentRepository studentRepository;
 
     @Autowired
+    private ProfessorRepository professorRepository;
+
+    @Autowired
     private TakenTestRepository takenTestRepository;
 
     @Autowired
@@ -35,10 +46,13 @@ public class TestServiceImpl implements TestService {
 
     private WorkingTestMapper workingTestMapper;
 
+    private TestMapper testMapper;
+
     private ItemMapper itemMapper;
 
     public TestServiceImpl() {
         workingTestMapper = new WorkingTestMapper();
+        testMapper = new TestMapper();
         itemMapper = new ItemMapper();
     }
 
@@ -70,6 +84,16 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    public TestDTO addTest(TestDTO dto, Integer professorId) throws Exception {
+        Professor p = professorRepository.findById(professorId).orElseGet(null);
+        if(p == null)
+            throw new Exception("Professor doesn't exist.");
+        Test test = testMapper.toEntity(dto);
+        test.setCreatedBy(p);
+        return testMapper.toDto(testRepository.save(test));
+    }
+
+    @Override
     public ItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception {
         TakenTest takenTest = takenTestRepository.getById(takenTestId);
         if(takenTest.getEnd() != null) {
@@ -94,5 +118,10 @@ public class TestServiceImpl implements TestService {
                 return null;
             }
         }
+    }
+
+    @Override
+    public List<TestDTO> getTests() {
+        return testMapper.toDtoList(testRepository.findAll());
     }
 }

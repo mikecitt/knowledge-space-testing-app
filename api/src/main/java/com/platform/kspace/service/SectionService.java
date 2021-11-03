@@ -1,0 +1,14 @@
+package com.platform.kspace.service;
+
+import java.util.List;
+
+import com.platform.kspace.dto.SectionDTO;
+import com.platform.kspace.model.Section;
+
+public interface SectionService {
+    List<Section> findAll();
+    List<SectionDTO> getSections();
+    Section findOne(Integer id);
+    Section save(Section section);
+    SectionDTO addSection(Section section, Integer testId);
+}

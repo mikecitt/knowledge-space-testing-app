@@ -3,12 +3,13 @@ package com.platform.kspace.controller;
 import java.util.List;
 
 import com.platform.kspace.dto.ItemDTO;
+import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
-import com.platform.kspace.model.Test;
 import com.platform.kspace.service.TestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,22 @@ public class TestController {
     private TestService testService;
 
     @GetMapping
-    public ResponseEntity<List<Test>> getTests() {
-        return ResponseEntity.ok(this.testService.findAll());
+    public ResponseEntity<List<TestDTO>> getTests() {
+        return ResponseEntity.ok(this.testService.getTests());
+    }
+
+    @PostMapping(
+            path = "/add", 
+            consumes = { MediaType.APPLICATION_JSON_VALUE },
+            produces = { MediaType.APPLICATION_JSON_VALUE }
+    )
+    public ResponseEntity<TestDTO> addTest(@RequestBody TestDTO dto, @RequestParam Integer professorId) {
+        try {
+            return ResponseEntity.ok(testService.addTest(dto, professorId));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/start")
