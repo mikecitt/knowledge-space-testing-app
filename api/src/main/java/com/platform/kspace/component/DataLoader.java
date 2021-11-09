@@ -12,7 +12,7 @@ import com.platform.kspace.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
+///@Component
 public class DataLoader {
     private TestRepository testRepository;
     private SectionRepository sectionRepository;
@@ -29,10 +29,18 @@ public class DataLoader {
     }
 
     private void LoadData() {
-        Professor p = new Professor("Petar Petrovic", "petar@example.com", "qwerty");
+        /*Professor p = new Professor("Petar", "Petrovic", "petar@example.com", "qwerty");
         p = this.userRepository.save(p);
 
-        Student s = new Student("Mika Mikic", "mika@example.com", "qwerty");
+        Calendar cal = Calendar.getInstance();
+        cal.set(2000, 10, 5);
+        Student s = new Student(
+                "Mika",
+                "Mikic",
+                "mika@example.com",
+                "qwerty",
+                cal.getTime()
+        );
         this.userRepository.save(s);
         
         Item item111 = new Item("Item111");
@@ -129,6 +137,16 @@ public class DataLoader {
         t2.addSection(section22);
         t2.addSection(section23);
         t2.setCreatedBy(p);
-        testRepository.save(t2);
+        testRepository.save(t2);*/
+
+        for(Item item : itemRepository.findAll()) {
+            item.addAnswer(new Answer("A", 5.0, item));
+            item.addAnswer(new Answer("B", -5.0, item));
+            item.addAnswer(new Answer("C", 10.0, item));
+            item.addAnswer(new Answer("D", -5.0, item));
+            item.addAnswer(new Answer("E", -5.0, item));
+            item.addAnswer(new Answer("F", 10.0, item));
+            itemRepository.save(item);
+        }
     }
 }
