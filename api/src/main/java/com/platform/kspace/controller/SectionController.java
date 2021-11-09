@@ -26,9 +26,15 @@ public class SectionController {
     @Autowired
     private SectionService sectionService;
 
-    @GetMapping
+    // not in use for now
+    /*@GetMapping
     public ResponseEntity<List<SectionDTO>> getSections() {
         return ResponseEntity.ok(sectionService.getSections());
+    }*/
+
+    @GetMapping
+    public ResponseEntity<List<SectionDTO>> getTestSections(@RequestParam Integer testId) {
+        return ResponseEntity.ok(sectionService.getTestSections(testId));
     }
 
     @PostMapping(

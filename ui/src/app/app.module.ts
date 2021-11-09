@@ -22,7 +22,7 @@ import { HttpClientModule } from '@angular/common/http';
     StudentsModule,
     BrowserAnimationsModule,
     CoreModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

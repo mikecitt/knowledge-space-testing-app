@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Adding new test</h2>
+<form #testForm="ngForm" (ngSubmit)="addTest()" [formGroup]="form">
+  <mat-dialog-content>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" required matInput placeholder="Test name" />
+        <mat-icon matSuffix>short_text</mat-icon>
+        <mat-hint>Should be short and exact.</mat-hint>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Timer</mat-label>
+        <input formControlName="timer" required type="number" min="1" matInput placeholder="Length in minutes" />
+        <mat-icon matSuffix>timer</mat-icon>
+        <mat-hint>Test must be finished in given time.</mat-hint>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Test availability</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input formControlName="validFrom" matStartDate placeholder="Valid from" />
+          <input formControlName="validUntil" matEndDate placeholder="Valid until" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-hint>Date range when test can be started.</mat-hint>
+      </mat-form-field>
+    </p>
+
+    <!-- </mat-card> -->
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button color="accent" [mat-dialog-close]="true">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!testForm.form.valid" [mat-dialog-close]="false">Submit</button>
+  </mat-dialog-actions>
+</form>

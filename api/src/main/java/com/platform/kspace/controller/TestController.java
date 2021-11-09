@@ -26,14 +26,10 @@ public class TestController {
         return ResponseEntity.ok(this.testService.getTests());
     }
 
-    @PostMapping(
-            path = "/add", 
-            consumes = { MediaType.APPLICATION_JSON_VALUE },
-            produces = { MediaType.APPLICATION_JSON_VALUE }
-    )
-    public ResponseEntity<TestDTO> addTest(@RequestBody TestDTO dto, @RequestParam Integer professorId) {
+    @PostMapping
+    public ResponseEntity<TestDTO> addTest(@RequestBody TestDTO dto) {
         try {
-            return ResponseEntity.ok(testService.addTest(dto, professorId));
+            return ResponseEntity.ok(testService.addTest(dto, 1));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

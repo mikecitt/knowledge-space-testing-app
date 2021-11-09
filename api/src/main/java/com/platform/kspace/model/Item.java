@@ -47,6 +47,12 @@ public class Item {
         this.answers = new ArrayList<>();
     }
 
+    public Item(String text, byte[] picture, List<Answer> answers) {
+        this.text = text;
+        this.picture = picture;
+        this.answers = answers;
+    }
+
     public Integer getId() {
         return this.id;
     }

@@ -55,5 +55,10 @@ public class SectionServiceImpl implements SectionService {
     public List<SectionDTO> getSections() {
         return sectionMapper.toDtoList(sectionRepository.findAll());
     }
+
+    @Override
+    public List<SectionDTO> getTestSections(Integer testId) {
+        return sectionMapper.toDtoList(sectionRepository.findByTestId(testId));
+    }
     
 }

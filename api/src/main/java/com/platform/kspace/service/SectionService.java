@@ -8,6 +8,7 @@ import com.platform.kspace.model.Section;
 public interface SectionService {
     List<Section> findAll();
     List<SectionDTO> getSections();
+    List<SectionDTO> getTestSections(Integer testId);
     Section findOne(Integer id);
     Section save(Section section);
     SectionDTO addSection(Section section, Integer testId);

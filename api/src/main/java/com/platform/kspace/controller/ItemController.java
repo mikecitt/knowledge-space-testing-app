@@ -6,10 +6,14 @@ import com.platform.kspace.dto.ItemDTO;
 import com.platform.kspace.service.ItemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,6 +23,16 @@ public class ItemController {
     
     @Autowired
     private ItemService itemService;
+
+    @PostMapping
+    public ResponseEntity<ItemDTO> addItem(@RequestBody ItemDTO dto, @RequestParam Integer sectionId) {
+        try {
+            return ResponseEntity.ok(itemService.addItem(dto, sectionId));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<ItemDTO>> getItems() {
