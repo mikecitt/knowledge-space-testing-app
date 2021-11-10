@@ -16,7 +16,7 @@ export class TestingService {
   takeTest(): Observable<any> {
     return this.http.get(`${API_BASE}${this.path}/start`, {
       params: {
-        studentId: 2,
+        studentId: 1000,
         testId: 1
       }
     });

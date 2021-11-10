@@ -16,9 +16,14 @@ import { TestFormComponent } from '../test-form/test-form.component';
   styleUrls: ['./tests-table.component.scss'],
 })
 export class TestsTableComponent implements OnInit {
-  private subs = new Subscription();
-
-  displayedColumns: string[] = ['id', 'name', 'timer', 'validFrom', 'validUntil', 'action'];
+  displayedColumns: string[] = [
+    'id',
+    'name',
+    'timer',
+    'validFrom',
+    'validUntil',
+    'action',
+  ];
 
   public dataSource: MatTableDataSource<ITest>;
 
@@ -27,40 +32,38 @@ export class TestsTableComponent implements OnInit {
 
   private dataArray: any;
 
-  constructor(private itemService: ItemService, private router: Router, public dialog: MatDialog) {}
+  constructor(
+    private itemService: ItemService,
+    private router: Router,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.subs.add(
-      this.itemService.getTests().subscribe(
-        (res) => {
-          console.log(res);
-          this.dataArray = res;
-          this.dataSource = new MatTableDataSource<ITest>(this.dataArray);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        },
-        (err: HttpErrorResponse) => {
-          console.log(err);
-        }
-      )
+    this.refresh();
+  }
+
+  refresh() {
+    this.itemService.getTests().subscribe(
+      (res) => {
+        console.log(res);
+        this.dataArray = res;
+        this.dataSource = new MatTableDataSource<ITest>(this.dataArray);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      (err: HttpErrorResponse) => {
+        console.log(err);
+      }
     );
   }
 
   addTest() {
     const dialogRef = this.dialog.open(TestFormComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
-      this.itemService.getTests().subscribe((data) => {
-        //this.dataSource.connect().next(data);
-      })
+      this.refresh();
     });
-  }
-
-  ngOnDestroy() {
-    if (this.subs) {
-      this.subs.unsubscribe();
-    }
   }
 
   openTest(id: number) {
