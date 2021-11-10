@@ -124,4 +124,9 @@ public class TestServiceImpl implements TestService {
     public List<TestDTO> getTests() {
         return testMapper.toDtoList(testRepository.findAll());
     }
+
+    @Override
+    public TestDTO getTest(Integer id) {
+        return testMapper.toDto(testRepository.findById(id).orElse(null));
+    }
 }

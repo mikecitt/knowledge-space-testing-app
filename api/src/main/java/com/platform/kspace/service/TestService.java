@@ -11,6 +11,7 @@ public interface TestService {
 
     List<Test> findAll();
     List<TestDTO> getTests();
+    TestDTO getTest(Integer id);
     Test findOne(int id);
     Test save(Test test);
     TestDTO addTest(TestDTO test, Integer professorId) throws Exception;

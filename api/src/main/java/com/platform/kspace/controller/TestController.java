@@ -2,6 +2,8 @@ package com.platform.kspace.controller;
 
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import com.platform.kspace.dto.ItemDTO;
 import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
@@ -9,7 +11,6 @@ import com.platform.kspace.service.TestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,11 @@ public class TestController {
     @GetMapping
     public ResponseEntity<List<TestDTO>> getTests() {
         return ResponseEntity.ok(this.testService.getTests());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TestDTO> getTest(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(this.testService.getTest(id));
     }
 
     @PostMapping

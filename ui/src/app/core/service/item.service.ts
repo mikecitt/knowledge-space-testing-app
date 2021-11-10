@@ -17,6 +17,10 @@ export class ItemService {
     return this.http.get<ITest>(`${API_BASE}/test/`);
   }
 
+  getTest(id: any) {
+    return this.http.get<any>(`${API_BASE}/test/${id}`);
+  }
+
   addTest(test: any) {
     return this.http.post<any>(`${API_BASE}/test/`, test);
   }
