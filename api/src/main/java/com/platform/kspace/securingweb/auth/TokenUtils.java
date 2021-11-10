@@ -10,14 +10,15 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 
 @Component
 public class TokenUtils {
 
-    @Value("administration")
+    @Value("kspace-testing")
     private String APP_NAME;
 
-    @Value("poverenik")
+    @Value("knowledge-is-power")
     public String SECRET;
 
     @Value("18000000")
@@ -38,6 +39,8 @@ public class TokenUtils {
                 .setIssuer(APP_NAME)
                 .setSubject(user.getEmail())
                 .setAudience(generateAudience())
+                .setId(user.getId().toString())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();

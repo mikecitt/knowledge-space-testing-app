@@ -63,6 +63,10 @@ public abstract class User implements UserDetails {
         return email;
     }
 
+    public String getRole() {
+        return authorities.get(0).getAuthority();
+    }
+
     public Timestamp getLastPasswordResetDate() {
         return lastPasswordResetDate;
     }
