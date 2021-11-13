@@ -1,7 +1,9 @@
 .mat-card {
     width: 30%;
-    margin-left: 35%;
-    margin-top: 100px;
+    margin-left: 150px;
+    top: 25%;
+    -ms-transform: translateY(-25%);
+    transform: translateY(-25%);
 }
 
 .mat-card-title {

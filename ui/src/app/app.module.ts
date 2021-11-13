@@ -9,9 +9,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthModule } from './modules/auth/auth.module';
 import { TokenInterceptor } from './core/interceptor/token.interceptor';
+import { MiscModule } from './modules/misc/misc.module';
 
 @NgModule({
   declarations: [
@@ -27,9 +27,9 @@ import { TokenInterceptor } from './core/interceptor/token.interceptor';
     CoreModule,
     HttpClientModule,
     AuthModule,
+    MiscModule,
   ],
   providers: [
-    CookieService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

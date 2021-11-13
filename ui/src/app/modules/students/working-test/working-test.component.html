@@ -1,19 +1,21 @@
-<mat-card *ngIf="currentItem">
-    <h1>
-        {{ currentItem.text }}
-    </h1>
-    <div class="inline-elem">
-        <div *ngFor="let answer of currentItem.answers; index as i">
-            <mat-checkbox class="answer-chkbox" [checked]="false" color="primary">
-                {{answer.text}}
-            </mat-checkbox>
+<div class="bg-image">
+    <mat-card *ngIf="currentItem">
+        <h1>
+            {{ currentItem.text }}
+        </h1>
+        <div class="inline-elem">
+            <div *ngFor="let answer of currentItem.answers; index as i">
+                <mat-checkbox class="answer-chkbox" [checked]="false" color="primary">
+                    {{answer.text}}
+                </mat-checkbox>
+            </div>
         </div>
-    </div>
-
-    <div class="inline-elem next-btn">
-        <button mat-raised-button (click)="nextQuestion()">Next</button>
-    </div>
-</mat-card>
+    
+        <div class="inline-elem next-btn">
+            <button color="accent" mat-raised-button (click)="nextQuestion()">Next</button>
+        </div>
+    </mat-card>
+</div>
 <div class="loading" *ngIf="loading">
     <mat-card>
         <p style="text-align: center;">Loading</p>

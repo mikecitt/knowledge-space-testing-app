@@ -1,6 +1,10 @@
-<mat-card>
-    <h2>
-        Homepage
-    </h2>
-    <button mat-raised-button (click)="startTest()">Start test</button>
-</mat-card>
+<div class="bg-image">
+    <app-main-bar></app-main-bar>
+    <router-outlet></router-outlet>
+    <mat-card>
+        <h2>
+            Homepage
+        </h2>
+        <button color="accent" mat-raised-button (click)="startTest()">Start test</button>
+    </mat-card>
+</div>

@@ -9,7 +9,6 @@ mat-checkbox ::ng-deep .mat-checkbox-inner-container {
 }
 
 .mat-raised-button {
-    background-color: rgb(18, 84, 143);
     width: 140px;
     height: 60px;
     font-size: 20px;
@@ -34,10 +33,11 @@ mat-checkbox ::ng-deep .mat-checkbox-inner-container {
 }
 
 .loading > mat-card {
-    margin-top: 20%;
-    margin-left: 10%;
-    width: 80%;
-    color: white;
+    top: 40%;
+    -ms-transform: translateY(-40%);
+    transform: translateY(-40%);
+    margin-left: 40%;
+    width: 20%;
     font-size: 15px;
 }
 
