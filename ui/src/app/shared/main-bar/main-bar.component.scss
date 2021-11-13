@@ -1,25 +1,37 @@
+$bar-height: 80px;
+
 .main-bar {
     top: 0;
     left: 0;
-    height: 80px;
+    height: $bar-height;
     width: 100%;
-    background-color: rgb(128, 160, 157);
+    background-color: rgb(147, 167, 161);
+    margin-bottom: 10px;
 }
 
 .logo {
+    float: left;
     width: 40%;
     height: 100%;
 }
 
 .logo-img {
-    float: left;
     background-image: url("/assets/knowledge.png");
     background-size: contain;
     background-repeat: no-repeat;
-    width: 100%;
-    height: 100%;
+    width: $bar-height;
+    height: $bar-height;
+    display: inline-block;
 }
 
 .items {
     float: right;
+    padding-top: 10px;
+    padding-right: 10px;
+    width: 50%;
+}
+
+.item {
+    float: right;
+    margin-right: 5px;
 }

@@ -3,6 +3,19 @@
         <div class="logo-img"></div>
     </div>
     <div class="items">
-        
+        <div class="item">
+            <button mat-button [matMenuTriggerFor]="menu" mat-fab color="primary">
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item color="primary">
+                    <mat-icon>person</mat-icon>Profile
+                </button>
+                <button mat-menu-item color="primary" (click)="logout()">
+                    <mat-icon>logout</mat-icon>Log out
+                </button>
+            </mat-menu>
+        </div>
+        <ng-content></ng-content>
     </div>
 </div>

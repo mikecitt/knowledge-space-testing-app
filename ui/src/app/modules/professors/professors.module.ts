@@ -7,6 +7,8 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { HomeComponent } from './home/home.component';
 import { TestComponent } from './test/test.component';
 import { TestFormComponent } from './test-form/test-form.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { RootPageComponent } from './root-page/root-page.component';
 
 
 @NgModule({
@@ -14,12 +16,14 @@ import { TestFormComponent } from './test-form/test-form.component';
     HomeComponent,
     TestsTableComponent,
     TestComponent,
-    TestFormComponent
+    TestFormComponent,
+    RootPageComponent
   ],
   imports: [
     CommonModule,
     ProfessorsRoutingModule,
-    MaterialModule
+    MaterialModule,
+    SharedModule
   ]
 })
 export class ProfessorsModule { }
