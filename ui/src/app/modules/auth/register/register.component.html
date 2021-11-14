@@ -1,0 +1,42 @@
+<div class="bg-image-right">
+    <mat-card>
+        <mat-card-title>Knowledge testing</mat-card-title>
+        <mat-card-content>
+            <form (ngSubmit)="onSubmit()">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter your first name</mat-label>
+                    <input matInput [formControl]="firstName" required>
+                    <mat-error *ngIf="firstName.invalid">{{ getErrorMessage() }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter your last name</mat-label>
+                    <input matInput [formControl]="lastName" required>
+                    <mat-error *ngIf="lastName.invalid">{{ getErrorMessage() }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter your date of birth</mat-label>
+                    <input placeholder="yyyy-MM-dd" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="picker"
+                        [formControl]="dateOfBirth" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker disabled="false"></mat-datepicker>
+                    <mat-error *ngIf="dateOfBirth.invalid">{{ getErrorMessage() }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter your email</mat-label>
+                    <input matInput placeholder="student@example.com" [formControl]="email" required>
+                    <mat-error *ngIf="email.invalid">{{ getEmailsErrorMessage() }}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter your password</mat-label>
+                    <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="password.invalid">{{ getErrorMessage() }}</mat-error>
+                </mat-form-field>
+                <button type="submit" [disabled]="!isFormValid()" id="loginBtn" mat-raised-button
+                    color="primary">Register</button>
+            </form>
+            <hr />
+            <button id="registerBtn" (click)="sendToLogin()" mat-raised-button>Sign in</button>
+        </mat-card-content>
+    </mat-card>
+</div>

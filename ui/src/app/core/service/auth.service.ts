@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { API_BASE } from '../constants/url.constants';
-import { UserLogin, UserToken } from '../models';
+import { StudentForm, UserLogin, UserToken } from '../models';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 const STORAGE_NAME = 'token';
@@ -35,10 +36,13 @@ export class AuthService {
         }
     }
 
-    login(user: UserLogin) {
+    register(studentForm: StudentForm): Observable<void> {
+        return this.http.post<void>(`${API_BASE}/auth/register`, studentForm);
+    }
+
+    login(user: UserLogin): Observable<void> {
         return this.http.post<UserToken>(`${API_BASE}/auth/login`, user)
             .pipe(map((res) => {
-                console.log('Login success:' + res.accessToken);
                 var accessToken = res.accessToken;
 
                 const expireDate = new Date();
@@ -48,11 +52,10 @@ export class AuthService {
                     expiresIn: expireDate.getTime()
                 };
                 localStorage.setItem(STORAGE_NAME, JSON.stringify(this.userToken));
-                console.log(expireDate);
             }));
     }
 
-    logout() {
+    logout(): void {
         this.userToken = null;
         localStorage.removeItem(STORAGE_NAME);
         this.router.navigate(['/auth/login']);
@@ -66,7 +69,12 @@ export class AuthService {
         return this.userToken ? this.userToken.accessToken : null;
     }
 
-    getDecodedToken() {
+    getUserId(): string {
+        var token = this.getDecodedToken();
+        return token ? token.jti : token;
+    }
+
+    getDecodedToken(): any {
         const helper = new JwtHelperService();
         const token = this.userToken;
         return token != null ? helper.decodeToken(token.accessToken) : token;

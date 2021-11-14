@@ -14,4 +14,8 @@ public class KSpaceException extends Exception {
         super(message);
         this.httpStatus = httpStatus;
     }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
 }

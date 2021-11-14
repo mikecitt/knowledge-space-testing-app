@@ -1,9 +1,12 @@
 package com.platform.kspace.controller;
 
+import com.platform.kspace.dto.StudentDTO;
 import com.platform.kspace.dto.UserLoginDTO;
 import com.platform.kspace.dto.UserTokenStateDTO;
+import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.model.User;
 import com.platform.kspace.securingweb.auth.TokenUtils;
+import com.platform.kspace.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -25,6 +29,9 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> createAuthenticationToken(
@@ -45,5 +52,17 @@ public class AuthController {
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerStudent(@RequestBody StudentDTO registrationForm) {
+        try {
+            userService.registerStudent(registrationForm);
+        } catch (KSpaceException kse) {
+            return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

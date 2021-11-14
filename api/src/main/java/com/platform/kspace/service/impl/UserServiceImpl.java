@@ -8,6 +8,7 @@ import com.platform.kspace.mapper.StudentMapper;
 import com.platform.kspace.model.Authority;
 import com.platform.kspace.model.Professor;
 import com.platform.kspace.model.Student;
+import com.platform.kspace.model.User;
 import com.platform.kspace.repository.AuthorityRepository;
 import com.platform.kspace.repository.UserRepository;
 import com.platform.kspace.service.UserService;
@@ -49,12 +50,12 @@ public class UserServiceImpl implements UserService {
         if(checkEmailAddress(student.getEmail())) {
             throw new KSpaceException(
                     HttpStatus.CONFLICT,
-                    "There is already registered student with given email address"
+                    "There is already registered user with given email address"
             );
         }
 
         // before password is placed it goes through hashing phase
-        student.setPassword(passwordEncoder.encode(student.getPassword()));
+        student.setPassword(passwordEncoder.encode(student.getPassword()), true);
 
         Authority auth = authorityRepository.findByName("ROLE_STUDENT");
         student.setAuthorities(new ArrayList<>() {{ add(auth); }});
@@ -67,15 +68,24 @@ public class UserServiceImpl implements UserService {
         if(checkEmailAddress(professor.getEmail())) {
             throw new KSpaceException(
                     HttpStatus.CONFLICT,
-                    "There is already registered professor with given email address"
+                    "There is already registered user with given email address"
             );
         }
 
         // before password is placed it goes through hashing phase
-        professor.setPassword(passwordEncoder.encode(professor.getPassword()));
+        professor.setPassword(passwordEncoder.encode(professor.getPassword()), true);
 
         Authority auth = authorityRepository.findByName("ROLE_PROFESSOR");
         professor.setAuthorities(new ArrayList<>() {{ add(auth); }});
         userRepository.save(professor);
+    }
+
+    @Override
+    public User findUserByEmail(String email) throws KSpaceException {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new KSpaceException(HttpStatus.NOT_FOUND, "There is no user with that email address");
+        }
+        return user;
     }
 }

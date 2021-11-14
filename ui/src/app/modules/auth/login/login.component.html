@@ -11,13 +11,14 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Enter your password</mat-label>
                     <input matInput [type]="hide ? 'password' : 'text'" [formControl]="password" required>
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
-                  </mat-form-field>
-                <button type="submit" [disabled]="!isFormValid()" id="loginBtn" mat-raised-button color="primary">Log in</button>
+                </mat-form-field>
+                <button type="submit" [disabled]="!isFormValid()" id="loginBtn" mat-raised-button color="primary">Log
+                    in</button>
             </form>
+            <hr />
+            <button id="registerBtn" mat-raised-button (click)="sendToRegistration()">Create new account</button>
         </mat-card-content>
     </mat-card>
 </div>

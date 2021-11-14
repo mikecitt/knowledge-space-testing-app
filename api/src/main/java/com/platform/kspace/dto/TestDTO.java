@@ -1,6 +1,7 @@
 package com.platform.kspace.dto;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class TestDTO {
     private Integer id;
@@ -8,12 +9,12 @@ public class TestDTO {
     private Double timer;
     private Date validFrom;
     private Date validUntil;
-    private Integer createdById;
+    private UUID createdById;
 
     public TestDTO() {
     }
 
-    public TestDTO(Integer id, String name, Double timer, Date validFrom, Date validUntil, Integer createdById) {
+    public TestDTO(Integer id, String name, Double timer, Date validFrom, Date validUntil, UUID createdById) {
         this.id = id;
         this.name = name;
         this.timer = timer;
@@ -62,11 +63,11 @@ public class TestDTO {
         this.validUntil = validUntil;
     }
 
-    public Integer getCreatedById() {
+    public UUID getCreatedById() {
         return this.createdById;
     }
 
-    public void setCreatedById(Integer createdById) {
+    public void setCreatedById(UUID createdById) {
         this.createdById = createdById;
     }
 }

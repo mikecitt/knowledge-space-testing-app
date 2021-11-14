@@ -2,6 +2,7 @@ package com.platform.kspace.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.platform.kspace.dto.ItemDTO;
 import com.platform.kspace.dto.TestDTO;
@@ -72,7 +73,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public WorkingTestDTO startTest(Integer testId, Integer studentId) {
+    public WorkingTestDTO startTest(Integer testId, UUID studentId) {
         Test test = testRepository.getById(testId);
         Student s = studentRepository.getById(studentId);
         TakenTest takenTest = new TakenTest(
@@ -84,8 +85,8 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public TestDTO addTest(TestDTO dto, Integer professorId) throws Exception {
-        Professor p = professorRepository.findById(professorId).orElseGet(null);
+    public TestDTO addTest(TestDTO dto, UUID professorId) throws Exception {
+        Professor p = professorRepository.getById(professorId);
         if(p == null)
             throw new Exception("Professor doesn't exist.");
         Test test = testMapper.toEntity(dto);

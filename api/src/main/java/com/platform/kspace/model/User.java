@@ -8,14 +8,15 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    protected Integer id;
+    @GeneratedValue
+    protected UUID id;
 
     @Column(nullable = false)
     protected String firstName;
@@ -47,7 +48,7 @@ public abstract class User implements UserDetails {
         this.password = password;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return this.id;
     }
 
@@ -85,8 +86,9 @@ public abstract class User implements UserDetails {
         return this.password;
     }
 
-    public void setPassword(String password) {
-        this.lastPasswordResetDate = new Timestamp(new Date().getTime());
+    public void setPassword(String password, boolean isNew) {
+        if (!isNew)
+            this.lastPasswordResetDate = new Timestamp(new Date().getTime());
         this.password = password;
     }
 

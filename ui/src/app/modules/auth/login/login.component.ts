@@ -34,6 +34,10 @@ export class LoginComponent implements OnInit {
     );
   }
 
+  sendToRegistration(): void {
+    this.service.getRouter().navigate(['/auth/register']);
+  }
+
   getEmailsErrorMessage(): string {
     if (this.email.hasError('required')) {
       return 'You must enter a value';

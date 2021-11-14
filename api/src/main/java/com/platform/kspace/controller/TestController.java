@@ -1,14 +1,18 @@
 package com.platform.kspace.controller;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 import javax.websocket.server.PathParam;
 
 import com.platform.kspace.dto.ItemDTO;
 import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
+import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.service.TestService;
 
+import com.platform.kspace.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,9 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public ResponseEntity<List<TestDTO>> getTests() {
         return ResponseEntity.ok(this.testService.getTests());
@@ -33,9 +40,14 @@ public class TestController {
     }
 
     @PostMapping
-    public ResponseEntity<TestDTO> addTest(@RequestBody TestDTO dto) {
+    public ResponseEntity<?> addTest(@RequestBody TestDTO dto, Principal principal) {
         try {
-            return ResponseEntity.ok(testService.addTest(dto, 1));
+            return ResponseEntity.ok(testService.addTest(
+                    dto,
+                    userService.findUserByEmail(principal.getName()).getId())
+            );
+        } catch (KSpaceException kse) {
+            return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -44,7 +56,7 @@ public class TestController {
 
     @GetMapping("/start")
     public ResponseEntity<WorkingTestDTO> startTest(
-            @RequestParam Integer studentId,
+            @RequestParam UUID studentId,
             @RequestParam Integer testId) {
         try {
             return ResponseEntity.ok(testService.startTest(testId, studentId));

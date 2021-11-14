@@ -3,18 +3,18 @@ INSERT INTO authority (name) VALUES
     ('ROLE_PROFESSOR');
 
 INSERT INTO professor (id, first_name, last_name, email, password) VALUES
-    (1, 'Petar', 'Petrović', 'petar@example.com', '$2a$04$P2R/ohGi2eYUJw02EEZaveX37jwcXb4E.RnwQo8MgP8EgNP0vjfN.');
+    ('c3b0c97ba5a8450cb6aa49bd3a4a52d6', 'Petar', 'Petrović', 'petar@example.com', '$2a$04$P2R/ohGi2eYUJw02EEZaveX37jwcXb4E.RnwQo8MgP8EgNP0vjfN.');
 
 INSERT INTO student (id, first_name, last_name, email, password, date_of_birth) VALUES
-    (1000, 'Mika', 'Mikić', 'mika@example.com', '$2a$04$P2R/ohGi2eYUJw02EEZaveX37jwcXb4E.RnwQo8MgP8EgNP0vjfN.', '2000-10-05');
+    ('d6d797ab63164464a46165d04f953a14', 'Mika', 'Mikić', 'mika@example.com', '$2a$04$P2R/ohGi2eYUJw02EEZaveX37jwcXb4E.RnwQo8MgP8EgNP0vjfN.', '2000-10-05');
 
 INSERT INTO user_authority (user_id, authority_id) VALUES
-    (1, 2),
-    (1000, 1);
+    ('c3b0c97ba5a8450cb6aa49bd3a4a52d6', 2),
+    ('d6d797ab63164464a46165d04f953a14', 1);
 
 INSERT INTO test VALUES
-    (1, 'Test1', 60.0, CURRENT_DATE(), CURRENT_DATE() + INTERVAL 5 DAY, 1),
-    (2, 'Test2', 120.0, CURRENT_DATE() + INTERVAL 10 DAY, CURRENT_DATE() + INTERVAL 14 DAY, 1);
+    (1, 'Test1', 60.0, CURRENT_DATE(), CURRENT_DATE() + INTERVAL 5 DAY, 'c3b0c97ba5a8450cb6aa49bd3a4a52d6'),
+    (2, 'Test2', 120.0, CURRENT_DATE() + INTERVAL 10 DAY, CURRENT_DATE() + INTERVAL 14 DAY, 'c3b0c97ba5a8450cb6aa49bd3a4a52d6');
 
 INSERT INTO section VALUES
     (1, 'Section11', 1),
