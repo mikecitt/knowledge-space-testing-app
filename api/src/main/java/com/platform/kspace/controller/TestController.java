@@ -4,9 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-import javax.websocket.server.PathParam;
-
-import com.platform.kspace.dto.ItemDTO;
+import com.platform.kspace.dto.StudentItemDTO;
 import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
 import com.platform.kspace.exceptions.KSpaceException;
@@ -67,7 +65,7 @@ public class TestController {
     }
 
     @GetMapping("/question/next")
-    public ResponseEntity<ItemDTO> getNextQuestion(
+    public ResponseEntity<StudentItemDTO> getNextQuestion(
             @RequestParam Integer workingTestId,
             @RequestParam(required = false) Integer itemId) {
         try {

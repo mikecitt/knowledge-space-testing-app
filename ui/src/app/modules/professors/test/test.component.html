@@ -1,33 +1,52 @@
 <mat-card>
   <mat-card-title>
-    {{test.name}}
+    {{ test.name }}
   </mat-card-title>
-  <mat-card-subtitle>
-    ID: {{test.id}}
-  </mat-card-subtitle>
+  <mat-card-subtitle> ID: {{ test.id }} </mat-card-subtitle>
   <mat-card-content>
-    <p>
-      Timer: {{test.timer}}
-    </p>
-    <p>
-      Valid from: {{test.validFrom | date:'short'}}
-    </p>
-    <p>
-      Valid until: {{test.validUntil | date:'short'}}
-    </p>
+    <p>Length: {{ test.timer }} minutes</p>
+    <p>Valid from: {{ test.validFrom | date: "fullDate" }}</p>
+    <p>Valid until: {{ test.validUntil | date: "fullDate" }}</p>
   </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" [disabled]="!checkDatePassed(test.validFrom)">Edit Test</button>
+    <button mat-raised-button color="warn" [disabled]="!checkDatePassed(test.validFrom)">Remove Test</button>
+  </mat-card-actions>
 </mat-card>
 
 <mat-accordion>
   <mat-expansion-panel *ngFor="let s of sections">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{s.name}}
+        {{ s.name }}
       </mat-panel-title>
       <mat-panel-description>
         <!-- This is a summary of the content -->
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <p>List of items:</p>
+    <mat-card *ngFor="let i of s.items" class="item-card">
+      <mat-card-title>{{ i.text }}</mat-card-title>
+      <img
+        mat-card-image
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Quadratic_formula.svg/1200px-Quadratic_formula.svg.png"
+      />
+      <mat-card-content>
+        <p *ngFor="let a of i.answers">{{ a.text }} ({{a.points}} points)</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-raised-button color="primary">Edit</button>
+        <button mat-raised-button color="warn">Remove</button>
+      </mat-card-actions>
+    </mat-card>
+    <!-- <app-item *ngFor="let i of s.items"></app-item> -->
+    <!-- <p *ngFor="let i of s.items">{{i.text}}</p> -->
+    <mat-action-row>
+      <button mat-raised-button color="primary">Add Item</button>
+      <button mat-raised-button color="primary">Edit Section</button>
+      <button mat-raised-button color="warn">Remove Section</button>
+    </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
+<button mat-raised-button color="primary" (click)="addSection()">
+  Add section
+</button>

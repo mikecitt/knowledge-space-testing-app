@@ -31,6 +31,11 @@ public class Answer {
         this.item = item;
     }
 
+    public Answer(String text, Double points) {
+        this.text = text;
+        this.points = points;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -46,4 +51,17 @@ public class Answer {
     public Item getItem() {
         return item;
     }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
 }

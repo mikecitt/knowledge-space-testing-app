@@ -22,7 +22,6 @@ export class TestsTableComponent implements OnInit {
     'timer',
     'validFrom',
     'validUntil',
-    'action',
   ];
 
   public dataSource: MatTableDataSource<ITest>;

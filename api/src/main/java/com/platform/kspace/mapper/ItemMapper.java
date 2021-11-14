@@ -8,17 +8,18 @@ import java.util.stream.Collectors;
 
 public class ItemMapper implements MapperInterface<Item, ItemDTO> {
 
-    private PossibleAnswerMapper possibleAnswerMapper;
+    private AnswerMapper answerMapper;
 
     public ItemMapper() {
-        possibleAnswerMapper = new PossibleAnswerMapper();
+        answerMapper = new AnswerMapper();
     }
 
     @Override
     public Item toEntity(ItemDTO dto) {
         return new Item(
                 dto.getText(),
-                dto.getPicture()
+                dto.getPicture(),
+                answerMapper.toEntityList(dto.getAnswers())
         );
     }
 
@@ -33,7 +34,7 @@ public class ItemMapper implements MapperInterface<Item, ItemDTO> {
                 entity.getId(),
                 entity.getText(),
                 entity.getPicture(),
-                possibleAnswerMapper.toDtoList(entity.getAnswers()),
+                answerMapper.toDtoList(entity.getAnswers()),
                 entity.getSection().getId()
         );
     }

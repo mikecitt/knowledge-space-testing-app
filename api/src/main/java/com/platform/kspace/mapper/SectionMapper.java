@@ -10,6 +10,12 @@ import org.hibernate.cfg.NotYetImplementedException;
 
 public class SectionMapper implements MapperInterface<Section, SectionDTO> {
 
+    private ItemMapper itemMapper;
+
+    public SectionMapper() {
+        itemMapper = new ItemMapper();
+    }
+
     @Override
     public Section toEntity(SectionDTO dto) {
         throw new NotYetImplementedException();
@@ -22,7 +28,7 @@ public class SectionMapper implements MapperInterface<Section, SectionDTO> {
 
     @Override
     public SectionDTO toDto(Section entity) {
-        return new SectionDTO(entity.getId(), entity.getName(), entity.getTest().getId());
+        return new SectionDTO(entity.getId(), entity.getName(), entity.getTest().getId(), itemMapper.toDtoList(entity.getItems()));
     }
 
     @Override

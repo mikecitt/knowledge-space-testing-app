@@ -51,6 +51,7 @@ public class Item {
         this.text = text;
         this.picture = picture;
         this.answers = answers;
+        this.answers.forEach(a -> a.setItem(this)); // testing
     }
 
     public Integer getId() {

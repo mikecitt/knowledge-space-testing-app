@@ -2,16 +2,16 @@ package com.platform.kspace.dto;
 
 import java.util.List;
 
-public class ItemDTO {
+public class StudentItemDTO {
     private Integer id;
     private String text;
     private byte[] picture;
-    private List<AnswerDTO> answers;
+    private List<PossibleAnswerDTO> answers;
     private Integer sectionId;
 
-    public ItemDTO() {}
+    public StudentItemDTO() {}
 
-    public ItemDTO(Integer id, String text, byte[] picture, List<AnswerDTO> answers, Integer sectionId) {
+    public StudentItemDTO(Integer id, String text, byte[] picture, List<PossibleAnswerDTO> answers, Integer sectionId) {
         this.id = id;
         this.text = text;
         this.picture = picture;
@@ -43,11 +43,11 @@ public class ItemDTO {
         this.picture = picture;
     }
 
-    public List<AnswerDTO> getAnswers() {
+    public List<PossibleAnswerDTO> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<AnswerDTO> answers) {
+    public void setAnswers(List<PossibleAnswerDTO> answers) {
         this.answers = answers;
     }
 

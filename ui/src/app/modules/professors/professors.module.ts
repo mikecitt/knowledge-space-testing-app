@@ -9,6 +9,8 @@ import { TestComponent } from './test/test.component';
 import { TestFormComponent } from './test-form/test-form.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RootPageComponent } from './root-page/root-page.component';
+import { SectionFormComponent } from './section-form/section-form.component';
+import { ItemComponent } from './item/item.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { RootPageComponent } from './root-page/root-page.component';
     TestsTableComponent,
     TestComponent,
     TestFormComponent,
-    RootPageComponent
+    RootPageComponent,
+    SectionFormComponent,
+    ItemComponent
   ],
   imports: [
     CommonModule,

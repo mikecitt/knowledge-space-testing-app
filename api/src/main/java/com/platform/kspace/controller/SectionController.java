@@ -8,7 +8,6 @@ import com.platform.kspace.service.SectionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,11 +36,7 @@ public class SectionController {
         return ResponseEntity.ok(sectionService.getTestSections(testId));
     }
 
-    @PostMapping(
-        path = "/add", 
-        consumes = { MediaType.APPLICATION_JSON_VALUE },
-        produces = { MediaType.APPLICATION_JSON_VALUE }
-)
+    @PostMapping("/add")
     public ResponseEntity<SectionDTO> addSection(@RequestBody Section section, @RequestParam Integer testId) {
         try {
             return ResponseEntity.ok(sectionService.addSection(section, testId));

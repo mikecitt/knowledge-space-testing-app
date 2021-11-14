@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.platform.kspace.dto.ItemDTO;
+import com.platform.kspace.dto.StudentItemDTO;
 import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
-import com.platform.kspace.mapper.ItemMapper;
+import com.platform.kspace.mapper.StudentItemMapper;
 import com.platform.kspace.mapper.TestMapper;
 import com.platform.kspace.mapper.WorkingTestMapper;
 import com.platform.kspace.model.Item;
@@ -49,12 +49,12 @@ public class TestServiceImpl implements TestService {
 
     private TestMapper testMapper;
 
-    private ItemMapper itemMapper;
+    private StudentItemMapper itemMapper;
 
     public TestServiceImpl() {
         workingTestMapper = new WorkingTestMapper();
         testMapper = new TestMapper();
-        itemMapper = new ItemMapper();
+        itemMapper = new StudentItemMapper();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public ItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception {
+    public StudentItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception {
         TakenTest takenTest = takenTestRepository.getById(takenTestId);
         if(takenTest.getEnd() != null) {
             throw new Exception("Test is finished");

@@ -25,6 +25,10 @@ export class ItemService {
     return this.http.post<any>(`${API_BASE}/test/`, test);
   }
 
+  addSection(section: any, testId: number) {
+    return this.http.post<any>(`${API_BASE}/section/add?testId=${testId}`, section);
+  }
+
   getTestSections(testId: number): Observable<ITest> {
     return this.http.get<ITest>(`${API_BASE}/section/`, {
       params: {

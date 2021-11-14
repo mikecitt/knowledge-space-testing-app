@@ -1,17 +1,21 @@
 package com.platform.kspace.dto;
 
+import java.util.List;
+
 public class SectionDTO {
     private Integer id;
     private String name;
     private Integer testId;
+    private List<ItemDTO> items;
 
     public SectionDTO() {
     }
 
-    public SectionDTO(Integer id, String name, Integer testId) {
+    public SectionDTO(Integer id, String name, Integer testId, List<ItemDTO> items) {
         this.id = id;
         this.name = name;
         this.testId = testId;
+        this.items = items;
     }
 
     public Integer getId() {
@@ -36,5 +40,13 @@ public class SectionDTO {
 
     public void setTestId(Integer testId) {
         this.testId = testId;
+    }
+
+    public List<ItemDTO> getItems() {
+        return this.items;
+    }
+
+    public void setItems(List<ItemDTO> items) {
+        this.items = items;
     }
 }

@@ -13,7 +13,7 @@ export class TestFormComponent implements OnInit {
   form: FormGroup;
 
   @ViewChild('testForm')
-  private testForm!: NgForm;
+  public testForm!: NgForm;
 
   constructor(public dialogRef: MatDialogRef<TestFormComponent>, private formBuilder: FormBuilder, private itemService: ItemService, private _snackBar: MatSnackBar) {
     this.form = this.formBuilder.group({
