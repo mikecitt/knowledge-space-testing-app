@@ -11,6 +11,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { RootPageComponent } from './root-page/root-page.component';
 import { SectionFormComponent } from './section-form/section-form.component';
 import { ItemComponent } from './item/item.component';
+import { ItemFormComponent } from './item-form/item-form.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { ItemComponent } from './item/item.component';
     TestFormComponent,
     RootPageComponent,
     SectionFormComponent,
-    ItemComponent
+    ItemComponent,
+    ItemFormComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,

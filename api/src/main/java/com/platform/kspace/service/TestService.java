@@ -15,6 +15,7 @@ public interface TestService {
     TestDTO getTest(Integer id);
     Test findOne(int id);
     Test save(Test test);
+    boolean deleteTest(Integer id);
     TestDTO addTest(TestDTO test, UUID professorId) throws Exception;
     WorkingTestDTO startTest(Integer testId, UUID studentId);
     StudentItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception;

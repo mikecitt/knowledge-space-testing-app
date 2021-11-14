@@ -130,4 +130,10 @@ public class TestServiceImpl implements TestService {
     public TestDTO getTest(Integer id) {
         return testMapper.toDto(testRepository.findById(id).orElse(null));
     }
+
+    @Override
+    public boolean deleteTest(Integer id) {
+        testRepository.deleteById(id);
+        return true;
+    }
 }

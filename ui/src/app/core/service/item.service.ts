@@ -25,8 +25,16 @@ export class ItemService {
     return this.http.post<any>(`${API_BASE}/test/`, test);
   }
 
+  removeTest(id: any) {
+    return this.http.delete<any>(`${API_BASE}/test/${id}`);
+  }
+
   addSection(section: any, testId: number) {
     return this.http.post<any>(`${API_BASE}/section/add?testId=${testId}`, section);
+  }
+
+  addItem(item: any, sectionId: number) {
+    return this.http.post<any>(`${API_BASE}/item?sectionId=${sectionId}`, item);
   }
 
   getTestSections(testId: number): Observable<ITest> {

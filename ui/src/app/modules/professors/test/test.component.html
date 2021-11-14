@@ -10,7 +10,7 @@
   </mat-card-content>
   <mat-card-actions align="end">
     <button mat-raised-button color="primary" [disabled]="!checkDatePassed(test.validFrom)">Edit Test</button>
-    <button mat-raised-button color="warn" [disabled]="!checkDatePassed(test.validFrom)">Remove Test</button>
+    <button mat-raised-button color="warn" (click)="removeTest()" [disabled]="!checkDatePassed(test.validFrom)">Remove Test</button>
   </mat-card-actions>
 </mat-card>
 
@@ -41,7 +41,7 @@
     <!-- <app-item *ngFor="let i of s.items"></app-item> -->
     <!-- <p *ngFor="let i of s.items">{{i.text}}</p> -->
     <mat-action-row>
-      <button mat-raised-button color="primary">Add Item</button>
+      <button mat-raised-button color="primary" (click)="addItem(s)">Add Item</button>
       <button mat-raised-button color="primary">Edit Section</button>
       <button mat-raised-button color="warn">Remove Section</button>
     </mat-action-row>

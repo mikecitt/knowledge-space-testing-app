@@ -32,6 +32,11 @@ public class TestController {
         return ResponseEntity.ok(this.testService.getTests());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTest(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(this.testService.deleteTest(id));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<TestDTO> getTest(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(this.testService.getTest(id));
