@@ -11,4 +11,5 @@ public interface ItemService {
     Item findOne(Integer id);
     Item save(Item item);
     ItemDTO addItem(ItemDTO dto, Integer sectionId);
+    void deleteItem(Integer id);
 }

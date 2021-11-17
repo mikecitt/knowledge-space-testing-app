@@ -55,5 +55,11 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDTO> getItems() {
         return itemMapper.toDtoList(itemRepository.findAll());
     }
+
+    @Override
+    public void deleteItem(Integer id) {
+        itemRepository.deleteById(id);
+        return;
+    }
     
 }

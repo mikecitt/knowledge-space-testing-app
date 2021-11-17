@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/core/service/item.service';
 
@@ -15,12 +15,12 @@ export class TestFormComponent implements OnInit {
   @ViewChild('testForm')
   public testForm!: NgForm;
 
-  constructor(public dialogRef: MatDialogRef<TestFormComponent>, private formBuilder: FormBuilder, private itemService: ItemService, private _snackBar: MatSnackBar) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<TestFormComponent>, private formBuilder: FormBuilder, private itemService: ItemService, private _snackBar: MatSnackBar) {
     this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      timer: ['', Validators.required],
-      validFrom: ['', Validators.required],
-      validUntil: ['', Validators.required]
+      name: [data == null ? '' : data.name, Validators.required],
+      timer: [data == null ? '' : data.timer, Validators.required],
+      validFrom: [data == null ? '' : data.validFrom, Validators.required],
+      validUntil: [data == null ? '' : data.validUntil, Validators.required]
     });
   }
 

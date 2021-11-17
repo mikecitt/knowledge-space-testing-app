@@ -60,5 +60,11 @@ public class SectionServiceImpl implements SectionService {
     public List<SectionDTO> getTestSections(Integer testId) {
         return sectionMapper.toDtoList(sectionRepository.findByTestId(testId));
     }
+
+    @Override
+    public void deleteSection(Integer id) {
+        sectionRepository.deleteById(id);
+        return;
+    }
     
 }

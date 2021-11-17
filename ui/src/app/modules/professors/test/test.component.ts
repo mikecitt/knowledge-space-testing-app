@@ -5,6 +5,7 @@ import { ItemService } from 'src/app/core/service/item.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { ItemFormComponent } from '../item-form/item-form.component';
 import { SectionFormComponent } from '../section-form/section-form.component';
+import { TestFormComponent } from '../test-form/test-form.component';
 
 @Component({
   selector: 'app-test',
@@ -59,6 +60,16 @@ export class TestComponent implements OnInit {
     return true;
   }
 
+  editTest() {
+    const dialogRef = this.dialog.open(TestFormComponent, {data: this.test});
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+      this.loadTest();
+      
+    });
+  }
+
   removeTest() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {data:{
       message: 'Are you sure want to delete?',
@@ -91,12 +102,60 @@ export class TestComponent implements OnInit {
     });
   }
 
+  removeSection(section: any) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data:{
+      message: 'Are you sure want to delete?',
+      buttonText: {
+        ok: 'Yes',
+        cancel: 'No'
+      }
+    }});
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+      if(result === true) {
+        this.itemService.removeSection(section.id).subscribe((res) => {
+          console.log(res);
+          this.loadSections();
+          // this.router.navigateByUrl(`/professors`);
+        }, (err) => {
+          console.log(err);
+        })
+      }
+      
+    });
+  }
+
   addItem(section: any) {
     const dialogRef = this.dialog.open(ItemFormComponent, {data: {sectionId: section.id}});
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
       this.loadSections();
+    });
+  }
+
+  removeItem(item: any) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {data:{
+      message: 'Are you sure want to delete?',
+      buttonText: {
+        ok: 'Yes',
+        cancel: 'No'
+      }
+    }});
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+      if(result === true) {
+        this.itemService.removeItem(item.id).subscribe((res) => {
+          console.log(res);
+          this.loadSections();
+          // this.router.navigateByUrl(`/professors`);
+        }, (err) => {
+          console.log(err);
+        })
+      }
+      
     });
   }
 }

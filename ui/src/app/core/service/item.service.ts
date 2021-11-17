@@ -44,8 +44,16 @@ export class ItemService {
     return this.http.post<any>(`${API_BASE}/section/add?testId=${testId}`, section);
   }
 
+  removeSection(id: any) {
+    return this.http.delete<any>(`${API_BASE}/section/${id}`);
+  }
+
   addItem(item: any, sectionId: number) {
     return this.http.post<any>(`${API_BASE}/item?sectionId=${sectionId}`, item);
+  }
+  
+  removeItem(id: any) {
+    return this.http.delete<any>(`${API_BASE}/item/${id}`);
   }
 
   getTestSections(testId: number): Observable<ITest> {

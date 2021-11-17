@@ -11,5 +11,6 @@ public interface SectionService {
     List<SectionDTO> getTestSections(Integer testId);
     Section findOne(Integer id);
     Section save(Section section);
+    void deleteSection(Integer id);
     SectionDTO addSection(Section section, Integer testId);
 }

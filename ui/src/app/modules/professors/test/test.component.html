@@ -9,7 +9,7 @@
     <p>Valid until: {{ test.validUntil | date: "fullDate" }}</p>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" [disabled]="!checkDatePassed(test.validFrom)">Edit Test</button>
+    <button mat-raised-button color="primary" (click)="editTest()" [disabled]="!checkDatePassed(test.validFrom)">Edit Test</button>
     <button mat-raised-button color="warn" (click)="removeTest()" [disabled]="!checkDatePassed(test.validFrom)">Remove Test</button>
   </mat-card-actions>
 </mat-card>
@@ -35,7 +35,7 @@
       </mat-card-content>
       <mat-card-actions align="end">
         <button mat-raised-button color="primary">Edit</button>
-        <button mat-raised-button color="warn">Remove</button>
+        <button mat-raised-button color="warn" (click)="removeItem(i)">Remove</button>
       </mat-card-actions>
     </mat-card>
     <!-- <app-item *ngFor="let i of s.items"></app-item> -->
@@ -43,7 +43,7 @@
     <mat-action-row>
       <button mat-raised-button color="primary" (click)="addItem(s)">Add Item</button>
       <button mat-raised-button color="primary">Edit Section</button>
-      <button mat-raised-button color="warn">Remove Section</button>
+      <button mat-raised-button color="warn" (click)="removeSection(s)">Remove Section</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
