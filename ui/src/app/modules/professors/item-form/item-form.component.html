@@ -1,28 +1,55 @@
 <h2 mat-dialog-title>Adding new item</h2>
-<form #testForm="ngForm" (ngSubmit)="addTest()" [formGroup]="form">
+<form #testForm="ngForm" [formGroup]="form">
   <mat-dialog-content>
     <p>
       <mat-form-field appearance="outline">
         <mat-label>Text</mat-label>
-        <textarea formControlName="text" required matInput placeholder="Question text"></textarea>
-        <!-- <mat-icon matSuffix>short_text</mat-icon> -->
-        <!-- <mat-hint>Should be short and exact.</mat-hint> -->
+        <textarea
+          formControlName="text"
+          required
+          matInput
+          placeholder="Question text"
+        ></textarea>
       </mat-form-field>
     </p>
-    <p ng-repeat="br in count">
-        <mat-form-field appearance="outline">
-          <mat-label>Text</mat-label>
-        <input required matInput placeholder="Question text"/>
-        </mat-form-field>
-    </p>
-    <p>
-        <button mat-button color="accent" (click)="test()">Add</button>
+    <div formArrayName="answers">
+      <div *ngFor="let answerGroup of answersArray; let i = index">
+        <div [formGroupName]="i">
+          <mat-form-field appearance="outline">
+            <mat-label>Answer #{{ i + 1 }}</mat-label>
+            <input required type="text" matInput formControlName="text" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Points</mat-label>
+            <input required type="number" matInput formControlName="points" />
+            <mat-hint>For incorrect answers input negative value or zero.</mat-hint>
+          </mat-form-field>
+          <button mat-mini-fab color="warn" (click)="removeQuestion(i)">
+            X
+          </button>
+        </div>
+        <br />
+      </div>
+    </div>
+    <p align="end">
+      <button mat-mini-fab color="accent" (click)="addQuestion()">+</button>
     </p>
 
     <!-- </mat-card> -->
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-raised-button color="accent" [mat-dialog-close]="true">Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!testForm.form.valid" [mat-dialog-close]="false">Submit</button>
+    <button mat-raised-button color="accent" [mat-dialog-close]="true">
+      Cancel
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="addTest()"
+      type="submit"
+      [disabled]="!testForm.form.valid"
+      [mat-dialog-close]="false"
+    >
+      Submit
+    </button>
   </mat-dialog-actions>
 </form>

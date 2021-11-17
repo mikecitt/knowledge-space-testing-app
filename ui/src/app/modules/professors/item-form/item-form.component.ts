@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ItemService } from 'src/app/core/service/item.service';
@@ -12,6 +12,11 @@ import { TestFormComponent } from '../test-form/test-form.component';
 })
 export class ItemFormComponent implements OnInit {
 
+  answers = [
+    {"text": "", "points": null},
+    {"text": "", "points": null}
+  ];
+
   count = 2;
 
   form: FormGroup;
@@ -19,9 +24,15 @@ export class ItemFormComponent implements OnInit {
   @ViewChild('testForm')
   private testForm!: NgForm;
 
+  rows: FormArray = this.formBuilder.array(this.answers.map(answer => this.formBuilder.group({
+    text: [answer.text],
+    points: [answer.points]
+  })));
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<TestFormComponent>, private formBuilder: FormBuilder, private itemService: ItemService, private _snackBar: MatSnackBar) {
     this.form = this.formBuilder.group({
-      text: ['', Validators.required]
+      text: ['', Validators.required],
+      answers: this.rows
     });
   }
 
@@ -29,8 +40,25 @@ export class ItemFormComponent implements OnInit {
     console.log(this.data);
   }
 
+  removeQuestion(q: number) {
+    console.log(q);
+    this.rows.removeAt(q);
+  }
+
+  addQuestion() {
+    // this.answers.push({"text":"a", "points": 5});
+    // this.form.get('answers')?.patchValue({"text":"D", "points": 20});
+    const row = this.formBuilder.group({
+      "text": "",
+      "points": null
+    });
+    this.rows.push(row);
+    console.log(this.answers);
+  }
+
   addTest() {
     const formObj = this.form.getRawValue();
+    console.log(formObj);
     this.itemService.addItem(formObj, this.data.sectionId).subscribe(
       (data) => {
         console.log(data);
@@ -43,14 +71,20 @@ export class ItemFormComponent implements OnInit {
     )
   }
 
+
   openSnackBar(message: string) {
     this._snackBar.open(message, 'Close', {
       duration: 3000
     });
   }
 
-  test() {
-    console.log(this.count);
+  get answersArray() {
+    return (<FormArray>this.form.get('answers')).controls;
+  }
+  
+  getArrayGroupControlByIndex(index: number) {
+    return (<FormArray>this.form.get('answers'))
+      .at(index);
   }
 
 }
