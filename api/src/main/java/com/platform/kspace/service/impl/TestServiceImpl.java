@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.platform.kspace.dto.PagedEntity;
 import com.platform.kspace.dto.StudentItemDTO;
 import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
@@ -23,6 +24,8 @@ import com.platform.kspace.repository.TestRepository;
 import com.platform.kspace.service.TestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javassist.NotFoundException;
@@ -124,6 +127,19 @@ public class TestServiceImpl implements TestService {
     @Override
     public List<TestDTO> getTests() {
         return testMapper.toDtoList(testRepository.findAll());
+    }
+
+    @Override
+    public PagedEntity<TestDTO> searchTests(String searchKeyword, Pageable pageable) {
+        Page<Test> page = testRepository.searchTests(searchKeyword, pageable);
+        List<TestDTO> a = testMapper.toDtoList(page.getContent());
+        return new PagedEntity<>(
+                testMapper.toDtoList(page.getContent()),
+                page.getTotalPages(),
+                page.getTotalElements(),
+                page.getNumber(),
+                page.getSize()
+        );
     }
 
     @Override

@@ -7,13 +7,15 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { WorkingTestComponent } from './working-test/working-test.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RootPageComponent } from './root-page/root-page.component';
+import { TestsListComponent } from './tests-list/tests-list.component';
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     WorkingTestComponent,
-    RootPageComponent
+    RootPageComponent,
+    TestsListComponent
   ],
   imports: [
     CommonModule,

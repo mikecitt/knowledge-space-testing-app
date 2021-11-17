@@ -1,0 +1,34 @@
+<mat-form-field id="searchField" appearance="fill">
+    <mat-label>Search</mat-label>
+    <input type="text" matInput [formControl]="searchKeyword"
+    (keyup)="keyUpEvent()" (keydown)="keyDownEvent()" (input)="checkIcon()">
+    <button mat-icon-button matSuffix (click)="resetSearch()">
+        <mat-icon matSuffix>{{ searchIconCode }}</mat-icon>
+    </button>
+</mat-form-field>
+<mat-card id="test-container">
+    <mat-card class="classHolder" *ngFor="let test of tests">
+        <div class="test-row">
+            <div class="test-cell">
+                <mat-icon>short_text</mat-icon>
+            </div>
+            <div class="test-cell cell-text">{{ test.name }}</div>
+        </div>
+        <div class="test-row">
+            <div class="test-cell">
+                <mat-icon>timer</mat-icon>
+            </div>
+            <div class="test-cell">{{ test.timer }} min</div>
+        </div>
+        <div class="test-row">
+            <div class="test-cell">
+                <mat-icon>date_range</mat-icon>
+            </div>
+            <div class="test-cell">
+                {{ test.validFrom | date: 'dd/MM/yyyy HH:mm' }} - {{ test.validUntil | date: 'dd/MM/yyyy HH:mm'}}</div>
+        </div>
+    </mat-card>
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="page" (page)="onPaginateChange($event)"
+        [pageSizeOptions]="[2, 5, 10, 25, 100]" aria-label="Select page">
+    </mat-paginator>
+</mat-card>

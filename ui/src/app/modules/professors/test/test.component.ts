@@ -73,7 +73,7 @@ export class TestComponent implements OnInit {
       if(result === true) {
         this.itemService.removeTest(this.id).subscribe((res) => {
           console.log(res);
-          this.router.navigateByUrl(`professors/`);
+          this.router.navigateByUrl(`/professors`);
         }, (err) => {
           console.log(err);
         })

@@ -1,0 +1,47 @@
+#searchField {
+    width: 100%;
+    input, mat-label {
+        font-size: 17px;
+    }
+    mat-icon {
+        font-size: 25px;
+    }
+}
+
+#test-container {
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.test-cell {
+    display: inline-block;
+    margin-right: 30px;
+    font-size: 18px;
+    vertical-align: middle;
+    .mat-icon {
+        font-size: 30px;
+    }
+}
+
+.cell-text {
+    max-width: 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+}
+
+.test-row {
+    display: block;
+    margin-bottom: 8px;
+    :last-child {
+        margin-bottom: 0;
+    }
+}
+
+.classHolder {
+    margin-bottom: 10px;
+    background-color: rgb(228, 228, 228);
+    :last-child {
+        margin-bottom: 0;
+    }
+}

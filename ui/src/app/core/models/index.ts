@@ -6,3 +6,4 @@ export { WorkingTest } from './working-test';
 export { Item } from './item';
 export { Answer } from './answer';
 export { StudentForm } from './student-form'
+export { PagedEntity } from './paged-entity'

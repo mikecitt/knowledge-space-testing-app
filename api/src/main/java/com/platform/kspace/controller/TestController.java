@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
+import com.platform.kspace.dto.PagedEntity;
 import com.platform.kspace.dto.StudentItemDTO;
 import com.platform.kspace.dto.TestDTO;
 import com.platform.kspace.dto.WorkingTestDTO;
@@ -12,6 +13,7 @@ import com.platform.kspace.service.TestService;
 
 import com.platform.kspace.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,11 @@ public class TestController {
     @GetMapping
     public ResponseEntity<List<TestDTO>> getTests() {
         return ResponseEntity.ok(this.testService.getTests());
+    }
+
+    @PatchMapping
+    public ResponseEntity<PagedEntity<TestDTO>> searchTests(@RequestParam String searchKeyword, Pageable pageable) {
+        return ResponseEntity.ok(this.testService.searchTests(searchKeyword, pageable));
     }
 
     @DeleteMapping("/{id}")
