@@ -8,6 +8,7 @@ import { WorkingTestComponent } from './working-test/working-test.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RootPageComponent } from './root-page/root-page.component';
 import { TestsListComponent } from './tests-list/tests-list.component';
+import { TestCardComponent } from './test-card/test-card.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { TestsListComponent } from './tests-list/tests-list.component';
     HomeComponent,
     WorkingTestComponent,
     RootPageComponent,
-    TestsListComponent
+    TestsListComponent,
+    TestCardComponent
   ],
   imports: [
     CommonModule,

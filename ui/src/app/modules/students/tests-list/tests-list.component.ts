@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { ITest } from 'src/app/core/models';
 import { ItemService } from 'src/app/core/service/item.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-tests-list',
   templateUrl: './tests-list.component.html',
-  styleUrls: ['./tests-list.component.scss']
+  styleUrls: ['./tests-list.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TestsListComponent implements OnInit {
 
@@ -15,12 +18,15 @@ export class TestsListComponent implements OnInit {
   pageSize: number;
   length: number;
   tests: ITest[]
+  expanded: boolean[] = [];
   searchKeyword = new FormControl('');
   doneTypingInterval = 800; // in ms
   typingTimer: any;
   searchIconCode = 'search';
 
-  constructor(private testService: ItemService) { }
+  @Output() onTestStart = new EventEmitter<ITest>();
+
+  constructor(private testService: ItemService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     var page = sessionStorage.getItem("currentTestPage");
@@ -43,6 +49,10 @@ export class TestsListComponent implements OnInit {
         sessionStorage.setItem("currentTestPage", this.page.toString());
         sessionStorage.setItem("currentTestPageSize", this.pageSize.toString());
         sessionStorage.setItem("currentTestSearch", this.searchKeyword.value);
+
+        this.expanded = [];
+        for (let i = 0; i < this.tests.length; i++)
+          this.expanded.push(false);
       }
     )
   }
@@ -74,5 +84,30 @@ export class TestsListComponent implements OnInit {
 
   keyDownEvent(): void {
     clearTimeout(this.typingTimer);
+  }
+
+  expandCard(testIndex: number): void {
+    for(let i = 0; i < this.expanded.length; i++) {
+      if (i != testIndex) {
+        this.expanded[i] = false;
+      }
+    }
+    this.expanded[testIndex] = !this.expanded[testIndex]
+  }
+
+  showStartTestDialog(test: ITest): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: 'fit-content',
+      data: {
+        title: "Starting test", 
+        question: "Are you sure you want to take this test now?" 
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.onTestStart.emit(test);
+      }
+    });
   }
 }

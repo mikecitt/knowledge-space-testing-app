@@ -9,7 +9,7 @@
 }
 
 #test-container {
-    overflow-y: auto;
+    overflow-y: scroll;
     max-height: 400px;
 }
 
@@ -30,18 +30,39 @@
     overflow: hidden; 
 }
 
+.test-cell {
+    cursor: text !important;
+}
+
 .test-row {
     display: block;
     margin-bottom: 8px;
-    :last-child {
-        margin-bottom: 0;
-    }
 }
 
 .classHolder {
     margin-bottom: 10px;
     background-color: rgb(228, 228, 228);
+    cursor: pointer;
     :last-child {
         margin-bottom: 0;
     }
+}
+.classHolder:hover {
+    background-color: rgb(189, 189, 189);
+}
+
+.info-tool-tip {
+    font-size: 15px;
+}
+
+.card-btn {
+    margin: 10px;
+    height: 40px;
+    float: right;
+}
+
+hr {
+    background-color: rgb(110, 110, 110);
+    height: 1px; 
+    border: 0;
 }

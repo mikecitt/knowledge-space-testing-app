@@ -1,7 +1,13 @@
 <mat-card class="columns-card">
     <mat-card-title>List of tests</mat-card-title>
-    <app-tests-list></app-tests-list>
+    <app-tests-list (onTestStart)="startTest($event)"></app-tests-list>
 </mat-card>
 <mat-card class="columns-card">
 
 </mat-card>
+<div class="loading" *ngIf="loading">
+    <mat-card>
+        <p style="text-align: center;">Loading</p>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card>
+</div>

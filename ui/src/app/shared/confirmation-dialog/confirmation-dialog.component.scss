@@ -1,0 +1,14 @@
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+.container > button {
+    flex: 1;
+    height: 40px;
+}

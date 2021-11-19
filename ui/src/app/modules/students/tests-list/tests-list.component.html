@@ -1,32 +1,51 @@
 <mat-form-field id="searchField" appearance="fill">
     <mat-label>Search</mat-label>
-    <input type="text" matInput [formControl]="searchKeyword"
-    (keyup)="keyUpEvent()" (keydown)="keyDownEvent()" (input)="checkIcon()">
+    <input type="text" matInput [formControl]="searchKeyword" (keyup)="keyUpEvent()" (keydown)="keyDownEvent()"
+        (input)="checkIcon()">
     <button mat-icon-button matSuffix (click)="resetSearch()">
         <mat-icon matSuffix>{{ searchIconCode }}</mat-icon>
     </button>
 </mat-form-field>
 <mat-card id="test-container">
-    <mat-card class="classHolder" *ngFor="let test of tests">
-        <div class="test-row">
-            <div class="test-cell">
-                <mat-icon>short_text</mat-icon>
-            </div>
-            <div class="test-cell cell-text">{{ test.name }}</div>
-        </div>
-        <div class="test-row">
-            <div class="test-cell">
-                <mat-icon>timer</mat-icon>
-            </div>
-            <div class="test-cell">{{ test.timer }} min</div>
-        </div>
-        <div class="test-row">
-            <div class="test-cell">
-                <mat-icon>date_range</mat-icon>
-            </div>
-            <div class="test-cell">
-                {{ test.validFrom | date: 'dd/MM/yyyy HH:mm' }} - {{ test.validUntil | date: 'dd/MM/yyyy HH:mm'}}</div>
-        </div>
+    <mat-card *ngFor="let test of tests; index as i;" class="classHolder" matRipple [matRippleCentered]="false"
+        (click)="expandCard(i)">
+        <app-test-card [trigger]="expanded[i]">
+            <mat-card-content style="margin-bottom: 0">
+                <div class="test-row">
+                    <div class="test-cell">
+                        <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test title">short_text</mat-icon>
+                    </div>
+                    <div class="test-cell cell-text"
+                    (mousedown)="$event.stopPropagation()"
+                    (click)="$event.stopPropagation()">{{ test.name }}</div>
+                </div>
+                <div class="test-row">
+                    <div class="test-cell">
+                        <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test duration">timer</mat-icon>
+                    </div>
+                    <div class="test-cell" 
+                    (click)="$event.stopPropagation()"
+                    (mousedown)="$event.stopPropagation()">{{ test.timer }} min</div>
+                </div>
+                <div class="test-row" style="margin-bottom: 0 !important;">
+                    <div class="test-cell">
+                        <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test validity date range">date_range
+                        </mat-icon>
+                    </div>
+                    <div class="test-cell" 
+                    (click)="$event.stopPropagation()"
+                    (mousedown)="$event.stopPropagation()">
+                        {{ test.validFrom | date: 'fullDate' }} - {{ test.validUntil | date: 'fullDate'}}</div>
+                </div>
+                <div style="margin: 0;" *ngIf="expanded[i]">
+                    <hr/>
+                    <button class="card-btn" 
+                    mat-raised-button color="primary"
+                    (mousedown)="$event.stopPropagation()"
+                    (click)="$event.stopPropagation(); showStartTestDialog(test)">Start test</button>
+                </div>
+            </mat-card-content>
+        </app-test-card>
     </mat-card>
     <mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="page" (page)="onPaginateChange($event)"
         [pageSizeOptions]="[2, 5, 10, 25, 100]" aria-label="Select page">

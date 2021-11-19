@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ITest } from 'src/app/core/models';
 import { TestingService } from 'src/app/core/service/testing.service';
 
 @Component({
@@ -9,15 +10,25 @@ import { TestingService } from 'src/app/core/service/testing.service';
 })
 export class HomeComponent implements OnInit {
 
+  public loading: boolean = false;
+
   constructor(private router: Router, private testingService: TestingService) { }
 
   ngOnInit(): void {
   }
 
-  startTest(): void {
-    this.testingService.takeTest().subscribe(response => {
-      sessionStorage.setItem("takenTest", JSON.stringify(response));
-    });
-    this.router.navigateByUrl("students/testing");
+  startTest(test: ITest): void {
+    this.loading = true;
+    this.testingService.takeTest(test.id).subscribe(
+      response => {
+        sessionStorage.setItem("takenTest", JSON.stringify(response));
+        setTimeout(() => {
+          this.loading = false;
+          this.router.navigateByUrl("students/testing");
+        }, 500)
+      },
+      error => {
+        this.loading = false;
+      });
   }
 }

@@ -39,3 +39,42 @@ body {
   -o-background-size: contain;
   background-size: contain;
 }
+
+::-webkit-scrollbar {
+  width: 10px;
+  overflow-y: scroll;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(172, 172, 172);
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(131, 131, 131);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgb(97, 97, 97);
+}
+
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index:99;
+  background-color: rgba($color: #000000, $alpha: 0.8);
+}
+
+.loading > mat-card {
+  top: 40%;
+  -ms-transform: translateY(-40%);
+  transform: translateY(-40%);
+  margin-left: 30% !important;
+  width: 40%;
+  font-size: 15px;
+}

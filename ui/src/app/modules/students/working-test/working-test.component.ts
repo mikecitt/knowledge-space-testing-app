@@ -24,6 +24,7 @@ export class WorkingTestComponent implements OnInit {
             console.log(this.currentItem)
           });
     } catch (err) {
+      console.log(err);
       this.authService.getRouter().navigate(['/students']);
     }
   }

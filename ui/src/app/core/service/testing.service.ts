@@ -15,11 +15,11 @@ export class TestingService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  takeTest(): Observable<WorkingTest> {
+  takeTest(testId: number): Observable<WorkingTest> {
     return this.http.get<WorkingTest>(`${API_BASE}${this.path}/start`, {
       params: {
         studentId: this.authService.getUserId(),
-        testId: 1
+        testId: testId
       }
     });
   }
