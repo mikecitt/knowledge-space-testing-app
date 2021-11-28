@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { API_BASE } from '../constants/url.constants';
-import { WorkingTest, Item } from '../models';
+import { WorkingTest, Item, TakenTest, PagedEntity } from '../models';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -18,7 +19,6 @@ export class TestingService {
   takeTest(testId: number): Observable<WorkingTest> {
     return this.http.get<WorkingTest>(`${API_BASE}${this.path}/start`, {
       params: {
-        studentId: this.authService.getUserId(),
         testId: testId
       }
     });
@@ -40,5 +40,25 @@ export class TestingService {
     return this.http.get<Item>(`${API_BASE}${this.path}/question/next`, {
       params: params
     });
+  }
+
+  getCurrentWorkingTest(): Observable<WorkingTest> {
+    return this.http.get<WorkingTest>(`${API_BASE}${this.path}/taken/current`);
+  }
+
+  searchTakenTests(searchKeyword: string, pageSize: number, page: number): Observable<PagedEntity<TakenTest>> {
+    return this.http.patch<PagedEntity<TakenTest>>(`${API_BASE}${this.path}/taken`, {}, {
+      params: {
+        searchKeyword: searchKeyword,
+        page: page,
+        size: pageSize
+      }
+    }).pipe(map(resp => {
+      resp.content.forEach(test => {
+        test.start = new Date(test.start);
+        test.end = test.end ? new Date(test.end) : null;
+      });
+      return resp;
+    }));;
   }
 }

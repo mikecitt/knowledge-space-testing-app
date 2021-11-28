@@ -4,10 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-import com.platform.kspace.dto.PagedEntity;
-import com.platform.kspace.dto.StudentItemDTO;
-import com.platform.kspace.dto.TestDTO;
-import com.platform.kspace.dto.WorkingTestDTO;
+import com.platform.kspace.dto.*;
 import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.service.TestService;
 
@@ -66,10 +63,28 @@ public class TestController {
 
     @GetMapping("/start")
     public ResponseEntity<WorkingTestDTO> startTest(
-            @RequestParam UUID studentId,
-            @RequestParam Integer testId) {
+            @RequestParam Integer testId,
+            Principal principal) {
         try {
-            return ResponseEntity.ok(testService.startTest(testId, studentId));
+            return ResponseEntity.ok(testService.startTest(
+                    testId, userService.findUserByEmail(principal.getName()).getId()));
+        } catch (KSpaceException kse) {
+            return new ResponseEntity<>(kse.getHttpStatus());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("/taken")
+    public ResponseEntity<PagedEntity<TakenTestDTO>> searchTakenTests(
+            @RequestParam String searchKeyword,
+            Principal principal,
+            Pageable pageable
+    ) {
+        try {
+            return ResponseEntity.ok(testService.searchTakenTests(searchKeyword,
+                    userService.findUserByEmail(principal.getName()).getId(), pageable));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -82,6 +97,18 @@ public class TestController {
             @RequestParam(required = false) Integer itemId) {
         try {
             return ResponseEntity.ok(testService.getNextQuestion(workingTestId, itemId));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/taken/current")
+    public ResponseEntity<WorkingTestDTO> getNextQuestion(Principal principal) {
+        try {
+            return ResponseEntity.ok(testService.getCurrentWorkingTest(
+                    userService.findUserByEmail(principal.getName()).getId()
+            ));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

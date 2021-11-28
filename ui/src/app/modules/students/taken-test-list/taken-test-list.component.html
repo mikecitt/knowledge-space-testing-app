@@ -1,0 +1,64 @@
+<mat-form-field id="searchField" appearance="fill">
+    <mat-label>Search</mat-label>
+    <input type="text" matInput [formControl]="searchKeyword" (keyup)="keyUpEvent()" (keydown)="keyDownEvent()"
+        (input)="checkIcon()">
+    <button mat-icon-button matSuffix (click)="resetSearch()">
+        <mat-icon matSuffix>{{ searchIconCode }}</mat-icon>
+    </button>
+</mat-form-field>
+<mat-card id="test-container">
+    <mat-card *ngFor="let test of tests; index as i;" class="classHolder" matRipple [matRippleCentered]="false">
+        <mat-card-content *ngIf="test.end !== null" style="margin-bottom: 0">
+            <div class="test-row">
+                <div class="test-cell">
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test title">short_text</mat-icon>
+                </div>
+                <div class="test-cell cell-text" (mousedown)="$event.stopPropagation()"
+                    (click)="$event.stopPropagation()">{{ test.testName }}</div>
+            </div>
+            <div class="test-row">
+                <div class="test-cell">
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test duration">date_range</mat-icon>
+                </div>
+                <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
+                    {{ test.start | date: 'medium' }} - {{ test.end | date: 'medium'}}</div>
+            </div>
+            <div class="test-row" style="margin-bottom: 0 !important;">
+                <div class="test-cell">
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test validity date range">assignment
+                    </mat-icon>
+                </div>
+                <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
+                    {{ test.score }} points</div>
+            </div>
+        </mat-card-content>
+        <mat-card-content *ngIf="test.end === null" style="margin-bottom: 0">
+            <div class="test-row">
+                <div class="test-cell">
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test title">short_text</mat-icon>
+                </div>
+                <div class="test-cell cell-text" (mousedown)="$event.stopPropagation()"
+                    (click)="$event.stopPropagation()">{{ test.testName }}</div>
+            </div>
+            <div class="test-row">
+                <div class="test-cell">
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test duration">date_range</mat-icon>
+                </div>
+                <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
+                    {{ test.start | date: 'medium' }}</div>
+            </div>
+            <div class="test-row" style="margin-bottom: 0 !important;">
+                <div class="test-cell">
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test validity date range">timelapse
+                    </mat-icon>
+                </div>
+                <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
+                    <countdown [config]="{ leftTime: remainingTime(test), format: 'HH:mm:ss.S' }"></countdown>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="page" (page)="onPaginateChange($event)"
+        [pageSizeOptions]="[2, 5, 10, 25, 100]" aria-label="Select page">
+    </mat-paginator>
+</mat-card>

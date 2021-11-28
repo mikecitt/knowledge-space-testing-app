@@ -40,6 +40,7 @@
                 <div style="margin: 0;" *ngIf="expanded[i]">
                     <hr/>
                     <button class="card-btn" 
+                    [disabled]="!isTestOpen(test)"
                     mat-raised-button color="primary"
                     (mousedown)="$event.stopPropagation()"
                     (click)="$event.stopPropagation(); showStartTestDialog(test)">Start test</button>

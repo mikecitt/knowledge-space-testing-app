@@ -9,6 +9,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { RootPageComponent } from './root-page/root-page.component';
 import { TestsListComponent } from './tests-list/tests-list.component';
 import { TestCardComponent } from './test-card/test-card.component';
+import { TakenTestListComponent } from './taken-test-list/taken-test-list.component';
+import { CountdownModule } from 'ngx-countdown';
 
 
 @NgModule({
@@ -17,13 +19,15 @@ import { TestCardComponent } from './test-card/test-card.component';
     WorkingTestComponent,
     RootPageComponent,
     TestsListComponent,
-    TestCardComponent
+    TestCardComponent,
+    TakenTestListComponent
   ],
   imports: [
     CommonModule,
     StudentsRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    CountdownModule
   ]
 })
 export class StudentsModule { }

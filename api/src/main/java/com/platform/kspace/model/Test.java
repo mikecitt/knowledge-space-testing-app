@@ -24,13 +24,13 @@ public class Test {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private Double timer;
 
-    @Column
+    @Column(nullable = false)
     private Date validFrom;
 
-    @Column
+    @Column(nullable = false)
     private Date validUntil;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")

@@ -1,14 +1,14 @@
 package com.platform.kspace.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.platform.kspace.dto.PagedEntity;
-import com.platform.kspace.dto.StudentItemDTO;
-import com.platform.kspace.dto.TestDTO;
-import com.platform.kspace.dto.WorkingTestDTO;
+import com.platform.kspace.dto.*;
+import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.mapper.StudentItemMapper;
+import com.platform.kspace.mapper.TakenTestMapper;
 import com.platform.kspace.mapper.TestMapper;
 import com.platform.kspace.mapper.WorkingTestMapper;
 import com.platform.kspace.model.Item;
@@ -26,6 +26,7 @@ import com.platform.kspace.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javassist.NotFoundException;
@@ -54,10 +55,19 @@ public class TestServiceImpl implements TestService {
 
     private StudentItemMapper itemMapper;
 
+    private TakenTestMapper takenTestMapper;
+
+    private boolean isTestStartable(Test test) {
+        Calendar now = Calendar.getInstance();
+        return test.getValidFrom().before(now.getTime()) &&
+                test.getValidUntil().after(now.getTime());
+    }
+
     public TestServiceImpl() {
         workingTestMapper = new WorkingTestMapper();
         testMapper = new TestMapper();
         itemMapper = new StudentItemMapper();
+        takenTestMapper = new TakenTestMapper();
     }
 
     @Override
@@ -76,15 +86,25 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public WorkingTestDTO startTest(Integer testId, UUID studentId) {
-        Test test = testRepository.getById(testId);
-        Student s = studentRepository.getById(studentId);
-        TakenTest takenTest = new TakenTest(
-                new Date(),
-                s,
-                test
-        );
-        return workingTestMapper.toDto(takenTestRepository.save(takenTest));
+    public WorkingTestDTO startTest(Integer testId, UUID studentId) throws KSpaceException {
+        TakenTest alreadyTaken = takenTestRepository.getUnfinishedTest(studentId);
+
+        if (alreadyTaken == null) {
+            Test test = testRepository.getById(testId);
+            if (isTestStartable(test)) {
+                Student s = studentRepository.getById(studentId);
+                TakenTest takenTest = new TakenTest(
+                        new Date(),
+                        s,
+                        test
+                );
+                return workingTestMapper.toDto(takenTestRepository.save(takenTest));
+            } else {
+                throw new KSpaceException(HttpStatus.BAD_REQUEST, "Selected test is not open.");
+            }
+        } else {
+            throw new KSpaceException(HttpStatus.CONFLICT, "You have already started another test.");
+        }
     }
 
     @Override
@@ -94,6 +114,11 @@ public class TestServiceImpl implements TestService {
             throw new Exception("Professor doesn't exist.");
         Test test = testMapper.toEntity(dto);
         test.setCreatedBy(p);
+        Calendar c = Calendar.getInstance();
+        c.setTime(test.getValidUntil());
+        c.add(Calendar.DATE, 1);
+        c.add(Calendar.SECOND, -1);
+        test.setValidUntil(c.getTime());
         return testMapper.toDto(testRepository.save(test));
     }
 
@@ -122,6 +147,34 @@ public class TestServiceImpl implements TestService {
                 return null;
             }
         }
+    }
+
+    @Override
+    public PagedEntity<TakenTestDTO> searchTakenTests(
+            String searchKeyword,
+            UUID studentId,
+            Pageable pageable
+    ) {
+        Page<TakenTest> page = takenTestRepository.searchTakenTestsByStudent(
+                searchKeyword, studentId, pageable);
+        return new PagedEntity<>(
+                takenTestMapper.toDtoList(page.getContent()),
+                page.getTotalPages(),
+                page.getTotalElements(),
+                page.getNumber(),
+                page.getSize()
+        );
+    }
+
+    @Override
+    public WorkingTestDTO getCurrentWorkingTest(UUID studentId) {
+        TakenTest takenTest = takenTestRepository.getUnfinishedTest(studentId);
+
+        if (takenTest != null) {
+            return workingTestMapper.toDto(takenTest);
+        }
+
+        return null;
     }
 
     @Override

@@ -21,10 +21,10 @@ public class TakenTest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
-    @Column
+    @Column(nullable = false)
     private Date start;
 
-    @Column
+    @Column(nullable = true)
     private Date end;
 
     @ManyToOne

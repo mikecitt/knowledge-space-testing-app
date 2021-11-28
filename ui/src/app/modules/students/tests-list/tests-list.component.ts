@@ -39,6 +39,11 @@ export class TestsListComponent implements OnInit {
     this.searchTests();
   }
 
+  isTestOpen(test: ITest) {
+    var now = Date.now();
+    return test.validFrom.getTime() <= now && test.validUntil.getTime() >= now;
+  }
+
   searchTests(): void {
     this.testService.searchTests(this.searchKeyword.value, this.pageSize, this.page).subscribe(
       res => {

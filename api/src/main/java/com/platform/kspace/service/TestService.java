@@ -1,9 +1,7 @@
 package com.platform.kspace.service;
 
-import com.platform.kspace.dto.PagedEntity;
-import com.platform.kspace.dto.StudentItemDTO;
-import com.platform.kspace.dto.TestDTO;
-import com.platform.kspace.dto.WorkingTestDTO;
+import com.platform.kspace.dto.*;
+import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.model.Test;
 import org.springframework.data.domain.Pageable;
 
@@ -20,6 +18,8 @@ public interface TestService {
     Test save(Test test);
     boolean deleteTest(Integer id);
     TestDTO addTest(TestDTO test, UUID professorId) throws Exception;
-    WorkingTestDTO startTest(Integer testId, UUID studentId);
+    WorkingTestDTO startTest(Integer testId, UUID studentId) throws KSpaceException;
     StudentItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception;
+    PagedEntity<TakenTestDTO> searchTakenTests(String searchKeyword, UUID studentId, Pageable pageable);
+    WorkingTestDTO getCurrentWorkingTest(UUID studentId);
 }

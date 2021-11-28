@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { API_BASE } from '../constants/url.constants';
 import { PagedEntity } from '../models';
 import { ITest } from '../models/test';
@@ -14,8 +15,14 @@ export class ItemService {
 
   constructor(private http: HttpClient) { }
 
-  getTests(): Observable<ITest> {
-    return this.http.get<ITest>(`${API_BASE}/test/`);
+  getTests(): Observable<ITest[]> {
+    return this.http.get<ITest[]>(`${API_BASE}/test/`).pipe(map(resp => {
+      resp.forEach(test => {
+        test.validFrom = new Date(test.validFrom);
+        test.validUntil = new Date(test.validUntil);
+      });
+      return resp;
+    }));;
   }
 
   searchTests(searchKeyword: string, pageSize: number, page: number): Observable<PagedEntity<ITest>> {
@@ -25,11 +32,21 @@ export class ItemService {
         page: page,
         size: pageSize
       }
-    });
+    }).pipe(map(resp => {
+      resp.content.forEach(test => {
+        test.validFrom = new Date(test.validFrom);
+        test.validUntil = new Date(test.validUntil);
+      });
+      return resp;
+    }));
   }
 
   getTest(id: any) {
-    return this.http.get<any>(`${API_BASE}/test/${id}`);
+    return this.http.get<any>(`${API_BASE}/test/${id}`).pipe(map(resp => {
+      resp.validFrom = new Date(resp.validFrom);
+      resp.validUntil = new Date(resp.validUntil);
+      return resp;
+    }));
   }
 
   addTest(test: any) {
@@ -51,7 +68,7 @@ export class ItemService {
   addItem(item: any, sectionId: number) {
     return this.http.post<any>(`${API_BASE}/item?sectionId=${sectionId}`, item);
   }
-  
+
   removeItem(id: any) {
     return this.http.delete<any>(`${API_BASE}/item/${id}`);
   }

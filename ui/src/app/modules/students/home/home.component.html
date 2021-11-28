@@ -1,9 +1,10 @@
 <mat-card class="columns-card">
-    <mat-card-title>List of tests</mat-card-title>
+    <mat-card-title>Available tests</mat-card-title>
     <app-tests-list (onTestStart)="startTest($event)"></app-tests-list>
 </mat-card>
 <mat-card class="columns-card">
-
+    <mat-card-title>Taken tests</mat-card-title>
+    <app-taken-test-list></app-taken-test-list>
 </mat-card>
 <div class="loading" *ngIf="loading">
     <mat-card>
