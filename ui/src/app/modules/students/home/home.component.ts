@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ITest } from 'src/app/core/models';
 import { TestingService } from 'src/app/core/service/testing.service';
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   public loading: boolean = false;
 
-  constructor(private router: Router, private testingService: TestingService) { }
+  constructor(private router: Router, private testingService: TestingService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -28,7 +29,16 @@ export class HomeComponent implements OnInit {
         }, 500)
       },
       error => {
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+          this.openSnackBar('You can only have one taken test at the time.');
+        }, 500)
       });
+  }
+
+  openSnackBar(message: string) {
+    this._snackBar.open(message, '', {
+      duration: 3000
+    });
   }
 }

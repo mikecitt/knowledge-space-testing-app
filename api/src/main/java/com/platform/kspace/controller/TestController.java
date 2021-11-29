@@ -32,8 +32,17 @@ public class TestController {
     }
 
     @PatchMapping
-    public ResponseEntity<PagedEntity<TestDTO>> searchTests(@RequestParam String searchKeyword, Pageable pageable) {
-        return ResponseEntity.ok(this.testService.searchTests(searchKeyword, pageable));
+    public ResponseEntity<?> searchTests(
+            @RequestParam String searchKeyword,
+            Pageable pageable,
+            Principal principal
+    ) {
+        try {
+            return ResponseEntity.ok(this.testService.searchTests(searchKeyword,
+                    userService.findUserByEmail(principal.getName()).getId(), pageable));
+        } catch (KSpaceException kse) {
+            return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -62,14 +71,14 @@ public class TestController {
     }
 
     @GetMapping("/start")
-    public ResponseEntity<WorkingTestDTO> startTest(
+    public ResponseEntity<?> startTest(
             @RequestParam Integer testId,
             Principal principal) {
         try {
             return ResponseEntity.ok(testService.startTest(
                     testId, userService.findUserByEmail(principal.getName()).getId()));
         } catch (KSpaceException kse) {
-            return new ResponseEntity<>(kse.getHttpStatus());
+            return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

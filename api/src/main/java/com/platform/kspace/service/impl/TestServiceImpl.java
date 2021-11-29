@@ -88,23 +88,22 @@ public class TestServiceImpl implements TestService {
     @Override
     public WorkingTestDTO startTest(Integer testId, UUID studentId) throws KSpaceException {
         TakenTest alreadyTaken = takenTestRepository.getUnfinishedTest(studentId);
+        Test test = testRepository.getById(testId);
 
-        if (alreadyTaken == null) {
-            Test test = testRepository.getById(testId);
-            if (isTestStartable(test)) {
-                Student s = studentRepository.getById(studentId);
-                TakenTest takenTest = new TakenTest(
-                        new Date(),
-                        s,
-                        test
-                );
-                return workingTestMapper.toDto(takenTestRepository.save(takenTest));
-            } else {
-                throw new KSpaceException(HttpStatus.BAD_REQUEST, "Selected test is not open.");
-            }
-        } else {
+        if (alreadyTaken != null)
             throw new KSpaceException(HttpStatus.CONFLICT, "You have already started another test.");
-        }
+        if (!isTestStartable(test))
+            throw new KSpaceException(HttpStatus.BAD_REQUEST, "Selected test is not open.");
+        if(takenTestRepository.checkIfTestIsAlreadyTaken(studentId))
+            throw new KSpaceException(HttpStatus.CONFLICT, "You have already taken this test.");
+
+        Student s = studentRepository.getById(studentId);
+        TakenTest takenTest = new TakenTest(
+                new Date(),
+                s,
+                test
+        );
+        return workingTestMapper.toDto(takenTestRepository.save(takenTest));
     }
 
     @Override
@@ -183,9 +182,8 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public PagedEntity<TestDTO> searchTests(String searchKeyword, Pageable pageable) {
-        Page<Test> page = testRepository.searchTests(searchKeyword, pageable);
-        List<TestDTO> a = testMapper.toDtoList(page.getContent());
+    public PagedEntity<TestDTO> searchTests(String searchKeyword, UUID studentId, Pageable pageable) {
+        Page<Test> page = testRepository.searchTests(searchKeyword, studentId, pageable);
         return new PagedEntity<>(
                 testMapper.toDtoList(page.getContent()),
                 page.getTotalPages(),

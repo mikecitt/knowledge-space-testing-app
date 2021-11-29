@@ -12,7 +12,7 @@ public interface TestService {
 
     List<Test> findAll();
     List<TestDTO> getTests();
-    PagedEntity<TestDTO> searchTests(String searchKeyword, Pageable pageable);
+    PagedEntity<TestDTO> searchTests(String searchKeyword, UUID studentId, Pageable pageable);
     TestDTO getTest(Integer id);
     Test findOne(int id);
     Test save(Test test);

@@ -18,14 +18,14 @@
             </div>
             <div class="test-row">
                 <div class="test-cell">
-                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test duration">date_range</mat-icon>
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test lasting">date_range</mat-icon>
                 </div>
                 <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
                     {{ test.start | date: 'medium' }} - {{ test.end | date: 'medium'}}</div>
             </div>
             <div class="test-row" style="margin-bottom: 0 !important;">
                 <div class="test-cell">
-                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test validity date range">assignment
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test score">assignment
                     </mat-icon>
                 </div>
                 <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
@@ -42,19 +42,23 @@
             </div>
             <div class="test-row">
                 <div class="test-cell">
-                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test duration">date_range</mat-icon>
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test started at">date_range</mat-icon>
                 </div>
                 <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
                     {{ test.start | date: 'medium' }}</div>
             </div>
             <div class="test-row" style="margin-bottom: 0 !important;">
                 <div class="test-cell">
-                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Test validity date range">timelapse
+                    <mat-icon matTooltipClass="info-tool-tip" matTooltip="Time elapsed">timelapse
                     </mat-icon>
                 </div>
                 <div class="test-cell" (click)="$event.stopPropagation()" (mousedown)="$event.stopPropagation()">
                     <countdown [config]="{ leftTime: remainingTime(test), format: 'HH:mm:ss.S' }"></countdown>
                 </div>
+            </div>
+            <div class="test-row" style="margin-bottom: 0 !important;">
+                <a routerLink="/students/testing" class="card-btn" mat-raised-button color="accent" (mousedown)="$event.stopPropagation()"
+                    (click)="$event.stopPropagation(); ">Back to test</a>
             </div>
         </mat-card-content>
     </mat-card>

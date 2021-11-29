@@ -43,6 +43,7 @@ export class TakenTestListComponent implements OnInit {
   searchTests(): void {
     this.testService.searchTakenTests(this.searchKeyword.value, this.pageSize, this.page).subscribe(
       res => {
+        this.remainingTimeValue = -1;
         this.tests = res.content;
         this.page = res.currentPage;
         this.pageSize = res.pageSize;
@@ -81,5 +82,9 @@ export class TakenTestListComponent implements OnInit {
 
   keyDownEvent(): void {
     clearTimeout(this.typingTimer);
+  }
+
+  takeBackToTest(): void {
+    
   }
 }

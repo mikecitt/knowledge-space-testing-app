@@ -16,6 +16,12 @@ public interface TakenTestRepository extends JpaRepository<TakenTest, Integer> {
     )
     TakenTest getUnfinishedTest(UUID userId);
 
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END FROM TAKEN_TEST" +
+            " WHERE TAKEN_BY_ID = ?1",
+            nativeQuery = true
+    )
+    boolean checkIfTestIsAlreadyTaken(UUID userId);
+
     @Query(
             value = "SELECT TT.* FROM TAKEN_TEST TT JOIN TEST T ON T.ID = TT.TEST_ID" +
                     " AND T.NAME LIKE %?1% AND TT.TAKEN_BY_ID = ?2" +
