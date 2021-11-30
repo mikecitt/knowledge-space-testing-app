@@ -2,17 +2,9 @@ package com.platform.kspace.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class TakenTest {
@@ -33,7 +25,7 @@ public class TakenTest {
     @OneToOne
     private Test test;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Answer> answers;
 
     public TakenTest() {}
@@ -66,5 +58,20 @@ public class TakenTest {
 
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    public void clearAnswersOfItem(Integer itemId) {
+        answers = answers.stream()
+                .filter(answer -> !answer.getItem().getId().equals(itemId))
+                .collect(Collectors.toList());
+    }
+
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
+    }
+
+    public boolean containsAnswer(Integer id) {
+        boolean a = answers.stream().anyMatch(answer -> answer.getId().equals(id));
+        return answers.stream().anyMatch(answer -> answer.getId().equals(id));
     }
 }

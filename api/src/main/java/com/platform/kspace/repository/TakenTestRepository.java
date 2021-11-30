@@ -5,8 +5,10 @@ import com.platform.kspace.model.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 
@@ -31,4 +33,12 @@ public interface TakenTestRepository extends JpaRepository<TakenTest, Integer> {
             nativeQuery = true
     )
     Page<TakenTest> searchTakenTestsByStudent(String searchKeyword, UUID userId, Pageable pageable);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM TAKEN_TEST_ANSWERS WHERE ANSWERS_ID IN " +
+            "(SELECT ID FROM ANSWER WHERE ITEM_ID = ?1)",
+            nativeQuery = true
+    )
+    void deleteAnswersOfItem(Integer itemId);
 }

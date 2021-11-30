@@ -9,6 +9,7 @@ import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.service.TestService;
 
 import com.platform.kspace.service.UserService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -102,10 +103,11 @@ public class TestController {
 
     @GetMapping("/question/next")
     public ResponseEntity<StudentItemDTO> getNextQuestion(
-            @RequestParam Integer workingTestId,
+            Principal principal,
             @RequestParam(required = false) Integer itemId) {
         try {
-            return ResponseEntity.ok(testService.getNextQuestion(workingTestId, itemId));
+            return ResponseEntity.ok(testService.getNextQuestion(
+                    userService.findUserByEmail(principal.getName()).getId(), itemId));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -121,6 +123,25 @@ public class TestController {
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/taken/answer")
+    public ResponseEntity<?> answerItem(
+            @RequestBody ItemAnswersDTO itemAnswersDTO,
+            Principal principal
+    ) {
+        try {
+            testService.answerOnItem(
+                    userService.findUserByEmail(principal.getName()).getId(),
+                    itemAnswersDTO
+            );
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (KSpaceException kse) {
+            return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
         }
     }
 }

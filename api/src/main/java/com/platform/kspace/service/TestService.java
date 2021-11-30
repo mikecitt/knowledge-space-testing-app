@@ -3,6 +3,7 @@ package com.platform.kspace.service;
 import com.platform.kspace.dto.*;
 import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.model.Test;
+import javassist.NotFoundException;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public interface TestService {
     boolean deleteTest(Integer id);
     TestDTO addTest(TestDTO test, UUID professorId) throws Exception;
     WorkingTestDTO startTest(Integer testId, UUID studentId) throws KSpaceException;
-    StudentItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception;
+    StudentItemDTO getNextQuestion(UUID studentId, Integer currentItemId) throws KSpaceException;
     PagedEntity<TakenTestDTO> searchTakenTests(String searchKeyword, UUID studentId, Pageable pageable);
     WorkingTestDTO getCurrentWorkingTest(UUID studentId);
+    void answerOnItem(UUID studentId, ItemAnswersDTO itemAnswersDTO) throws NotFoundException;
 }

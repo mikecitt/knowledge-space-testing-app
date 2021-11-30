@@ -5,7 +5,7 @@
         </h1>
         <div class="inline-elem">
             <div *ngFor="let answer of currentItem.answers; index as i">
-                <mat-checkbox class="answer-chkbox" [checked]="false" color="primary">
+                <mat-checkbox class="answer-chkbox" [(ngModel)]="answer.selected" color="primary">
                     {{answer.text}}
                 </mat-checkbox>
             </div>

@@ -11,16 +11,8 @@ import com.platform.kspace.mapper.StudentItemMapper;
 import com.platform.kspace.mapper.TakenTestMapper;
 import com.platform.kspace.mapper.TestMapper;
 import com.platform.kspace.mapper.WorkingTestMapper;
-import com.platform.kspace.model.Item;
-import com.platform.kspace.model.Professor;
-import com.platform.kspace.model.Student;
-import com.platform.kspace.model.TakenTest;
-import com.platform.kspace.model.Test;
-import com.platform.kspace.repository.ItemRepository;
-import com.platform.kspace.repository.ProfessorRepository;
-import com.platform.kspace.repository.StudentRepository;
-import com.platform.kspace.repository.TakenTestRepository;
-import com.platform.kspace.repository.TestRepository;
+import com.platform.kspace.model.*;
+import com.platform.kspace.repository.*;
 import com.platform.kspace.service.TestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +37,9 @@ public class TestServiceImpl implements TestService {
 
     @Autowired
     private TakenTestRepository takenTestRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @Autowired
     private ItemRepository itemRepository;
@@ -122,23 +117,32 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public StudentItemDTO getNextQuestion(Integer takenTestId, Integer currentItemId) throws Exception {
-        TakenTest takenTest = takenTestRepository.getById(takenTestId);
-        if(takenTest.getEnd() != null) {
-            throw new Exception("Test is finished");
-        }
+    public StudentItemDTO getNextQuestion(UUID studentId, Integer currentItemId) throws KSpaceException {
+        TakenTest takenTest = takenTestRepository.getUnfinishedTest(studentId);
+
+        if (takenTest == null)
+            throw new KSpaceException(HttpStatus.NOT_FOUND, "There is no taken test at the moment.");
+
         List<Item> items = itemRepository.findAllTestItems(takenTest.getTest().getId());
         if(currentItemId == null) {
             if(items.size() == 0) {
                 return null;
             }
-            return itemMapper.toDto(items.get(0));
+            StudentItemDTO item = itemMapper.toDto(items.get(0));
+            item.getAnswers().forEach(answer -> answer.setSelected(
+                    takenTest.containsAnswer(answer.getId()))
+            );
+            return item;
         } else {
             try {
                 for(Item i : items) {
                     if(i.getId().equals(currentItemId)) {
                         int index = items.indexOf(i);
-                        return itemMapper.toDto(items.get(index + 1));
+                        StudentItemDTO item = itemMapper.toDto(items.get(index + 1));
+                        item.getAnswers().forEach(answer -> answer.setSelected(
+                                takenTest.containsAnswer(answer.getId()))
+                        );
+                        return item;
                     }
                 }
                 throw new NotFoundException("Item not in current test");
@@ -174,6 +178,24 @@ public class TestServiceImpl implements TestService {
         }
 
         return null;
+    }
+
+    @Override
+    public void answerOnItem(UUID studentId, ItemAnswersDTO itemAnswersDTO) throws NotFoundException {
+        TakenTest takenTest = takenTestRepository.getUnfinishedTest(studentId);
+        if (itemRepository.findAllTestItems(takenTest.getTest().getId()).stream().noneMatch(
+                item -> item.getId().equals(itemAnswersDTO.getItemId()))
+        ) {
+            throw new NotFoundException("Item not in current test");
+        }
+
+        takenTest.clearAnswersOfItem(itemAnswersDTO.getItemId());
+        takenTestRepository.deleteAnswersOfItem(itemAnswersDTO.getItemId());
+        for(Integer answerId : itemAnswersDTO.getSelectedAnswers()) {
+            takenTest.addAnswer(answerRepository.getById(answerId));
+        }
+
+        takenTestRepository.save(takenTest);
     }
 
     @Override

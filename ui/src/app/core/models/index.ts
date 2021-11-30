@@ -8,3 +8,6 @@ export { Answer } from './answer';
 export { StudentForm } from './student-form'
 export { PagedEntity } from './paged-entity'
 export { TakenTest } from './taken-test'
+export { ItemAnswers } from './item-answers'
+export { StudentItem } from './student-item';
+export { PossibleAnswer } from './possible-answer';

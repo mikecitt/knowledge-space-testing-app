@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Item } from 'src/app/core/models';
+import { ItemAnswers, StudentItem } from 'src/app/core/models';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { TestingService } from 'src/app/core/service/testing.service';
 
@@ -10,7 +10,7 @@ import { TestingService } from 'src/app/core/service/testing.service';
 })
 export class WorkingTestComponent implements OnInit {
 
-  public currentItem: Item | null = null;
+  public currentItem: StudentItem | null = null;
   public loading: boolean = false;
 
   constructor(private testingService: TestingService, private authService: AuthService) { }
@@ -31,17 +31,29 @@ export class WorkingTestComponent implements OnInit {
 
   nextQuestion(): void {
     this.loading = true;
-    this.testingService.getNextQuestion(this.currentItem)
-      .subscribe(
-        response => {
-          setTimeout(() => {
-            this.loading = false;
-            this.currentItem = response;
-          }, 500)
-        },
-        error => {
-          console.log(error);
-          this.loading = false;
-        })
+    if (this.currentItem) {
+      var currItem = this.currentItem;
+      var itemAnswers: ItemAnswers = {
+        itemId: currItem.id,
+        selectedAnswers: this.currentItem.answers
+          .filter(elem => elem.selected)
+          .map(elem => elem.id)
+      };
+      this.testingService.answerOnQuestion(itemAnswers)
+        .subscribe(response => {
+          this.testingService.getNextQuestion(this.currentItem)
+            .subscribe(
+              response => {
+                setTimeout(() => {
+                  this.loading = false;
+                  this.currentItem = response;
+                }, 500)
+              },
+              error => {
+                console.log(error);
+                this.loading = false;
+              })
+        });
+    }
   }
 }

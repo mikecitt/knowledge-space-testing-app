@@ -3,6 +3,14 @@
     margin-bottom: 20px;
 }
 
+mat-card {
+    width: 70%;
+    margin-left: 15%;
+    top: 25%;
+    -ms-transform: translateY(250%);
+    transform: translateY(25%);
+}
+
 mat-checkbox ::ng-deep .mat-checkbox-inner-container {
     width: 25px;
     height: 25px;

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { API_BASE } from '../constants/url.constants';
-import { WorkingTest, Item, TakenTest, PagedEntity } from '../models';
+import { WorkingTest, TakenTest, PagedEntity, ItemAnswers, StudentItem } from '../models';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -24,22 +24,18 @@ export class TestingService {
     });
   }
 
-  getNextQuestion(currentItem: Item | null): Observable<Item> {
-    var temp = sessionStorage.getItem("takenTest");
-    if(!temp) {
-      throw "There is no taken test at the time";
-    } 
-
-    var currentTest = JSON.parse(temp);
-    var params: any = {
-      workingTestId: currentTest.id
-    };
+  getNextQuestion(currentItem: StudentItem | null): Observable<StudentItem> {
+    var params: any = {};
     if(currentItem)
       params.itemId = currentItem.id;
       
-    return this.http.get<Item>(`${API_BASE}${this.path}/question/next`, {
+    return this.http.get<StudentItem>(`${API_BASE}${this.path}/question/next`, {
       params: params
     });
+  }
+
+  answerOnQuestion(itemAnswers: ItemAnswers): Observable<void> {
+    return this.http.post<void>(`${API_BASE}${this.path}/taken/answer`, itemAnswers);
   }
 
   getCurrentWorkingTest(): Observable<WorkingTest> {
