@@ -44,8 +44,9 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    public SectionDTO addSection(Section section, Integer testId) {
+    public SectionDTO addSection(SectionDTO dto, Integer testId) {
         Test test = testRepository.findById(testId).orElse(null);
+        Section section = sectionMapper.toEntity(dto);
         section.setTest(test);
         section = sectionRepository.save(section);
         return sectionMapper.toDto(section);
@@ -65,6 +66,15 @@ public class SectionServiceImpl implements SectionService {
     public void deleteSection(Integer id) {
         sectionRepository.deleteById(id);
         return;
+    }
+
+    @Override
+    public SectionDTO updateSection(SectionDTO section, Integer sectionId) throws Exception {
+        Section s = sectionRepository.getById(sectionId);
+        if(s == null)
+            throw new Exception("Section doesn't exist.");
+        s.setName(section.getName());
+        return sectionMapper.toDto(sectionRepository.save(s));
     }
     
 }

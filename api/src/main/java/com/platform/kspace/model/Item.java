@@ -94,4 +94,8 @@ public class Item {
         this.answers.add(answer);
     }
 
+    public void fixAnswers() {
+        this.answers.forEach(a -> a.setItem(this));
+    }
+
 }

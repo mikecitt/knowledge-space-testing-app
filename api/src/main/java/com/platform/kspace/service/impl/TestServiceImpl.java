@@ -117,6 +117,18 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    public TestDTO updateTest(TestDTO test, Integer testId) throws Exception {
+        Test t = testRepository.getById(testId);
+        if(t == null)
+            throw new Exception("Test doesn't exist.");
+        t.setName(test.getName());
+        t.setTimer(test.getTimer());
+        t.setValidFrom(test.getValidFrom());
+        t.setValidUntil(test.getValidUntil());
+        return testMapper.toDto(testRepository.save(t));
+    }
+
+    @Override
     public StudentItemDTO getNextQuestion(UUID studentId, Integer currentItemId) throws KSpaceException {
         TakenTest takenTest = takenTestRepository.getUnfinishedTest(studentId);
 

@@ -3,6 +3,7 @@ package com.platform.kspace.service.impl;
 import java.util.List;
 
 import com.platform.kspace.dto.ItemDTO;
+import com.platform.kspace.mapper.AnswerMapper;
 import com.platform.kspace.mapper.ItemMapper;
 import com.platform.kspace.model.Item;
 import com.platform.kspace.model.Section;
@@ -24,8 +25,11 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemMapper itemMapper;
 
+    private AnswerMapper answerMapper;
+
     public ItemServiceImpl() {
         this.itemMapper = new ItemMapper();
+        this.answerMapper = new AnswerMapper();
     }
 
     @Override
@@ -60,6 +64,17 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Integer id) {
         itemRepository.deleteById(id);
         return;
+    }
+
+    @Override
+    public ItemDTO updateItem(ItemDTO dto, Integer itemId) throws Exception {
+        Item i = itemRepository.getById(itemId);
+        if(i == null)
+            throw new Exception("Section doesn't exist.");
+        i.setText(dto.getText());
+        i.setAnswers(answerMapper.toEntityList(dto.getAnswers()));
+        i.fixAnswers();
+        return itemMapper.toDto(itemRepository.save(i));
     }
     
 }

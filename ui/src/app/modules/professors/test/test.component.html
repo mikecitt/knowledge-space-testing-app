@@ -9,8 +9,22 @@
     <p>Valid until: {{ test.validUntil | date: "fullDate" }}</p>
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="editTest()" [disabled]="!checkDatePassed(test.validFrom)">Edit Test</button>
-    <button mat-raised-button color="warn" (click)="removeTest()" [disabled]="!checkDatePassed(test.validFrom)">Remove Test</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="editTest()"
+      [disabled]="!checkDatePassed(test.validFrom)"
+    >
+      Edit Test
+    </button>
+    <button
+      mat-raised-button
+      color="warn"
+      (click)="removeTest()"
+      [disabled]="!checkDatePassed(test.validFrom)"
+    >
+      Remove Test
+    </button>
   </mat-card-actions>
 </mat-card>
 
@@ -31,19 +45,29 @@
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Quadratic_formula.svg/1200px-Quadratic_formula.svg.png"
       />
       <mat-card-content>
-        <p *ngFor="let a of i.answers">{{ a.text }} ({{a.points}} points)</p>
+        <p *ngFor="let a of i.answers">{{ a.text }} ({{ a.points }} points)</p>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-raised-button color="primary">Edit</button>
-        <button mat-raised-button color="warn" (click)="removeItem(i)">Remove</button>
+        <button mat-raised-button color="primary" (click)="updateItem(i)">
+          Edit
+        </button>
+        <button mat-raised-button color="warn" (click)="removeItem(i)">
+          Remove
+        </button>
       </mat-card-actions>
     </mat-card>
     <!-- <app-item *ngFor="let i of s.items"></app-item> -->
     <!-- <p *ngFor="let i of s.items">{{i.text}}</p> -->
     <mat-action-row>
-      <button mat-raised-button color="primary" (click)="addItem(s)">Add Item</button>
-      <button mat-raised-button color="primary">Edit Section</button>
-      <button mat-raised-button color="warn" (click)="removeSection(s)">Remove Section</button>
+      <button mat-raised-button color="primary" (click)="addItem(s)">
+        Add Item
+      </button>
+      <button mat-raised-button color="primary" (click)="updateSection(s)">
+        Edit Section
+      </button>
+      <button mat-raised-button color="warn" (click)="removeSection(s)">
+        Remove Section
+      </button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

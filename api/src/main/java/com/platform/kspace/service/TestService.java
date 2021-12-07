@@ -18,6 +18,7 @@ public interface TestService {
     Test findOne(int id);
     Test save(Test test);
     boolean deleteTest(Integer id);
+    TestDTO updateTest(TestDTO test, Integer testId) throws Exception;
     TestDTO addTest(TestDTO test, UUID professorId) throws Exception;
     WorkingTestDTO startTest(Integer testId, UUID studentId) throws KSpaceException;
     StudentItemDTO getNextQuestion(UUID studentId, Integer currentItemId) throws KSpaceException;

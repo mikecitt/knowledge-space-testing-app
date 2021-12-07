@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import com.platform.kspace.dto.SectionDTO;
 import com.platform.kspace.model.Section;
 
-import org.hibernate.cfg.NotYetImplementedException;
-
 public class SectionMapper implements MapperInterface<Section, SectionDTO> {
 
     private ItemMapper itemMapper;
@@ -18,12 +16,12 @@ public class SectionMapper implements MapperInterface<Section, SectionDTO> {
 
     @Override
     public Section toEntity(SectionDTO dto) {
-        throw new NotYetImplementedException();
+        return new Section(dto.getName());
     }
 
     @Override
     public List<Section> toEntityList(List<SectionDTO> dtoList) {
-        throw new NotYetImplementedException();
+        return dtoList.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
     @Override

@@ -26,6 +26,28 @@ export class TestFormComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  submitTest() {
+    if (this.data == null) {
+      this.addTest();
+    } else {
+      this.updateTest();
+    }
+  }
+
+  updateTest() {
+    const formObj = this.form.getRawValue();
+    this.itemService.updateTest(formObj, this.data.id).subscribe(
+      (data) => {
+        console.log(data);
+        this.openSnackBar('Test successfuly updated!');
+        this.dialogRef.close('added');
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
   addTest() {
     const formObj = this.form.getRawValue();
     this.itemService.addTest(formObj).subscribe(

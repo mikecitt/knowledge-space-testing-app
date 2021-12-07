@@ -12,5 +12,6 @@ public interface SectionService {
     Section findOne(Integer id);
     Section save(Section section);
     void deleteSection(Integer id);
-    SectionDTO addSection(Section section, Integer testId);
+    SectionDTO addSection(SectionDTO section, Integer testId);
+    SectionDTO updateSection(SectionDTO section, Integer sectionId) throws Exception;
 }

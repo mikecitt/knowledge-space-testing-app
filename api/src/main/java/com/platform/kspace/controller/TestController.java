@@ -2,7 +2,6 @@ package com.platform.kspace.controller;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.UUID;
 
 import com.platform.kspace.dto.*;
 import com.platform.kspace.exceptions.KSpaceException;
@@ -62,6 +61,21 @@ public class TestController {
             return ResponseEntity.ok(testService.addTest(
                     dto,
                     userService.findUserByEmail(principal.getName()).getId())
+            );
+        } catch (KSpaceException kse) {
+            return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTest(@RequestBody TestDTO dto, @PathVariable("id") Integer id) {
+        try {
+            return ResponseEntity.ok(testService.updateTest(
+                    dto,
+                    id)
             );
         } catch (KSpaceException kse) {
             return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());

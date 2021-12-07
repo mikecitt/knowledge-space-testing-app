@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Adding new item</h2>
+<h2 mat-dialog-title>Item details</h2>
 <form #testForm="ngForm" [formGroup]="form">
   <mat-dialog-content>
     <p>
@@ -22,7 +22,9 @@
           <mat-form-field appearance="outline">
             <mat-label>Points</mat-label>
             <input required type="number" matInput formControlName="points" />
-            <mat-hint>For incorrect answers input negative value or zero.</mat-hint>
+            <mat-hint
+              >For incorrect answers input negative value or zero.</mat-hint
+            >
           </mat-form-field>
           <button mat-mini-fab color="warn" (click)="removeQuestion(i)">
             X
