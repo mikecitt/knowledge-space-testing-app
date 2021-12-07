@@ -26,6 +26,10 @@ public class Section {
     @ManyToOne
     private Test test;
 
+    @ManyToOne
+    private KnowledgeSpace knowledgeSpace;
+
+    // TODO: remove from model
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "section")
     private List<Item> items;
 
