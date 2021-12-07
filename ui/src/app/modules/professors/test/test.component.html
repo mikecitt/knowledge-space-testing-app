@@ -13,7 +13,7 @@
       mat-raised-button
       color="primary"
       (click)="editTest()"
-      [disabled]="!checkDatePassed(test.validFrom)"
+      [disabled]="checkDatePassed(test.validFrom)"
     >
       Edit Test
     </button>
@@ -21,7 +21,7 @@
       mat-raised-button
       color="warn"
       (click)="removeTest()"
-      [disabled]="!checkDatePassed(test.validFrom)"
+      [disabled]="checkDatePassed(test.validFrom)"
     >
       Remove Test
     </button>
@@ -48,10 +48,20 @@
         <p *ngFor="let a of i.answers">{{ a.text }} ({{ a.points }} points)</p>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-raised-button color="primary" (click)="updateItem(i)">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="updateItem(i)"
+          [disabled]="checkDatePassed(test.validFrom)"
+        >
           Edit
         </button>
-        <button mat-raised-button color="warn" (click)="removeItem(i)">
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="removeItem(i)"
+          [disabled]="checkDatePassed(test.validFrom)"
+        >
           Remove
         </button>
       </mat-card-actions>
@@ -59,18 +69,38 @@
     <!-- <app-item *ngFor="let i of s.items"></app-item> -->
     <!-- <p *ngFor="let i of s.items">{{i.text}}</p> -->
     <mat-action-row>
-      <button mat-raised-button color="primary" (click)="addItem(s)">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="addItem(s)"
+        [disabled]="checkDatePassed(test.validFrom)"
+      >
         Add Item
       </button>
-      <button mat-raised-button color="primary" (click)="updateSection(s)">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="updateSection(s)"
+        [disabled]="checkDatePassed(test.validFrom)"
+      >
         Edit Section
       </button>
-      <button mat-raised-button color="warn" (click)="removeSection(s)">
+      <button
+        mat-raised-button
+        color="warn"
+        (click)="removeSection(s)"
+        [disabled]="checkDatePassed(test.validFrom)"
+      >
         Remove Section
       </button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<button mat-raised-button color="primary" (click)="addSection()">
+<button
+  mat-raised-button
+  color="primary"
+  (click)="addSection()"
+  [disabled]="checkDatePassed(test.validFrom)"
+>
   Add section
 </button>

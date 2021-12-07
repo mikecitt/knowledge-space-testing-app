@@ -57,7 +57,7 @@ export class TestComponent implements OnInit {
   }
 
   checkDatePassed(date: Date) {
-    return true;
+    return date.getTime() <= new Date().getTime();
   }
 
   editTest() {
