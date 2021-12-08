@@ -1,7 +1,6 @@
 package com.platform.kspace.repository;
 
 import com.platform.kspace.model.TakenTest;
-import com.platform.kspace.model.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

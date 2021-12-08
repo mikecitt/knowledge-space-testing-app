@@ -71,7 +71,6 @@ public class TakenTest {
     }
 
     public boolean containsAnswer(Integer id) {
-        boolean a = answers.stream().anyMatch(answer -> answer.getId().equals(id));
         return answers.stream().anyMatch(answer -> answer.getId().equals(id));
     }
 }
