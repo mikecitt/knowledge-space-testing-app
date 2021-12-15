@@ -12,12 +12,12 @@ public class Edge {
     @ManyToOne
     @MapsId("fromId")
     @JoinColumn(name = "from_id")
-    private Item from;
+    private DomainProblem from;
 
     @ManyToOne
     @MapsId("toId")
     @JoinColumn(name = "to_id")
-    private Item to;
+    private DomainProblem to;
 
     @ManyToOne
     private KnowledgeSpace knowledgeSpace;

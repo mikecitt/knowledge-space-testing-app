@@ -36,6 +36,9 @@ public class Test {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     private Set<Section> sections;
 
+    @ManyToOne
+    private Domain domain;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Professor createdBy;
 
