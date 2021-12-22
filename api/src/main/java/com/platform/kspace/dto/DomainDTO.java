@@ -1,19 +1,16 @@
 package com.platform.kspace.dto;
 
-import java.util.List;
 
 public class DomainDTO {
     private Integer id;
     private String text;
-    private List<DomainProblemDTO> domainProblems;
 
     public DomainDTO() {
     }
 
-    public DomainDTO(Integer id, String text, List<DomainProblemDTO> domainProblems) {
+    public DomainDTO(Integer id, String text) {
         this.id = id;
         this.text = text;
-        this.domainProblems = domainProblems;
     }
 
     public Integer getId() {
@@ -31,12 +28,4 @@ public class DomainDTO {
     public void setText(String text) {
         this.text = text;
     }
-
-    public List<DomainProblemDTO> getDomainProblems() {
-        return this.domainProblems;
-    }
-
-    public void setDomainProblems(List<DomainProblemDTO> domainProblems) {
-        this.domainProblems = domainProblems;
-    }    
 }

@@ -2,7 +2,7 @@ package com.platform.kspace.model;
 
 import javax.persistence.*;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,9 +16,6 @@ public class Domain {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domain")
-    private List<DomainProblem> domainProblems;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domain")
     private Set<KnowledgeSpace> knowledgeSpaces;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domain")
@@ -28,21 +25,13 @@ public class Domain {
     public Domain() {
     }
 
-    public Domain(Integer id, String name) {
-        this.id = id;
+    public Domain(String name) {
         this.name = name;
+        this.knowledgeSpaces = new HashSet<>();
     }
 
-    public Domain(Integer id, String name, List<DomainProblem> domainProblems) {
-        this.id = id;
+    public Domain(String name, Set<KnowledgeSpace> knowledgeSpaces, Set<Test> tests) {
         this.name = name;
-        this.domainProblems = domainProblems;
-    }
-
-    public Domain(Integer id, String name, List<DomainProblem> domainProblems, Set<KnowledgeSpace> knowledgeSpaces, Set<Test> tests) {
-        this.id = id;
-        this.name = name;
-        this.domainProblems = domainProblems;
         this.knowledgeSpaces = knowledgeSpaces;
         this.tests = tests;
     }
@@ -59,20 +48,17 @@ public class Domain {
         this.name = name;
     }
 
-    public List<DomainProblem> getDomainProblems() {
-        return this.domainProblems;
-    }
-
-    public void setDomainProblems(List<DomainProblem> domainProblems) {
-        this.domainProblems = domainProblems;
-    }
-
     public Set<KnowledgeSpace> getKnowledgeSpaces() {
         return this.knowledgeSpaces;
     }
 
     public void setKnowledgeSpaces(Set<KnowledgeSpace> knowledgeSpaces) {
         this.knowledgeSpaces = knowledgeSpaces;
+    }
+
+    public void addKnowledgeSpace(KnowledgeSpace knowledgeSpace) {
+        knowledgeSpace.setDomain(this);
+        this.knowledgeSpaces.add(knowledgeSpace);
     }
 
     public Set<Test> getTests() {

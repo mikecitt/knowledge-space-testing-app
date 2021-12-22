@@ -1,5 +1,6 @@
 package com.platform.kspace.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -9,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -24,23 +24,18 @@ public class DomainProblem {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domain")
     private Set<Item> items;
 
-    @ManyToOne
-    private Domain domain;
-
-
     public DomainProblem() {
     }
 
-    public DomainProblem(Integer id, String name) {
-        this.id = id;
+    public DomainProblem(String name) {
         this.name = name;
+        items = new HashSet<>();
     }
 
-    public DomainProblem(Integer id, String name, Set<Item> items, Domain domain) {
-        this.id = id;
+    public DomainProblem(String name, Set<Item> items) {
         this.name = name;
         this.items = items;
-        this.domain = domain;
+        items = new HashSet<>();
     }
 
     public Integer getId() {
@@ -63,11 +58,7 @@ public class DomainProblem {
         this.items = items;
     }
 
-    public Domain getDomain() {
-        return this.domain;
-    }
-
-    public void setDomain(Domain domain) {
-        this.domain = domain;
+    public void addItem(Item item) {
+        this.items.add(item);
     }
 }

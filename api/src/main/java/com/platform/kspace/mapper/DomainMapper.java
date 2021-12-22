@@ -8,15 +8,9 @@ import com.platform.kspace.model.Domain;
 
 public class DomainMapper implements MapperInterface<Domain, DomainDTO> {
 
-    private DomainProblemMapper domainProblemMapper;
-
-    public DomainMapper() {
-        domainProblemMapper = new DomainProblemMapper();
-    }
-
     @Override
     public Domain toEntity(DomainDTO dto) {
-        return new Domain(dto.getId(), dto.getText(), domainProblemMapper.toEntityList(dto.getDomainProblems()));
+        return new Domain(dto.getText());
     }
 
     @Override
@@ -26,7 +20,7 @@ public class DomainMapper implements MapperInterface<Domain, DomainDTO> {
 
     @Override
     public DomainDTO toDto(Domain entity) {
-        return new DomainDTO(entity.getId(), entity.getName(), domainProblemMapper.toDtoList(entity.getDomainProblems()));
+        return new DomainDTO(entity.getId(), entity.getName());
     }
 
     @Override
