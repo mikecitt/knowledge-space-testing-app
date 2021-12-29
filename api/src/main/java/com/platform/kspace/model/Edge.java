@@ -35,6 +35,35 @@ public class Edge {
     public void setKnowledgeSpace(KnowledgeSpace knowledgeSpace) {
         this.knowledgeSpace = knowledgeSpace;
     }
+
+
+    public EdgeKey getId() {
+        return this.id;
+    }
+
+    public void setId(EdgeKey id) {
+        this.id = id;
+    }
+
+    public DomainProblem getFrom() {
+        return this.from;
+    }
+
+    public void setFrom(DomainProblem from) {
+        this.from = from;
+    }
+
+    public DomainProblem getTo() {
+        return this.to;
+    }
+
+    public void setTo(DomainProblem to) {
+        this.to = to;
+    }
+
+    public KnowledgeSpace getKnowledgeSpace() {
+        return this.knowledgeSpace;
+    }    
 }
 
 @Embeddable

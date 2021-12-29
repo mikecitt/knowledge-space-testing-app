@@ -2,8 +2,8 @@ package com.platform.kspace.controller;
 
 import java.util.List;
 
-import com.platform.kspace.dto.DomainDTO;
-import com.platform.kspace.service.DomainService;
+import com.platform.kspace.dto.DomainProblemDTO;
+import com.platform.kspace.service.DomainProblemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/domain")
-public class DomainController {
+@RequestMapping("api/domain-problem")
+public class DomainProblemController {
     @Autowired
-    private DomainService domainService;
+    private DomainProblemService domainProblemService;
 
     @PostMapping
-    public ResponseEntity<DomainDTO> addDomain(@RequestBody DomainDTO dto) {
+    public ResponseEntity<DomainProblemDTO> addDomainProblem(@RequestBody DomainProblemDTO dto) {
         try {
-            return ResponseEntity.ok(domainService.addDomain(dto));
+            return ResponseEntity.ok(domainProblemService.addDomainProblem(dto));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -33,7 +33,7 @@ public class DomainController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DomainDTO>> getDomains() {
-        return ResponseEntity.ok(domainService.getDomains());
+    public ResponseEntity<List<DomainProblemDTO>> getDomainProblems() {
+        return ResponseEntity.ok(domainProblemService.getDomainProblems());
     }
 }

@@ -2,8 +2,8 @@ package com.platform.kspace.model;
 
 import javax.persistence.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class KnowledgeSpace {
@@ -22,12 +22,22 @@ public class KnowledgeSpace {
     private Domain domain;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "knowledgeSpace")
-    private Set<Edge> edges;
+    private List<Edge> edges;
+
+    public KnowledgeSpace() {
+        
+    }
 
     public KnowledgeSpace(String name, Boolean isReal) {
         this.name = name;
         this.isReal = isReal;
-        edges = new HashSet<>();
+        this.edges = new ArrayList<>();
+    }
+
+    public KnowledgeSpace(String name, Boolean isReal, List<Edge> edges) {
+        this.name = name;
+        this.isReal = isReal;
+        this.edges = edges;
     }
 
     public void addEdge(Edge edge) {
@@ -37,5 +47,45 @@ public class KnowledgeSpace {
 
     public void setDomain(Domain domain) {
         this.domain = domain;
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Boolean isIsReal() {
+        return this.isReal;
+    }
+
+    public Boolean getIsReal() {
+        return this.isReal;
+    }
+
+    public void setIsReal(Boolean isReal) {
+        this.isReal = isReal;
+    }
+
+    public Domain getDomain() {
+        return this.domain;
+    }
+
+    public List<Edge> getEdges() {
+        return this.edges;
+    }
+
+    public void setEdges(List<Edge> edges) {
+        this.edges = edges;
     }
 }

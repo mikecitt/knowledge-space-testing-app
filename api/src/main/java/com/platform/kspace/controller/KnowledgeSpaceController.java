@@ -2,14 +2,15 @@ package com.platform.kspace.controller;
 
 import java.util.List;
 
-import com.platform.kspace.dto.DomainDTO;
-import com.platform.kspace.service.DomainService;
+import com.platform.kspace.dto.KnowledgeSpaceDTO;
+import com.platform.kspace.service.KnowledgeSpaceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/domain")
-public class DomainController {
+@RequestMapping("api/knowledge-space")
+public class KnowledgeSpaceController {
     @Autowired
-    private DomainService domainService;
+    private KnowledgeSpaceService knowledgeSpaceService;
 
     @PostMapping
-    public ResponseEntity<DomainDTO> addDomain(@RequestBody DomainDTO dto) {
+    public ResponseEntity<KnowledgeSpaceDTO> addDomainProblem(@RequestBody KnowledgeSpaceDTO dto, @PathVariable Integer domainId) {
         try {
-            return ResponseEntity.ok(domainService.addDomain(dto));
+            return ResponseEntity.ok(knowledgeSpaceService.addKnowledgeSpace(dto, domainId));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -33,7 +34,7 @@ public class DomainController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DomainDTO>> getDomains() {
-        return ResponseEntity.ok(domainService.getDomains());
+    public ResponseEntity<List<KnowledgeSpaceDTO>> getDomainProblems() {
+        return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces());
     }
 }
