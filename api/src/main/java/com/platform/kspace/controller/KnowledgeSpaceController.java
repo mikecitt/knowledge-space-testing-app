@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,7 +25,7 @@ public class KnowledgeSpaceController {
     private KnowledgeSpaceService knowledgeSpaceService;
 
     @PostMapping
-    public ResponseEntity<KnowledgeSpaceDTO> addDomainProblem(@RequestBody KnowledgeSpaceDTO dto, @PathVariable Integer domainId) {
+    public ResponseEntity<KnowledgeSpaceDTO> addKnowledgeSpace(@RequestBody KnowledgeSpaceDTO dto, @RequestParam Integer domainId) {
         try {
             return ResponseEntity.ok(knowledgeSpaceService.addKnowledgeSpace(dto, domainId));
         } catch (Exception ex) {
@@ -33,8 +34,14 @@ public class KnowledgeSpaceController {
         }
     }
 
+    // @GetMapping
+    // public ResponseEntity<List<KnowledgeSpaceDTO>> getKnowledgeSpaces() {
+    //     return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces());
+    // }
+    // unnecesarry
+
     @GetMapping
-    public ResponseEntity<List<KnowledgeSpaceDTO>> getDomainProblems() {
-        return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces());
+    public ResponseEntity<List<KnowledgeSpaceDTO>> getDomainKnowledgeSpaces(@RequestParam Integer domainId) {
+        return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces(domainId));
     }
 }

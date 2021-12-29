@@ -10,4 +10,5 @@ public interface KnowledgeSpaceService {
     List<KnowledgeSpace> findAll();
     KnowledgeSpaceDTO addKnowledgeSpace(KnowledgeSpaceDTO dto, Integer domainId);
     List<KnowledgeSpaceDTO> getKnowledgeSpaces();
+    List<KnowledgeSpaceDTO> getKnowledgeSpaces(Integer id);
 }

@@ -52,5 +52,10 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
     public List<KnowledgeSpaceDTO> getKnowledgeSpaces() {
         return knowledgeSpaceMapper.toDtoList(knowledgeSpaceRepository.findAll());
     }
+
+    @Override
+    public List<KnowledgeSpaceDTO> getKnowledgeSpaces(Integer id) {
+        return knowledgeSpaceMapper.toDtoList(knowledgeSpaceRepository.findByDomainId(id));
+    }
     
 }
