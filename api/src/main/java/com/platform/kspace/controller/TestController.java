@@ -27,8 +27,13 @@ public class TestController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<TestDTO>> getTests() {
-        return ResponseEntity.ok(this.testService.getTests());
+    public ResponseEntity<?> getTests(Principal principal) {
+        try {
+            return ResponseEntity.ok(this.testService.findAllByUser(
+                    userService.findUserByEmail(principal.getName())));
+        } catch (KSpaceException kse) {
+            return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
+        }
     }
 
     @PatchMapping

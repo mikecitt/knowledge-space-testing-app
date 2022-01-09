@@ -36,7 +36,7 @@ public class DataLoader {
     }
 
     private void LoadData() {
-        Professor p = new Professor("Petar", "Petrovic", "petar@example.com", "$2a$04$P2R/ohGi2eYUJw02EEZaveX37jwcXb4E.RnwQo8MgP8EgNP0vjfN.");
+        /*Professor p = new Professor("Petar", "Petrovic", "petar@example.com", "$2a$04$P2R/ohGi2eYUJw02EEZaveX37jwcXb4E.RnwQo8MgP8EgNP0vjfN.");
         p.setPassword(passwordEncoder.encode("qwerty"), true);
         p = this.userRepository.save(p);
 
@@ -158,6 +158,6 @@ public class DataLoader {
         Domain general = new Domain("General Computer Usage");
         general.addKnowledgeSpace(knowledgeSpace);
 
-        domainRepository.save(general);
+        domainRepository.save(general);*/
     }
 }

@@ -38,7 +38,7 @@ public class TokenUtils {
                 .setSubject(user.getEmail())
                 .setAudience(generateAudience())
                 .setId(user.getId().toString())
-                // .claim("role", user.getRole())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();

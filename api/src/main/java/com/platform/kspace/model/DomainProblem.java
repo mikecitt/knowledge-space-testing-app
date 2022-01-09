@@ -21,7 +21,7 @@ public class DomainProblem {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domain")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domainProblem")
     private Set<Item> items;
 
     public DomainProblem() {

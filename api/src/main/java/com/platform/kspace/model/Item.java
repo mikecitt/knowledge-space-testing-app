@@ -30,9 +30,8 @@ public class Item {
     private List<Answer> answers;
 
     @ManyToOne
-    private Domain domain;
+    private DomainProblem domainProblem;
 
-    // TODO: Remove from model
     @ManyToOne
     private Section section;
 

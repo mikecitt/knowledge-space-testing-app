@@ -66,8 +66,8 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public List<Test> findAll() {
-        return testRepository.findAll();
+    public List<TestDTO> findAllByUser(User user) {
+        return testMapper.toDtoList(testRepository.findAllByCreatedBy(user));
     }
 
     @Override
