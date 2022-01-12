@@ -10,7 +10,7 @@ public class DomainProblemMapper implements MapperInterface<DomainProblem, Domai
 
     @Override
     public DomainProblem toEntity(DomainProblemDTO dto) {
-        return new DomainProblem(dto.getText());
+        return new DomainProblem(dto.getId(), dto.getText());
     }
 
     @Override

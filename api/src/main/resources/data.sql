@@ -141,23 +141,23 @@ INSERT INTO knowledge_space (id, is_real, name, domain_id) VALUES
 	(2, false, 'Expected2', 2);
 
 INSERT INTO domain_problem (id, name) VALUES
-	(1, 'HTTP'),
-	(2,	'REST'),
-	(3,	'SOA'),
-	(4,	'Microservices'),
-	(5,	'Databases'),
-	(6,	'Basic Computer Knowledge'),
-	(7,	'Basic Web Knowledge'),
-	(8,	'Computer Operation Proficiency');
+	('7f91b07ce0184b4b9825ecff1256cba4', 'HTTP'),
+	('5706e487af22425c898a8d0d9d74b125', 'REST'),
+	('9440fe067efa46c587c6cd4656b96b45', 'SOA'),
+	('34b6c73e29704609a7e94e2528dd8779', 'Microservices'),
+	('c1edd78975be4ab0b59899e75bdbec3f', 'Databases'),
+	('cffb6d7eb11f42a5ab8598961ba9e744', 'Basic Computer Knowledge'),
+	('3c02e26072494f62baee852ede19dad8', 'Basic Web Knowledge'),
+	('29c2109a90a24e37929e2578420dc6df', 'Computer Operation Proficiency');
 
 INSERT INTO edge (from_id, to_id, knowledge_space_id) VALUES
-	(1,	2, 1),
-	(2,	3, 1),
-	(2,	4, 1),
-	(3,	5, 1),
-	(4,	5, 1),
-	(6,	7, 2),
-	(7,	8, 2);
+	('7f91b07ce0184b4b9825ecff1256cba4', '5706e487af22425c898a8d0d9d74b125', 1),
+	('5706e487af22425c898a8d0d9d74b125', '9440fe067efa46c587c6cd4656b96b45', 1),
+	('5706e487af22425c898a8d0d9d74b125', '34b6c73e29704609a7e94e2528dd8779', 1),
+	('9440fe067efa46c587c6cd4656b96b45', 'c1edd78975be4ab0b59899e75bdbec3f', 1),
+	('34b6c73e29704609a7e94e2528dd8779', 'c1edd78975be4ab0b59899e75bdbec3f', 1),
+	('cffb6d7eb11f42a5ab8598961ba9e744', '3c02e26072494f62baee852ede19dad8', 2),
+	('3c02e26072494f62baee852ede19dad8', '29c2109a90a24e37929e2578420dc6df', 2);
 
 INSERT INTO test (id, name , timer, valid_from, valid_until, created_by_id, domain_id) VALUES
     (1, 'Introduction to web programming', 60.0, CURRENT_DATE(), CURRENT_DATE() + INTERVAL 5 DAY, 'c3b0c97ba5a8450cb6aa49bd3a4a52d6', 1),
@@ -172,17 +172,17 @@ INSERT INTO section VALUES
 	(5, 'Computer usage', 3);
 
 INSERT INTO item VALUES
-    (1, NULL, 'HTML is what type of language?', 1, 1),
-    (2, NULL, 'Which HTTP methods exists?', 2, 1),
-    (3, NULL, 'Which of the following is the base namespace for a SOAP message?', 3, 1),
-    (4, NULL, 'What''s the difference between a microservices-oriented architecture (MOA) and a service-oriented architecture (SOA)?', 4, 2),
-	(5, NULL, 'What do you mean by one to many relationships?', 5, 3),
-    (6, NULL, 'Identify the device through which data and instructions are entered into a computer?', 6, 4),
-	(7, NULL, 'Which one of these is working as temporary memory?', 6, 5),
-	(8, NULL, 'Which software is a file compression utility?', 7, 4),
-	(9, NULL, 'In which situation running applications of an user account remains active?', 7, 5),
-	(10, NULL, 'Which of the following is a correct format of Email address?', 8, 4),
-	(11, NULL, 'Which one of the following is a search engine?', 8, 5);
+    (1, NULL, 'HTML is what type of language?', '7f91b07ce0184b4b9825ecff1256cba4', 1),
+    (2, NULL, 'Which HTTP methods exists?', '5706e487af22425c898a8d0d9d74b125', 1),
+    (3, NULL, 'Which of the following is the base namespace for a SOAP message?', '9440fe067efa46c587c6cd4656b96b45', 1),
+    (4, NULL, 'What''s the difference between a microservices-oriented architecture (MOA) and a service-oriented architecture (SOA)?', '34b6c73e29704609a7e94e2528dd8779', 2),
+	(5, NULL, 'What do you mean by one to many relationships?', 'c1edd78975be4ab0b59899e75bdbec3f', 3),
+    (6, NULL, 'Identify the device through which data and instructions are entered into a computer?', 'cffb6d7eb11f42a5ab8598961ba9e744', 4),
+	(7, NULL, 'Which one of these is working as temporary memory?', 'cffb6d7eb11f42a5ab8598961ba9e744', 5),
+	(8, NULL, 'Which software is a file compression utility?', '3c02e26072494f62baee852ede19dad8', 4),
+	(9, NULL, 'In which situation running applications of an user account remains active?', '3c02e26072494f62baee852ede19dad8', 5),
+	(10, NULL, 'Which of the following is a correct format of Email address?', '29c2109a90a24e37929e2578420dc6df', 4),
+	(11, NULL, 'Which one of the following is a search engine?', '29c2109a90a24e37929e2578420dc6df', 5);
 
 INSERT INTO answer (points, text, item_id) VALUES
     (0.0, 'Scripting Language', 1),

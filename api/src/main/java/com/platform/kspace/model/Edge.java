@@ -2,6 +2,7 @@ package com.platform.kspace.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 public class Edge {
@@ -70,25 +71,25 @@ public class Edge {
 class EdgeKey implements Serializable {
 
     @Column(name = "from_id")
-    Integer fromId;
+    UUID fromId;
 
     @Column(name = "to_id")
-    Integer toId;
+    UUID toId;
 
 
-    public Integer getFromId() {
+    public UUID getFromId() {
         return this.fromId;
     }
 
-    public void setFromId(Integer fromId) {
+    public void setFromId(UUID fromId) {
         this.fromId = fromId;
     }
 
-    public Integer getToId() {
+    public UUID getToId() {
         return this.toId;
     }
 
-    public void setToId(Integer toId) {
+    public void setToId(UUID toId) {
         this.toId = toId;
     }
 

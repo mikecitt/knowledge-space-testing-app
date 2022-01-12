@@ -1,22 +1,23 @@
 package com.platform.kspace.dto;
 
+import java.util.UUID;
+
 public class DomainProblemDTO {
-    private Integer id;
+    private UUID id;
     private String text;
 
-    public DomainProblemDTO() {
-    }
+    public DomainProblemDTO() {}
 
-    public DomainProblemDTO(Integer id, String text) {
+    public DomainProblemDTO(UUID id, String text) {
         this.id = id;
         this.text = text;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

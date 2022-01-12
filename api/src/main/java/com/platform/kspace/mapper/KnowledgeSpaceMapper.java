@@ -16,7 +16,13 @@ public class KnowledgeSpaceMapper implements MapperInterface<KnowledgeSpace, Kno
 
     @Override
     public KnowledgeSpace toEntity(KnowledgeSpaceDTO dto) {
-        return new KnowledgeSpace(dto.getName(), dto.getIsReal(), edgeMapper.toEntityList(dto.getEdges()));
+        KnowledgeSpace knowledgeSpace = new KnowledgeSpace(
+                dto.getName(),
+                dto.getIsReal(),
+                edgeMapper.toEntityList(dto.getEdges())
+        );
+        knowledgeSpace.getEdges().forEach(x -> x.setKnowledgeSpace(knowledgeSpace));
+        return knowledgeSpace;
     }
 
     @Override
