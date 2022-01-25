@@ -11,3 +11,4 @@ export { TakenTest } from './taken-test'
 export { ItemAnswers } from './item-answers'
 export { StudentItem } from './student-item';
 export { PossibleAnswer } from './possible-answer';
+export { Domain } from './domain';

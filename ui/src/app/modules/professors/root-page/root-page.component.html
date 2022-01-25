@@ -1,4 +1,20 @@
 <div class="bg-image">
-    <app-main-bar></app-main-bar>
+    <app-main-bar>
+        <div class="item">
+            <button mat-button mat-fab color="primary" (click)="redirectTo('')">
+                <img class="test" src="assets/exam-test.png"/>
+            </button>
+        </div>
+        <div class="item">
+            <button mat-button mat-fab color="primary" (click)="redirectTo('domain')">
+                <img class="domain" src="assets/domain.png"/>
+            </button>
+        </div>
+        <div class="item">
+            <button mat-button mat-fab color="primary" (click)="redirectTo('knowledge-space')">
+                <img class="bulb" src="assets/bulb.png"/>
+            </button>
+        </div>
+    </app-main-bar>
     <router-outlet></router-outlet>
 </div>

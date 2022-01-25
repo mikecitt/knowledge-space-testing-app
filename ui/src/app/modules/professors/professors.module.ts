@@ -13,6 +13,9 @@ import { SectionFormComponent } from './section-form/section-form.component';
 import { ItemComponent } from './item/item.component';
 import { ItemFormComponent } from './item-form/item-form.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { DomainComponent } from './domain/domain.component';
+import { KnowledgeSpaceComponent } from './knowledge-space/knowledge-space.component';
+import { DomainFormComponent } from './domain-form/domain-form.component';
 
 
 @NgModule({
@@ -25,7 +28,10 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     SectionFormComponent,
     ItemComponent,
     ItemFormComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    DomainComponent,
+    KnowledgeSpaceComponent,
+    DomainFormComponent
   ],
   imports: [
     CommonModule,
