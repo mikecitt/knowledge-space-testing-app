@@ -1,0 +1,23 @@
+table {
+    width: 100%;
+  }
+  mat-header-cell, mat-cell {
+    justify-content: left;
+  }
+  .left-text {
+    text-align: left;
+  }
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  border-color: currentColor;
+}
+
+button {
+    margin-left: 5px;
+}

@@ -12,3 +12,6 @@ export { ItemAnswers } from './item-answers'
 export { StudentItem } from './student-item';
 export { PossibleAnswer } from './possible-answer';
 export { Domain } from './domain';
+export { DomainProblem } from './domain-problem';
+export { KnowledgeSpace } from './knowledge-space';
+export { Edge } from './edge';

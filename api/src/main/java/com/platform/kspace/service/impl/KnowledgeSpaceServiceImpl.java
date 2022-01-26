@@ -47,9 +47,9 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
     }
 
     @Override
-    public KnowledgeSpaceDTO addKnowledgeSpace(KnowledgeSpaceDTO dto, Integer domainId) {
+    public KnowledgeSpaceDTO addKnowledgeSpace(KnowledgeSpaceDTO dto) {
         KnowledgeSpace knowledgeSpace = knowledgeSpaceMapper.toEntity(dto);
-        Domain domain = domainRepository.findById(domainId).orElse(null);
+        Domain domain = domainRepository.findById(dto.getDomain().getId()).orElse(null);
         // TODO: add exception for this
         if(domain == null)
             return null;

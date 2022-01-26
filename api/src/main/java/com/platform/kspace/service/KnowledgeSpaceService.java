@@ -8,7 +8,7 @@ import com.platform.kspace.model.KnowledgeSpace;
 public interface KnowledgeSpaceService {
     KnowledgeSpace save(KnowledgeSpace knowledgeSpace);
     List<KnowledgeSpace> findAll();
-    KnowledgeSpaceDTO addKnowledgeSpace(KnowledgeSpaceDTO dto, Integer domainId);
+    KnowledgeSpaceDTO addKnowledgeSpace(KnowledgeSpaceDTO dto);
     List<KnowledgeSpaceDTO> getKnowledgeSpaces();
     List<KnowledgeSpaceDTO> getKnowledgeSpaces(Integer id);
 }

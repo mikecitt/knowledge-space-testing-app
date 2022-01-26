@@ -7,16 +7,18 @@ public class KnowledgeSpaceDTO {
     private String name;
     private Boolean isReal;
     private List<EdgeDTO> edges;
+    private DomainDTO domain;
 
 
     public KnowledgeSpaceDTO() {
     }
 
-    public KnowledgeSpaceDTO(Integer id, String name, Boolean isReal, List<EdgeDTO> edges) {
+    public KnowledgeSpaceDTO(Integer id, String name, Boolean isReal, List<EdgeDTO> edges, DomainDTO domain) {
         this.id = id;
         this.name = name;
         this.isReal = isReal;
         this.edges = edges;
+        this.domain = domain;
     }
 
     public Integer getId() {
@@ -53,5 +55,13 @@ public class KnowledgeSpaceDTO {
 
     public void setEdges(List<EdgeDTO> edges) {
         this.edges = edges;
+    }
+
+    public DomainDTO getDomain() {
+        return domain;
+    }
+
+    public void setDomain(DomainDTO domain) {
+        this.domain = domain;
     }
 }

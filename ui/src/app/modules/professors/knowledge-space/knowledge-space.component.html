@@ -1,1 +1,40 @@
-<p>knowledge-space works!</p>
+<mat-card>
+
+    <div class="mat-elevation-z1">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <td mat-cell *matCellDef="let element" class="left-text"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name </th>
+                <td mat-cell *matCellDef="let element" class="left-text"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="domain">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Domain </th>
+                <td mat-cell *matCellDef="let element" class="left-text"> {{element.domain.text}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="isReal">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Real </th>
+                <td mat-cell *matCellDef="let element" class="left-text"> {{element.isReal ? "Yes" : "No"}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="operation">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element" class="left-text">
+                    <button mat-raised-button color="warn">Delete</button>
+                    <button mat-raised-button color="primary">Edit</button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 50]"></mat-paginator>
+    </div>
+</mat-card>

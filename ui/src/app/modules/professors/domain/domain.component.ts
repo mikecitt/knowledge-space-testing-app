@@ -81,8 +81,8 @@ export class DomainComponent implements OnInit {
       (err) => {
         console.log(err);
         this._snackBar.open("This domain contains tests and knowledge spaces", 'Close', {
-          duration: 30000,
-          panelClass: 'warn-snackbar'
+          duration: 3000,
+          panelClass: 'blue-snackbar'
         });
       }
     );

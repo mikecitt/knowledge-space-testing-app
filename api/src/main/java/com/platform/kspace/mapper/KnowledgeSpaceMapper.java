@@ -9,9 +9,11 @@ import com.platform.kspace.model.KnowledgeSpace;
 public class KnowledgeSpaceMapper implements MapperInterface<KnowledgeSpace, KnowledgeSpaceDTO> {
 
     private EdgeMapper edgeMapper;
+    private DomainMapper domainMapper;
 
     public KnowledgeSpaceMapper() {
         this.edgeMapper = new EdgeMapper();
+        this.domainMapper = new DomainMapper();
     }
 
     @Override
@@ -32,7 +34,12 @@ public class KnowledgeSpaceMapper implements MapperInterface<KnowledgeSpace, Kno
 
     @Override
     public KnowledgeSpaceDTO toDto(KnowledgeSpace entity) {
-        return new KnowledgeSpaceDTO(entity.getId(), entity.getName(), entity.getIsReal(), edgeMapper.toDtoList(entity.getEdges()));
+        return new KnowledgeSpaceDTO(
+                entity.getId(),
+                entity.getName(),
+                entity.getIsReal(),
+                edgeMapper.toDtoList(entity.getEdges()),
+                domainMapper.toDto((entity.getDomain())));
     }
 
     @Override

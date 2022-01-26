@@ -25,23 +25,20 @@ public class KnowledgeSpaceController {
     private KnowledgeSpaceService knowledgeSpaceService;
 
     @PostMapping
-    public ResponseEntity<KnowledgeSpaceDTO> addKnowledgeSpace(@RequestBody KnowledgeSpaceDTO dto, @RequestParam Integer domainId) {
+    public ResponseEntity<KnowledgeSpaceDTO> addKnowledgeSpace(@RequestBody KnowledgeSpaceDTO dto) {
         try {
-            return ResponseEntity.ok(knowledgeSpaceService.addKnowledgeSpace(dto, domainId));
+            return ResponseEntity.ok(knowledgeSpaceService.addKnowledgeSpace(dto));
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    // @GetMapping
-    // public ResponseEntity<List<KnowledgeSpaceDTO>> getKnowledgeSpaces() {
-    //     return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces());
-    // }
-    // unnecesarry
-
     @GetMapping
-    public ResponseEntity<List<KnowledgeSpaceDTO>> getDomainKnowledgeSpaces(@RequestParam Integer domainId) {
+    public ResponseEntity<List<KnowledgeSpaceDTO>> getDomainKnowledgeSpaces(@RequestParam(required=false) Integer domainId) {
+        if (domainId == null) {
+            return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces());
+        }
         return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces(domainId));
     }
 }
