@@ -16,6 +16,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { DomainComponent } from './domain/domain.component';
 import { KnowledgeSpaceComponent } from './knowledge-space/knowledge-space.component';
 import { DomainFormComponent } from './domain-form/domain-form.component';
+import { KnowledgeSpaceFormComponent } from './knowledge-space-form/knowledge-space-form.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { DomainFormComponent } from './domain-form/domain-form.component';
     ConfirmDialogComponent,
     DomainComponent,
     KnowledgeSpaceComponent,
-    DomainFormComponent
+    DomainFormComponent,
+    KnowledgeSpaceFormComponent
   ],
   imports: [
     CommonModule,

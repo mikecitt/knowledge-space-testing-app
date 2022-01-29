@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Knowledge space details</h2>
+<form #domainForm="ngForm" (ngSubmit)="submitKnowledgeSpace()" [formGroup]="form">
+    <mat-dialog-content>
+        <div id="leftColumn">
+            <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input formControlName="text" required matInput placeholder="Knowledge space name" />
+                    <mat-icon matSuffix>short_text</mat-icon>
+                    <mat-hint>Should be short and exact.</mat-hint>
+                </mat-form-field>
+            </p>
+            <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Domain</mat-label>
+                    <mat-select formControlName="domainControl" required>
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let domain of domains" [value]="domain">
+                            {{domain.text}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="domainControl.hasError('required')">Please select a domain</mat-error>
+                </mat-form-field>
+            </p>
+        </div>
+        <div id="rightColumn">
+            <p>
+                <mat-form-field appearance="outline">
+                    <mat-label>Domain problem name</mat-label>
+                    <input matInput placeholder="Knowledge space name" disabled/>
+                    <mat-icon matSuffix>short_text</mat-icon>
+                </mat-form-field>
+            </p>
+        </div>
+        <div class="space-wrapper">
+            <div id="kspace" #spaceConfigNetwork></div>
+        </div>
+        <!-- </mat-card> -->
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button color="accent" [mat-dialog-close]="true">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!domainForm.form.valid"
+            [mat-dialog-close]="false">Submit</button>
+    </mat-dialog-actions>
+</form>

@@ -3,19 +3,13 @@ package com.platform.kspace.controller;
 import java.util.List;
 
 import com.platform.kspace.dto.KnowledgeSpaceDTO;
+import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.service.KnowledgeSpaceService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -28,8 +22,34 @@ public class KnowledgeSpaceController {
     public ResponseEntity<KnowledgeSpaceDTO> addKnowledgeSpace(@RequestBody KnowledgeSpaceDTO dto) {
         try {
             return ResponseEntity.ok(knowledgeSpaceService.addKnowledgeSpace(dto));
+        } catch (KSpaceException ex) {
+            return new ResponseEntity<>(ex.getHttpStatus());
         } catch (Exception ex) {
             ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<KnowledgeSpaceDTO> updateKnowledgeSpace(@RequestBody KnowledgeSpaceDTO dto, @PathVariable("id") Integer id) {
+        try {
+            return ResponseEntity.ok(knowledgeSpaceService.updateKnowledgeSpace(dto, id));
+        } catch (KSpaceException ex) {
+            return new ResponseEntity<>(ex.getHttpStatus());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<KnowledgeSpaceDTO> deleteKnowledgeSpace(@PathVariable("id") Integer id) {
+        try {
+            knowledgeSpaceService.deleteKnowledgeSpace(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (KSpaceException ex) {
+            return new ResponseEntity<>(ex.getHttpStatus());
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

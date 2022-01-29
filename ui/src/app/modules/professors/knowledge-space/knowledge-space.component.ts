@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { KnowledgeSpace } from 'src/app/core/models';
 import { KnowledgeSpaceService } from 'src/app/core/service/knowledge-space.service';
+import { KnowledgeSpaceFormComponent } from '../knowledge-space-form/knowledge-space-form.component';
 
 @Component({
   selector: 'app-knowledge-space',
@@ -64,8 +65,11 @@ export class KnowledgeSpaceComponent implements OnInit {
     );
   }
 
-  /*addDomain(): void {
-    const dialogRef = this.dialog.open(DomainFormComponent);
+  goToAddition(): void {
+    const dialogRef = this.dialog.open(KnowledgeSpaceFormComponent, {
+      width: '90%',
+      maxWidth: '90%'
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
@@ -73,8 +77,8 @@ export class KnowledgeSpaceComponent implements OnInit {
     });
   }
 
-  editDomain(row: Domain): void {
-    const dialogRef = this.dialog.open(DomainFormComponent, { data: row });
+  editKnowledgeSpace(row: KnowledgeSpace): void {
+    const dialogRef = this.dialog.open(KnowledgeSpaceFormComponent, { data: row });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
@@ -82,19 +86,19 @@ export class KnowledgeSpaceComponent implements OnInit {
     });
   }
 
-  removeDomain(domain: Domain): void {
-    this.domainService.deleteDomain(domain.id).subscribe(
+  deleteKnowledgeSpace(knowledgeSpace: KnowledgeSpace): void {
+    this.knowledgeSpace.deleteKnowledgeSpace(knowledgeSpace.id).subscribe(
       (data) => {
         console.log(data);
         this.refresh();
       },
       (err) => {
         console.log(err);
-        this._snackBar.open("This domain contains tests and knowledge spaces", 'Close', {
+        this._snackBar.open("This knowledge space is related to tests.", 'Close', {
           duration: 3000,
-          panelClass: 'blue-snackbar'
+          panelClass: 'warn-snackbar'
         });
       }
     );
-  }*/
+  }
 }

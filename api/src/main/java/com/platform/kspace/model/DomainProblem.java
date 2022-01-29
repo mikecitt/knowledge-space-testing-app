@@ -20,7 +20,7 @@ public class DomainProblem {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domainProblem")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, mappedBy = "domainProblem")
     private Set<Item> items;
 
     public DomainProblem() {

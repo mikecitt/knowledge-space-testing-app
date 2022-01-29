@@ -22,7 +22,7 @@ public class SectionServiceImpl implements SectionService {
     @Autowired
     private TestRepository testRepository;
 
-    private SectionMapper sectionMapper;
+    private final SectionMapper sectionMapper;
 
     public SectionServiceImpl() {
         this.sectionMapper = new SectionMapper();

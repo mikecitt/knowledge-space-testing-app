@@ -1,0 +1,40 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.space-wrapper {
+  overflow-y: auto;
+  height: 400px;
+  border: 2px solid lightgray;
+  border-radius: 10px
+}
+
+#kspace {
+  height: 100%;
+}
+
+#leftColumn {
+  display: inline-block;
+  width: 50%;
+  mat-form-field {
+    width: 90%;
+  }
+}
+
+#rightColumn {
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+  mat-form-field {
+    width: 90%;
+    float: right;
+  }
+}

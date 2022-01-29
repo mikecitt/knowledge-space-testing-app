@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DomainProblemServiceImpl implements DomainProblemService {
 
-    private DomainProblemMapper domainProblemMapper;
+    private final DomainProblemMapper domainProblemMapper;
 
     @Autowired
     private DomainProblemRepository domainProblemRepository;

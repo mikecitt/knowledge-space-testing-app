@@ -23,6 +23,14 @@ export class DomainService {
       );
   }
 
+  getUnassignedDomains(): Observable<any[]> {
+    return this.http.get<any[]>(`${API_BASE}/domain/unassigned`).pipe(
+      map((resp) => {
+        return resp;
+      })
+    );
+  }
+
   addDomain(domain: Domain): Observable<Domain> {
     return this.http.post<Domain>(`${API_BASE}/domain/`, domain);
   }

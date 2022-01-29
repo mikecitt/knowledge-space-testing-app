@@ -12,8 +12,8 @@ import { DomainService } from 'src/app/core/service/domain.service';
 export class DomainFormComponent implements OnInit {
   form: FormGroup;
 
-  @ViewChild('testForm')
-  public testForm!: NgForm;
+  @ViewChild('domainForm')
+  public domainForm!: NgForm;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<DomainFormComponent>, private formBuilder: FormBuilder, private domainService: DomainService, private _snackBar: MatSnackBar) {
     this.form = this.formBuilder.group({

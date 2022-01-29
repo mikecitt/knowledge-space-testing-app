@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DomainServiceImpl implements DomainService {
 
-    private DomainMapper domainMapper;
+    private final DomainMapper domainMapper;
 
     @Autowired
     private DomainRepository domainRepository;
@@ -68,5 +68,10 @@ public class DomainServiceImpl implements DomainService {
     public List<DomainDTO> getDomains() {
         return domainMapper.toDtoList(domainRepository.findAll());
     }
-    
+
+    @Override
+    public List<DomainDTO> getUnassignedDomains() {
+        return domainMapper.toDtoList(domainRepository.getNotAssignedDomains());
+    }
+
 }

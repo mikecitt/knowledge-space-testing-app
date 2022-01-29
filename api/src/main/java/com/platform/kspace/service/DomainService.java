@@ -13,4 +13,5 @@ public interface DomainService {
     void deleteDomain(Integer id) throws KSpaceException;
     List<Domain> findAll();
     List<DomainDTO> getDomains();
+    List<DomainDTO> getUnassignedDomains();
 }

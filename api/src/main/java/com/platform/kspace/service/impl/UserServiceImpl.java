@@ -31,9 +31,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthorityRepository authorityRepository;
 
-    private StudentMapper studentMapper;
+    private final StudentMapper studentMapper;
 
-    private ProfessorMapper professorMapper;
+    private final ProfessorMapper professorMapper;
 
     private boolean checkEmailAddress(String emailAddress) {
         return userRepository.findByEmail(emailAddress) != null;

@@ -23,9 +23,9 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private SectionRepository sectionRepository;
 
-    private ItemMapper itemMapper;
+    private final ItemMapper itemMapper;
 
-    private AnswerMapper answerMapper;
+    private final AnswerMapper answerMapper;
 
     public ItemServiceImpl() {
         this.itemMapper = new ItemMapper();

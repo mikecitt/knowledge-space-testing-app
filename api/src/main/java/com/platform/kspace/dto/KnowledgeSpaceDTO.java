@@ -8,8 +8,7 @@ public class KnowledgeSpaceDTO {
     private Boolean isReal;
     private List<EdgeDTO> edges;
     private DomainDTO domain;
-
-
+    
     public KnowledgeSpaceDTO() {
     }
 

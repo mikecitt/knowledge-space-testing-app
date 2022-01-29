@@ -44,13 +44,13 @@ public class TestServiceImpl implements TestService {
     @Autowired
     private ItemRepository itemRepository;
 
-    private WorkingTestMapper workingTestMapper;
+    private final WorkingTestMapper workingTestMapper;
 
-    private TestMapper testMapper;
+    private final TestMapper testMapper;
 
-    private StudentItemMapper itemMapper;
+    private final StudentItemMapper itemMapper;
 
-    private TakenTestMapper takenTestMapper;
+    private final TakenTestMapper takenTestMapper;
 
     private boolean isTestStartable(Test test) {
         Calendar now = Calendar.getInstance();

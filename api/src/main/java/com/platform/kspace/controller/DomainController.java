@@ -32,11 +32,9 @@ public class DomainController {
     public ResponseEntity<DomainDTO> updateDomain(@RequestBody DomainDTO dto, @PathVariable("id") Integer id) {
         try {
             return ResponseEntity.ok(domainService.updateDomain(dto, id));
-        }
-        catch (KSpaceException ex) {
+        } catch (KSpaceException ex) {
             return new ResponseEntity<>(ex.getHttpStatus());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -46,11 +44,9 @@ public class DomainController {
         try {
             domainService.deleteDomain(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (KSpaceException ex) {
+        } catch (KSpaceException ex) {
             return new ResponseEntity<>(ex.getHttpStatus());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -58,5 +54,10 @@ public class DomainController {
     @GetMapping
     public ResponseEntity<List<DomainDTO>> getDomains() {
         return ResponseEntity.ok(domainService.getDomains());
+    }
+
+    @GetMapping("/unassigned")
+    public ResponseEntity<List<DomainDTO>> getUnassignedDomains() {
+        return ResponseEntity.ok(domainService.getUnassignedDomains());
     }
 }
