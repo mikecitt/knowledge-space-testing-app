@@ -21,11 +21,10 @@ public class KnowledgeSpace {
     @ManyToOne
     private Domain domain;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "knowledgeSpace")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "knowledgeSpace", orphanRemoval = true)
     private List<Edge> edges;
 
     public KnowledgeSpace() {
-        
     }
 
     public KnowledgeSpace(String name, Boolean isReal) {

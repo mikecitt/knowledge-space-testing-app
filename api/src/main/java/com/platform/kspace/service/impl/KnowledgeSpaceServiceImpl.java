@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
 
@@ -100,6 +102,7 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public void deleteKnowledgeSpace(Integer id) throws KSpaceException {
         Optional<KnowledgeSpace> ks = knowledgeSpaceRepository.findById(id);
 
@@ -108,9 +111,11 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
         }
 
         knowledgeSpaceRepository.delete(ks.get());
+        domainRepository.deleteUnusedDomainProblems();
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public KnowledgeSpaceDTO updateKnowledgeSpace(KnowledgeSpaceDTO dto, Integer id) throws KSpaceException {
         Optional<KnowledgeSpace> ks = knowledgeSpaceRepository.findById(id);
         KnowledgeSpace knowledgeSpaceNew = knowledgeSpaceMapper.toEntity(dto);
@@ -130,6 +135,7 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
         List<Edge> oldEdges = new ArrayList<>();
         for(Edge e : knowledgeSpaceNew.getEdges()) {
             if (!ks.get().getEdges().contains(e)) {
+                e.setKnowledgeSpace(ks.get());
                 newEdges.add(e);
             } else {
                 ks.get().getEdges().stream()
@@ -141,7 +147,9 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
         updateEdgesWithLiveData(newEdges, saveDomainsFromEdges(newEdges));
         ks.get().getEdges().removeIf(x -> !oldEdges.contains(x));
         ks.get().getEdges().addAll(newEdges);
-        return knowledgeSpaceMapper.toDto(knowledgeSpaceRepository.save(ks.get()));
+        KnowledgeSpace saved = knowledgeSpaceRepository.save(ks.get());
+        domainRepository.deleteUnusedDomainProblems();
+        return knowledgeSpaceMapper.toDto(saved);
     }
 
 }

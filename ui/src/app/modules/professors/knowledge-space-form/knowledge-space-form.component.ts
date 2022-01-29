@@ -8,6 +8,7 @@ import { DomainService } from 'src/app/core/service/domain.service';
 import { KnowledgeSpaceService } from 'src/app/core/service/knowledge-space.service';
 import { Data, Network, Node } from 'vis';
 
+
 @Component({
   selector: 'app-knowledge-space-form',
   templateUrl: './knowledge-space-form.component.html',
@@ -68,6 +69,7 @@ export class KnowledgeSpaceFormComponent implements OnInit {
       let nodesMap = new Map<string, Node>();
       this.data.edges.forEach(value => {
         edges.push({
+          id: `${value.from.id}-${value.to.id}`,
           from: value.from.id,
           to: value.to.id
         });
@@ -104,11 +106,18 @@ export class KnowledgeSpaceFormComponent implements OnInit {
         enabled: true,
         addNode: (nodeData: any, callback: any) => {
           callback(nodeData);
-          console.log(nodeData);
           this.domainProblems.set(nodeData.id, {
             id: nodeData.id,
             text: nodeData.label
           });
+        },
+        deleteNode: (nodeData: any, callback: any) => {
+          callback(nodeData);
+          this.edgesById = this.edgesById
+            .filter(x => nodeData.edges[0] !== `${x[0]}-${x[1]}`);
+          for(let node of nodeData.nodes) {
+            this.domainProblems.delete(node);
+          }
         },
         addEdge: (edgeData: any, callback: any) => {
           callback(edgeData);
@@ -120,7 +129,12 @@ export class KnowledgeSpaceFormComponent implements OnInit {
               to.id
             ]);
           }
-        }
+        },
+        deleteEdge: (edgeData: any, callback: any) => {
+          callback(edgeData);
+          this.edgesById = this.edgesById
+            .filter(x => edgeData.edges[0] !== `${x[0]}-${x[1]}`);
+        },
       },
       edges: {
         arrows: 'to'
@@ -149,7 +163,6 @@ export class KnowledgeSpaceFormComponent implements OnInit {
     const kSpace: KnowledgeSpace = this.getCurrentSpace();
     this.knowledgeSpaceService.updateKnowledgeSpace(kSpace, this.data.id).subscribe(
       (data) => {
-        console.log(data);
         this.openSnackBar('Domain successfuly updated!');
         this.dialogRef.close('added');
       },
@@ -163,7 +176,6 @@ export class KnowledgeSpaceFormComponent implements OnInit {
     const kSpace: KnowledgeSpace = this.getCurrentSpace();
     this.knowledgeSpaceService.addKnowledgeSpace(kSpace).subscribe(
       (data) => {
-        console.log(data);
         this.openSnackBar('Domain successfuly added!');
         this.dialogRef.close('added');
       },
