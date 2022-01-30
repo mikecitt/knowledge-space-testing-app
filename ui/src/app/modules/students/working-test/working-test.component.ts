@@ -29,6 +29,10 @@ export class WorkingTestComponent implements OnInit {
     }
   }
 
+  return(): void {
+    this.authService.getRouter().navigate(['/students']);
+  }
+
   nextQuestion(): void {
     this.loading = true;
     if (this.currentItem) {

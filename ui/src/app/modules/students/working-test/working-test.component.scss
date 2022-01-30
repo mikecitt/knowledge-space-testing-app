@@ -1,9 +1,8 @@
 .answer-chkbox {
-    font-size: 25px;
-    margin-bottom: 20px;
+    margin-top: 15px;
 }
 
-mat-card {
+#card-question {
     width: 70%;
     margin-left: 15%;
     top: 25%;
@@ -12,20 +11,22 @@ mat-card {
 }
 
 mat-checkbox ::ng-deep .mat-checkbox-inner-container {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
 }
 
-.mat-raised-button {
-    width: 140px;
-    height: 60px;
-    font-size: 20px;
+mat-card-header {
+    display: flex;
 }
 
-.inline-elem {
-    display: inline-block;
+.close-action {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+
 }
 
-.next-btn {
-    margin-left: calc(100% - 200px);
+.example-header-image {
+    background-image: url('https://www.vhv.rs/dpng/d/294-2943438_doubt-icon-png-png-download-question-mark-png.png');
+    background-size: cover;
 }
