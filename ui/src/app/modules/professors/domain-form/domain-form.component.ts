@@ -41,6 +41,7 @@ export class DomainFormComponent implements OnInit {
       },
       (err) => {
         console.log(err);
+        this.openSnackBar('Domain was not updated, something is wrong with your form.', 'warn-snackbar');
       }
     )
   }
@@ -55,13 +56,15 @@ export class DomainFormComponent implements OnInit {
       },
       (err) => {
         console.log(err);
+        this.openSnackBar('Domain was not added, something is wrong with your form.', 'warn-snackbar');
       }
     )
   }
 
-  openSnackBar(message: string) {
+  openSnackBar(message: string, panelClass: string = '') {
     this._snackBar.open(message, 'Close', {
-      duration: 3000
+      duration: 3000,
+      panelClass: panelClass
     });
   }
 }

@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Knowledge space details</h2>
-<form #domainForm="ngForm" (ngSubmit)="submitKnowledgeSpace()" [formGroup]="form">
+<form #domainForm="ngForm" (ngSubmit)="submitKnowledgeSpace()" [formGroup]="form" (keydown.enter)="$event.preventDefault()">
     <mat-dialog-content>
         <div id="leftColumn">
             <p>
@@ -27,7 +27,7 @@
             <p>
                 <mat-form-field appearance="outline">
                     <mat-label>Domain problem name</mat-label>
-                    <input matInput placeholder="Knowledge space name" disabled/>
+                    <input [formControl]="domainProblemName" matInput placeholder="Domain problem name" (keyup)="problemNameUpdate($event)"/>
                     <mat-icon matSuffix>short_text</mat-icon>
                 </mat-form-field>
             </p>

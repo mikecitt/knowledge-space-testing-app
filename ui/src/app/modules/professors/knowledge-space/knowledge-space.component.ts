@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { KnowledgeSpace } from 'src/app/core/models';
 import { KnowledgeSpaceService } from 'src/app/core/service/knowledge-space.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { KnowledgeSpaceFormComponent } from '../knowledge-space-form/knowledge-space-form.component';
 
 @Component({
@@ -78,7 +79,11 @@ export class KnowledgeSpaceComponent implements OnInit {
   }
 
   editKnowledgeSpace(row: KnowledgeSpace): void {
-    const dialogRef = this.dialog.open(KnowledgeSpaceFormComponent, { data: row });
+    const dialogRef = this.dialog.open(KnowledgeSpaceFormComponent, { 
+      data: row ,
+      width: '90%',
+      maxWidth: '90%'
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
@@ -100,5 +105,21 @@ export class KnowledgeSpaceComponent implements OnInit {
         });
       }
     );
+  }
+
+  startKnowledgeSpaceDeletion(knowledgeSpace: KnowledgeSpace): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: 'fit-content',
+      data: {
+        title: "Deletion", 
+        question: "Are you sure you want to delete this knowledge space?" 
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteKnowledgeSpace(knowledgeSpace);
+      }
+    });
   }
 }

@@ -138,13 +138,11 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
                 e.setKnowledgeSpace(ks.get());
                 newEdges.add(e);
             } else {
-                ks.get().getEdges().stream()
-                        .filter(x -> x.equals(e))
-                        .findAny()
-                        .ifPresent(oldEdges::add);
+                oldEdges.add(e);
             }
         }
         updateEdgesWithLiveData(newEdges, saveDomainsFromEdges(newEdges));
+        saveDomainsFromEdges(oldEdges);
         ks.get().getEdges().removeIf(x -> !oldEdges.contains(x));
         ks.get().getEdges().addAll(newEdges);
         KnowledgeSpace saved = knowledgeSpaceRepository.save(ks.get());

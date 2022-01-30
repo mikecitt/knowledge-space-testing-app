@@ -2,11 +2,10 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { from } from 'rxjs';
 import { Domain, DomainProblem, Edge, KnowledgeSpace } from 'src/app/core/models';
 import { DomainService } from 'src/app/core/service/domain.service';
 import { KnowledgeSpaceService } from 'src/app/core/service/knowledge-space.service';
-import { Data, Network, Node } from 'vis';
+import { Data, DataSet, Network, Node } from 'vis';
 
 
 @Component({
@@ -20,10 +19,13 @@ export class KnowledgeSpaceFormComponent implements OnInit {
 
   form: FormGroup;
   domainControl: FormControl;
+  domainProblemName: FormControl;
   domains: Domain[];
   space: Network;
   domainProblems: Map<string, DomainProblem>;
   edgesById: string[][] = [];
+  graphData: Data;
+  currentNodeId: string;
 
   @ViewChild('knowledgeSpaceForm')
   public knowledgeSpaceForm!: NgForm;
@@ -40,6 +42,8 @@ export class KnowledgeSpaceFormComponent implements OnInit {
       text: [data == null ? '' : data.name, Validators.required],
       domainControl: this.domainControl
     });
+    this.domainProblemName = new FormControl('', Validators.required);
+    this.domainProblemName.disable();
   }
 
   ngOnInit(): void {
@@ -57,8 +61,8 @@ export class KnowledgeSpaceFormComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    var graphData = this.getGraphData();
-    this.loadGraph(graphData);
+    this.graphData = this.getGraphData();
+    this.loadGraph(this.graphData);
   }
 
   getGraphData(): Data {
@@ -92,8 +96,8 @@ export class KnowledgeSpaceFormComponent implements OnInit {
       nodes = Array.from<Node>(nodesMap.values());
     }
     return {
-      nodes,
-      edges
+      nodes: new DataSet(nodes),
+      edges: new DataSet(edges)
     };
   }
 
@@ -115,7 +119,7 @@ export class KnowledgeSpaceFormComponent implements OnInit {
           callback(nodeData);
           this.edgesById = this.edgesById
             .filter(x => nodeData.edges[0] !== `${x[0]}-${x[1]}`);
-          for(let node of nodeData.nodes) {
+          for (let node of nodeData.nodes) {
             this.domainProblems.delete(node);
           }
         },
@@ -135,6 +139,7 @@ export class KnowledgeSpaceFormComponent implements OnInit {
           this.edgesById = this.edgesById
             .filter(x => edgeData.edges[0] !== `${x[0]}-${x[1]}`);
         },
+        editEdge: false
       },
       edges: {
         arrows: 'to'
@@ -143,11 +148,16 @@ export class KnowledgeSpaceFormComponent implements OnInit {
     var container = this.networkContainer.nativeElement;
     this.space = new Network(container, graphData, options);
 
-    this.space.on("hoverNode", params => {
-    });
-    this.space.on("blurNode", params => {
-    });
     this.space.on("click", properties => {
+      if (properties.nodes.length !== 0) {
+        var node = this.domainProblems.get(properties.nodes[0]);
+        this.currentNodeId = properties.nodes[0];
+        this.domainProblemName.setValue(node?.text);
+        this.domainProblemName.enable();
+      } else {
+        this.domainProblemName.setValue('');
+        this.domainProblemName.disable();
+      }
     });
   }
 
@@ -163,11 +173,12 @@ export class KnowledgeSpaceFormComponent implements OnInit {
     const kSpace: KnowledgeSpace = this.getCurrentSpace();
     this.knowledgeSpaceService.updateKnowledgeSpace(kSpace, this.data.id).subscribe(
       (data) => {
-        this.openSnackBar('Domain successfuly updated!');
+        this.openSnackBar('Knowledge space successfuly updated!');
         this.dialogRef.close('added');
       },
       (err) => {
         console.log(err);
+        this.openSnackBar('Knowledge space was not updated, something is wrong with your form.', 'warn-snackbar');
       }
     )
   }
@@ -176,18 +187,20 @@ export class KnowledgeSpaceFormComponent implements OnInit {
     const kSpace: KnowledgeSpace = this.getCurrentSpace();
     this.knowledgeSpaceService.addKnowledgeSpace(kSpace).subscribe(
       (data) => {
-        this.openSnackBar('Domain successfuly added!');
+        this.openSnackBar('Knowledge space successfuly added!');
         this.dialogRef.close('added');
       },
       (err) => {
         console.log(err);
+        this.openSnackBar('Knowledge space was not updated, something is wrong with your form.', 'warn-snackbar');
       }
     )
   }
 
-  openSnackBar(message: string) {
+  openSnackBar(message: string, panelClass: string = '') {
     this._snackBar.open(message, 'Close', {
-      duration: 3000
+      duration: 3000,
+      panelClass: panelClass
     });
   }
 
@@ -210,5 +223,18 @@ export class KnowledgeSpaceFormComponent implements OnInit {
       name: this.form.get("text")?.value,
       edges: edges
     };
+  }
+
+  problemNameUpdate(event: Event) {
+    console.log(event);
+    console.log(this.domainProblemName.value);
+    var domainProblem = this.domainProblems.get(this.currentNodeId);
+    if (this.graphData.nodes instanceof DataSet && domainProblem && this.domainProblemName.value) {
+      domainProblem.text = this.domainProblemName.value;
+      this.graphData.nodes.update({
+        id: this.currentNodeId,
+        label: domainProblem.text
+      });
+    }
   }
 } 

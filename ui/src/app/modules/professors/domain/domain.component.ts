@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Domain } from 'src/app/core/models';
 import { DomainService } from 'src/app/core/service/domain.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
 import { DomainFormComponent } from '../domain-form/domain-form.component';
 
 @Component({
@@ -86,5 +87,21 @@ export class DomainComponent implements OnInit {
         });
       }
     );
+  }
+
+  startDomainDeletion(domain: Domain): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: 'fit-content',
+      data: {
+        title: "Deletion", 
+        question: "Are you sure you want to delete this domain?" 
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.removeDomain(domain);
+      }
+    });
   }
 }
