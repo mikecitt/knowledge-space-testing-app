@@ -6,15 +6,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.platform.kspace.dto.ItemProblemDTO;
 import com.platform.kspace.dto.KnowledgeSpaceDTO;
 import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.mapper.KnowledgeSpaceMapper;
-import com.platform.kspace.model.Domain;
-import com.platform.kspace.model.DomainProblem;
-import com.platform.kspace.model.Edge;
-import com.platform.kspace.model.KnowledgeSpace;
+import com.platform.kspace.model.*;
 import com.platform.kspace.repository.DomainProblemRepository;
 import com.platform.kspace.repository.DomainRepository;
+import com.platform.kspace.repository.ItemRepository;
 import com.platform.kspace.repository.KnowledgeSpaceRepository;
 import com.platform.kspace.service.KnowledgeSpaceService;
 
@@ -37,6 +36,9 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
 
     @Autowired
     private DomainRepository domainRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     private List<DomainProblem> saveDomainsFromEdges(List<Edge> edges) {
         Set<DomainProblem> domainProblems = edges
@@ -148,6 +150,26 @@ public class KnowledgeSpaceServiceImpl implements KnowledgeSpaceService {
         KnowledgeSpace saved = knowledgeSpaceRepository.save(ks.get());
         domainRepository.deleteUnusedDomainProblems();
         return knowledgeSpaceMapper.toDto(saved);
+    }
+
+    @Override
+    public List<ItemProblemDTO> getAllDomainProblemsFromKSpace(Integer kSpaceId, Integer testId) {
+        List<DomainProblem> domainProblems = domainProblemRepository
+                .findKnowledgeSpaceDomainProblems(kSpaceId);
+        List<Item> testItems = itemRepository.findAllTestItems(testId);
+
+        List<ItemProblemDTO> itemProblems = new ArrayList<>();
+
+        for(DomainProblem dp : domainProblems) {
+            for(Item item: testItems) {
+                if(dp.getItems().contains(item)) {
+                    itemProblems.add(new ItemProblemDTO(item.getId(), dp.getId()));
+                    break;
+                }
+            }
+        }
+
+        return itemProblems;
     }
 
 }

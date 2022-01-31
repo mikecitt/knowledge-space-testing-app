@@ -2,6 +2,7 @@ package com.platform.kspace.controller;
 
 import java.util.List;
 
+import com.platform.kspace.dto.ItemProblemDTO;
 import com.platform.kspace.dto.KnowledgeSpaceDTO;
 import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.service.KnowledgeSpaceService;
@@ -60,4 +61,12 @@ public class KnowledgeSpaceController {
         }
         return ResponseEntity.ok(knowledgeSpaceService.getKnowledgeSpaces(domainId));
     }
+
+    @GetMapping("/assigned-problems")
+    public ResponseEntity<List<ItemProblemDTO>> getAssignedProblems(@RequestParam Integer kSpaceId, @RequestParam Integer testId) {
+        return ResponseEntity.ok(knowledgeSpaceService.getAllDomainProblemsFromKSpace(kSpaceId, testId));
+    }
+
+    //@PatchMapping("/domain-assignment")
+
 }

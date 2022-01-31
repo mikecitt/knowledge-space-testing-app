@@ -124,14 +124,19 @@ export class KnowledgeSpaceFormComponent implements OnInit {
           }
         },
         addEdge: (edgeData: any, callback: any) => {
-          callback(edgeData);
           var from = this.domainProblems.get(edgeData.from);
           var to = this.domainProblems.get(edgeData.to);
           if (from && to) {
-            this.edgesById.push([
-              from.id,
-              to.id
-            ]);
+            var found = this.edgesById.find(edge => 
+              (edge[0] === from?.id && edge[1] === to?.id) || 
+              (edge[1] === from?.id && edge[0] === to?.id));
+            if (!found) {
+              callback(edgeData);
+              this.edgesById.push([
+                from.id,
+                to.id
+              ]);
+            }
           }
         },
         deleteEdge: (edgeData: any, callback: any) => {

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { API_BASE } from '../constants/url.constants';
-import { KnowledgeSpace } from '../models';
+import { ItemProblem, KnowledgeSpace } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,12 @@ export class KnowledgeSpaceService {
 
   constructor(private http: HttpClient) { }
 
-  getKnowledgeSpaces(): Observable<KnowledgeSpace[]> {
-    return this.http.get<KnowledgeSpace[]>(`${API_BASE}/knowledge-space`).pipe(
+  getKnowledgeSpaces(domainId: number = -1): Observable<KnowledgeSpace[]> {
+    let requestParam = '';
+    if (domainId !== -1) {
+      requestParam = `?domainId=${domainId}`;
+    }
+    return this.http.get<KnowledgeSpace[]>(`${API_BASE}/knowledge-space${requestParam}`).pipe(
         map((resp) => {
           return resp;
         })
@@ -33,5 +37,14 @@ export class KnowledgeSpaceService {
 
   deleteKnowledgeSpace(knowledgeSpaceId: number): Observable<void> {
     return this.http.delete<void>(`${API_BASE}/knowledge-space/${knowledgeSpaceId}`);
+  }
+
+  getAssignedProblems(kSpaceId: number, testId: number): Observable<ItemProblem[]> {
+    return this.http.get<ItemProblem[]>(`${API_BASE}/knowledge-space/assigned-problems`, { 
+      params: {
+        kSpaceId,
+        testId
+      }
+    });
   }
 }

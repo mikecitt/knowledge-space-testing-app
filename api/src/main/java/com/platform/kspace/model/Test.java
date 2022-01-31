@@ -110,5 +110,12 @@ public class Test {
     public void setCreatedBy(Professor createdBy) {
         this.createdBy = createdBy;
     }
-    
+
+    public Domain getDomain() {
+        return domain;
+    }
+
+    public void setDomain(Domain domain) {
+        this.domain = domain;
+    }
 }

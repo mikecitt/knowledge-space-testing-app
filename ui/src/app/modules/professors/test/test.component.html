@@ -1,106 +1,107 @@
-<mat-card>
-  <mat-card-title>
-    {{ test.name }}
-  </mat-card-title>
-  <mat-card-subtitle> ID: {{ test.id }} </mat-card-subtitle>
-  <mat-card-content>
-    <p>Length: {{ test.timer }} minutes</p>
-    <p>Valid from: {{ test.validFrom | date: "fullDate" }}</p>
-    <p>Valid until: {{ test.validUntil | date: "fullDate" }}</p>
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="editTest()"
-      [disabled]="checkDatePassed(test.validFrom)"
-    >
-      Edit Test
-    </button>
-    <button
-      mat-raised-button
-      color="warn"
-      (click)="removeTest()"
-      [disabled]="checkDatePassed(test.validFrom)"
-    >
-      Remove Test
-    </button>
-  </mat-card-actions>
-</mat-card>
+<div *ngIf="test">
+  <mat-card>
+    <mat-card-title>
+      {{ test.name }}
+    </mat-card-title>
+    <mat-card-subtitle> ID: {{ test.id }} </mat-card-subtitle>
+    <mat-card-content>
+      <p>Length: {{ test.timer }} minutes</p>
+      <p>Valid from: {{ test.validFrom | date: "fullDate" }}</p>
+      <p>Valid until: {{ test.validUntil | date: "fullDate" }}</p>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="editTest()" [disabled]="checkDatePassed(test.validFrom)">
+        Edit Test
+      </button>
+      <button mat-raised-button color="warn" (click)="removeTest()" [disabled]="checkDatePassed(test.validFrom)">
+        Remove Test
+      </button>
+    </mat-card-actions>
+  </mat-card>
 
-<mat-accordion>
-  <mat-expansion-panel *ngFor="let s of sections">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{ s.name }}
-      </mat-panel-title>
-      <mat-panel-description>
-        <!-- This is a summary of the content -->
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <mat-card *ngFor="let i of s.items" class="item-card">
-      <mat-card-title>{{ i.text }}</mat-card-title>
-      <img
-        mat-card-image
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Quadratic_formula.svg/1200px-Quadratic_formula.svg.png"
-      />
-      <mat-card-content>
-        <p *ngFor="let a of i.answers">{{ a.text }} ({{ a.points }} points)</p>
-      </mat-card-content>
-      <mat-card-actions align="end">
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="updateItem(i)"
-          [disabled]="checkDatePassed(test.validFrom)"
-        >
-          Edit
+  <mat-card>
+    <mat-card-title>
+      Knowledge space
+    </mat-card-title>
+    <mat-card-content>
+      <div id="leftSide">
+        <p>
+          <mat-form-field appearance="outline">
+            <mat-label>Domain</mat-label>
+            <mat-select [formControl]="domainControl" (selectionChange)="onSpaceChange($event)" required>
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let domain of domains" [value]="domain">
+                {{domain.text}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="domainControl.hasError('required')">Please select a domain</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Item</mat-label>
+            <mat-select [formControl]="itemControl" (selectionChange)="onItemChange($event)">
+              <mat-option>--</mat-option>
+              <mat-option *ngFor="let item of allItems" [value]="item">
+                {{item.text}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="itemControl.hasError('required')">Please select a domain</mat-error>
+          </mat-form-field>
+        </p>
+      </div>
+      <div id="rightSide">
+        <div class="space-wrapper">
+          <div id="kspace" #spaceConfigNetwork></div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let s of sections">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ s.name }}
+        </mat-panel-title>
+        <mat-panel-description>
+          <!-- This is a summary of the content -->
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card *ngFor="let i of s.items" class="item-card">
+        <mat-card-title>{{ i.text }}</mat-card-title>
+        <img mat-card-image
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Quadratic_formula.svg/1200px-Quadratic_formula.svg.png" />
+        <mat-card-content>
+          <p *ngFor="let a of i.answers">{{ a.text }} ({{ a.points }} points)</p>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" (click)="updateItem(i)"
+            [disabled]="checkDatePassed(test.validFrom)">
+            Edit
+          </button>
+          <button mat-raised-button color="warn" (click)="removeItem(i)" [disabled]="checkDatePassed(test.validFrom)">
+            Remove
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      <!-- <app-item *ngFor="let i of s.items"></app-item> -->
+      <!-- <p *ngFor="let i of s.items">{{i.text}}</p> -->
+      <mat-action-row>
+        <button mat-raised-button color="primary" (click)="addItem(s)" [disabled]="checkDatePassed(test.validFrom)">
+          Add Item
         </button>
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="removeItem(i)"
-          [disabled]="checkDatePassed(test.validFrom)"
-        >
-          Remove
+        <button mat-raised-button color="primary" (click)="updateSection(s)"
+          [disabled]="checkDatePassed(test.validFrom)">
+          Edit Section
         </button>
-      </mat-card-actions>
-    </mat-card>
-    <!-- <app-item *ngFor="let i of s.items"></app-item> -->
-    <!-- <p *ngFor="let i of s.items">{{i.text}}</p> -->
-    <mat-action-row>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="addItem(s)"
-        [disabled]="checkDatePassed(test.validFrom)"
-      >
-        Add Item
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="updateSection(s)"
-        [disabled]="checkDatePassed(test.validFrom)"
-      >
-        Edit Section
-      </button>
-      <button
-        mat-raised-button
-        color="warn"
-        (click)="removeSection(s)"
-        [disabled]="checkDatePassed(test.validFrom)"
-      >
-        Remove Section
-      </button>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
-<button
-  mat-raised-button
-  color="primary"
-  (click)="addSection()"
-  [disabled]="checkDatePassed(test.validFrom)"
->
-  Add section
-</button>
+        <button mat-raised-button color="warn" (click)="removeSection(s)" [disabled]="checkDatePassed(test.validFrom)">
+          Remove Section
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <button mat-raised-button color="primary" (click)="addSection()" [disabled]="checkDatePassed(test.validFrom)">
+    Add section
+  </button>
+</div>

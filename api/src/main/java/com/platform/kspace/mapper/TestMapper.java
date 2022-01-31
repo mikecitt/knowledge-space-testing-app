@@ -8,6 +8,12 @@ import com.platform.kspace.model.Test;
 
 public class TestMapper implements MapperInterface<Test, TestDTO> {
 
+    private DomainMapper domainMapper;
+
+    public TestMapper() {
+        domainMapper = new DomainMapper();
+    }
+
     @Override
     public Test toEntity(TestDTO dto) {
         return new Test(dto.getName(), dto.getTimer(), dto.getValidFrom(), dto.getValidUntil());
@@ -26,7 +32,8 @@ public class TestMapper implements MapperInterface<Test, TestDTO> {
             entity.getTimer(),
             entity.getValidFrom(),
             entity.getValidUntil(),
-            entity.getCreatedBy().getId()
+            entity.getCreatedBy().getId(),
+            domainMapper.toDto(entity.getDomain())
         );
     }
 

@@ -10,17 +10,19 @@ public class TestDTO {
     private Date validFrom;
     private Date validUntil;
     private UUID createdById;
+    private DomainDTO domain;
 
     public TestDTO() {
     }
 
-    public TestDTO(Integer id, String name, Double timer, Date validFrom, Date validUntil, UUID createdById) {
+    public TestDTO(Integer id, String name, Double timer, Date validFrom, Date validUntil, UUID createdById, DomainDTO domain) {
         this.id = id;
         this.name = name;
         this.timer = timer;
         this.validFrom = validFrom;
         this.validUntil = validUntil;
         this.createdById = createdById;
+        this.domain = domain;
     }
 
     public Integer getId() {
@@ -69,5 +71,13 @@ public class TestDTO {
 
     public void setCreatedById(UUID createdById) {
         this.createdById = createdById;
+    }
+
+    public DomainDTO getDomain() {
+        return domain;
+    }
+
+    public void setDomain(DomainDTO domain) {
+        this.domain = domain;
     }
 }

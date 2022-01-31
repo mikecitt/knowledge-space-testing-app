@@ -25,3 +25,29 @@ button {
 mat-expansion-panel {
   margin: 10px;
 }
+
+#leftSide {
+  display: inline-block;
+  width: 19%;
+  margin-right: 1%;
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+#rightSide {
+  display: inline-block;
+  width: 79%;
+  vertical-align: top;
+}
+
+.space-wrapper {
+  overflow-y: auto;
+  height: 400px;
+  border: 2px solid lightgray;
+  border-radius: 10px
+}
+
+#kspace {
+  height: 100%;
+}
