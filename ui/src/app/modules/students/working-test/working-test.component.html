@@ -1,19 +1,34 @@
 <div class="bg-image">
-    <mat-card *ngIf="currentItem">
-        <h1>
-            {{ currentItem.text }}
-        </h1>
-        <div class="inline-elem">
-            <div *ngFor="let answer of currentItem.answers; index as i">
-                <mat-checkbox class="answer-chkbox" [(ngModel)]="answer.selected" color="primary">
-                    {{answer.text}}
-                </mat-checkbox>
+    <mat-card id="card-question" *ngIf="currentItem">
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>
+                {{ currentItem.text }}
+            </mat-card-title>
+            <mat-card-subtitle>There may be more than one correct answer.</mat-card-subtitle>
+            <span flex></span>
+            <div class="close-action">
+                <button class="pull-right" mat-icon-button (click)="return()">
+                    <mat-icon>close</mat-icon>
+                </button>
             </div>
-        </div>
-    
-        <div class="inline-elem next-btn">
-            <button color="accent" mat-raised-button (click)="nextQuestion()">Next</button>
-        </div>
+        </mat-card-header>
+        <mat-card-content>
+            <img *ngIf="currentItem.imgName !== null"
+                mat-card-image
+                src="{{IMG_BASE+currentItem.imgName}}"
+            />
+            <div class="">
+                <div *ngFor="let answer of currentItem.answers; index as i">
+                    <mat-checkbox class="answer-chkbox" [(ngModel)]="answer.selected" color="primary">
+                        {{answer.text}}
+                    </mat-checkbox>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-raised-button color="primary" (click)="nextQuestion()">Next</button>
+        </mat-card-actions>
     </mat-card>
 </div>
 <div class="loading" *ngIf="loading">

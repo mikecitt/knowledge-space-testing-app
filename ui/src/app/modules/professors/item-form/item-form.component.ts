@@ -22,6 +22,8 @@ export class ItemFormComponent implements OnInit {
     { text: '', points: null },
   ];
 
+  image = null;
+
   count = 2;
 
   form: FormGroup;
@@ -48,6 +50,7 @@ export class ItemFormComponent implements OnInit {
     if (this.data.answers != undefined) this.answers = this.data.answers;
     this.form = this.formBuilder.group({
       text: [data.text, Validators.required],
+      imgName: [],
       answers: this.formBuilder.array(
         this.answers.map((answer) =>
           this.formBuilder.group({
@@ -66,6 +69,17 @@ export class ItemFormComponent implements OnInit {
   removeQuestion(q: number) {
     console.log(q);
     this.rows.removeAt(q);
+  }
+
+  addImage(event: any){
+    var reader = new FileReader();
+    // console.log("image url: "+event.target.value);
+    // console.log("files[0]: "+event.target.files[0]);
+    reader.onload = (event:any) => {
+
+      this.form.controls['imgName'].setValue(event.target.result);
+    }
+    reader.readAsDataURL(event.target.files[0]);
   }
 
   addQuestion() {

@@ -3,7 +3,7 @@ import { PossibleAnswer } from "./possible-answer";
 export interface StudentItem {
     id: number,
     text: string,
-    picture: Uint8Array,
+    imgName: string,
     answers: PossibleAnswer[]
     sectionId: number
 }

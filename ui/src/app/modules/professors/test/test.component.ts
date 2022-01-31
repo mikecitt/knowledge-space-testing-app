@@ -12,6 +12,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { ItemFormComponent } from '../item-form/item-form.component';
 import { SectionFormComponent } from '../section-form/section-form.component';
 import { TestFormComponent } from '../test-form/test-form.component';
+import { IMG_BASE } from 'src/app/core/constants/url.constants';
 
 @Component({
   selector: 'app-test',
@@ -24,6 +25,7 @@ export class TestComponent implements OnInit {
 
   public sections: any = null;
   public test: any = null;
+  public IMG_BASE = IMG_BASE;
   domainControl: FormControl;
   itemControl: FormControl;
   domains: Domain[];
@@ -140,7 +142,7 @@ export class TestComponent implements OnInit {
         this.selectedProblemId = properties.nodes[0];
         let itemProblem = this.itemProblems.find(x => x.domainProblemId == this.selectedProblemId);
         let item = this.allItems.find(x => x.id === itemProblem?.itemId);
-        
+
         if (item) {
           this.itemControl.setValue(item);
         }
@@ -315,7 +317,7 @@ export class TestComponent implements OnInit {
       if (itemProblem.domainProblemId == this.selectedProblemId) {
         itemProblem.itemId = source.value.id;
         continue;
-      } 
+      }
       if (itemProblem.itemId == source.value.id) {
         itemProblem.itemId = -1;
       }
