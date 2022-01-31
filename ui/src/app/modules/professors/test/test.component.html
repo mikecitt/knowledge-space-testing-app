@@ -40,9 +40,9 @@
     </mat-expansion-panel-header>
     <mat-card *ngFor="let i of s.items" class="item-card">
       <mat-card-title>{{ i.text }}</mat-card-title>
-      <img
+      <img *ngIf="i.imgName !== null"
         mat-card-image
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Quadratic_formula.svg/1200px-Quadratic_formula.svg.png"
+        src="{{IMG_BASE+i.imgName}}"
       />
       <mat-card-content>
         <p *ngFor="let a of i.answers">{{ a.text }} ({{ a.points }} points)</p>

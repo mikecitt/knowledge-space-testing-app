@@ -172,17 +172,17 @@ INSERT INTO section VALUES
 	(5, 'Computer usage', 3);
 
 INSERT INTO item VALUES
-    (1, NULL, 'HTML is what type of language?', '7f91b07ce0184b4b9825ecff1256cba4', 1),
-    (2, NULL, 'Which HTTP methods exists?', '5706e487af22425c898a8d0d9d74b125', 1),
-    (3, NULL, 'Which of the following is the base namespace for a SOAP message?', '9440fe067efa46c587c6cd4656b96b45', 1),
-    (4, NULL, 'What''s the difference between a microservices-oriented architecture (MOA) and a service-oriented architecture (SOA)?', '34b6c73e29704609a7e94e2528dd8779', 2),
-	(5, NULL, 'What do you mean by one to many relationships?', 'c1edd78975be4ab0b59899e75bdbec3f', 3),
-    (6, NULL, 'Identify the device through which data and instructions are entered into a computer?', 'cffb6d7eb11f42a5ab8598961ba9e744', 4),
-	(7, NULL, 'Which one of these is working as temporary memory?', 'cffb6d7eb11f42a5ab8598961ba9e744', 5),
-	(8, NULL, 'Which software is a file compression utility?', '3c02e26072494f62baee852ede19dad8', 4),
-	(9, NULL, 'In which situation running applications of an user account remains active?', '3c02e26072494f62baee852ede19dad8', 5),
-	(10, NULL, 'Which of the following is a correct format of Email address?', '29c2109a90a24e37929e2578420dc6df', 4),
-	(11, NULL, 'Which one of the following is a search engine?', '29c2109a90a24e37929e2578420dc6df', 5);
+    (1, 'formula.png', 'HTML is what type of language?', '7f91b07ce0184b4b9825ecff1256cba4', 1),
+    (2, 'formula.png', 'Which HTTP methods exists?', '5706e487af22425c898a8d0d9d74b125', 1),
+    (3, 'formula.png', 'Which of the following is the base namespace for a SOAP message?', '9440fe067efa46c587c6cd4656b96b45', 1),
+    (4, 'formula.png', 'What''s the difference between a microservices-oriented architecture (MOA) and a service-oriented architecture (SOA)?', '34b6c73e29704609a7e94e2528dd8779', 2),
+	(5, 'formula.png', 'What do you mean by one to many relationships?', 'c1edd78975be4ab0b59899e75bdbec3f', 3),
+    (6, 'formula.png', 'Identify the device through which data and instructions are entered into a computer?', 'cffb6d7eb11f42a5ab8598961ba9e744', 4),
+	(7, 'formula.png', 'Which one of these is working as temporary memory?', 'cffb6d7eb11f42a5ab8598961ba9e744', 5),
+	(8, 'formula.png', 'Which software is a file compression utility?', '3c02e26072494f62baee852ede19dad8', 4),
+	(9, 'formula.png', 'In which situation running applications of an user account remains active?', '3c02e26072494f62baee852ede19dad8', 5),
+	(10,'formula.png', 'Which of the following is a correct format of Email address?', '29c2109a90a24e37929e2578420dc6df', 4),
+	(11,'formula.png', 'Which one of the following is a search engine?', '29c2109a90a24e37929e2578420dc6df', 5);
 
 INSERT INTO answer (points, text, item_id) VALUES
     (0.0, 'Scripting Language', 1),

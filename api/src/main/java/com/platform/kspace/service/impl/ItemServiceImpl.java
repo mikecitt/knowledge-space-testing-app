@@ -3,6 +3,7 @@ package com.platform.kspace.service.impl;
 import java.util.List;
 
 import com.platform.kspace.dto.ItemDTO;
+import com.platform.kspace.helper.ImageHandler;
 import com.platform.kspace.mapper.AnswerMapper;
 import com.platform.kspace.mapper.ItemMapper;
 import com.platform.kspace.model.Item;
@@ -52,6 +53,8 @@ public class ItemServiceImpl implements ItemService {
         Section section = sectionRepository.findById(sectionId).orElse(null);
         Item item = itemMapper.toEntity(dto);
         item.setSection(section);
+        if(item.getImgName() != null)
+            item.setImgName(ImageHandler.saveImage("src\\\\main\\\\images\\\\", item.getImgName()));
         return itemMapper.toDto(itemRepository.save(item));
     }
 

@@ -5,16 +5,16 @@ import java.util.List;
 public class ItemDTO {
     private Integer id;
     private String text;
-    private byte[] picture;
+    private String imgName;
     private List<AnswerDTO> answers;
     private Integer sectionId;
 
     public ItemDTO() {}
 
-    public ItemDTO(Integer id, String text, byte[] picture, List<AnswerDTO> answers, Integer sectionId) {
+    public ItemDTO(Integer id, String text, String imgName, List<AnswerDTO> answers, Integer sectionId) {
         this.id = id;
         this.text = text;
-        this.picture = picture;
+        this.imgName = imgName;
         this.answers = answers;
         this.sectionId = sectionId;
     }
@@ -35,12 +35,12 @@ public class ItemDTO {
         this.text = text;
     }
 
-    public byte[] getPicture() {
-        return picture;
+    public String getImgName() {
+        return imgName;
     }
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
     }
 
     public List<AnswerDTO> getAnswers() {

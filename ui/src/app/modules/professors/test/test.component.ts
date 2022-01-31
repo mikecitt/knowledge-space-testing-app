@@ -6,6 +6,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { ItemFormComponent } from '../item-form/item-form.component';
 import { SectionFormComponent } from '../section-form/section-form.component';
 import { TestFormComponent } from '../test-form/test-form.component';
+import { IMG_BASE } from 'src/app/core/constants/url.constants';
 
 @Component({
   selector: 'app-test',
@@ -15,6 +16,7 @@ import { TestFormComponent } from '../test-form/test-form.component';
 export class TestComponent implements OnInit {
   public sections: any = null;
   public test: any = null;
+  public IMG_BASE = IMG_BASE;
 
   constructor(
     private _Activatedroute: ActivatedRoute,

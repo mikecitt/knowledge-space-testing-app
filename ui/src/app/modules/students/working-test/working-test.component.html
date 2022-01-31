@@ -14,9 +14,9 @@
             </div>
         </mat-card-header>
         <mat-card-content>
-            <img *ngIf="currentItem.picture !== null"
+            <img *ngIf="currentItem.imgName !== null"
                 mat-card-image
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Quadratic_formula.svg/1200px-Quadratic_formula.svg.png"
+                src="{{IMG_BASE+currentItem.imgName}}"
             />
             <div class="">
                 <div *ngFor="let answer of currentItem.answers; index as i">

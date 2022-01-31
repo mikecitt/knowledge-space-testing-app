@@ -18,7 +18,7 @@ public class StudentItemMapper implements MapperInterface<Item, StudentItemDTO> 
     public Item toEntity(StudentItemDTO dto) {
         return new Item(
                 dto.getText(),
-                dto.getPicture()
+                dto.getImgName()
         );
     }
 
@@ -32,7 +32,7 @@ public class StudentItemMapper implements MapperInterface<Item, StudentItemDTO> 
         return new StudentItemDTO(
                 entity.getId(),
                 entity.getText(),
-                entity.getPicture(),
+                entity.getImgName(),
                 possibleAnswerMapper.toDtoList(entity.getAnswers()),
                 entity.getSection().getId()
         );

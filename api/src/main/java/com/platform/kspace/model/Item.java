@@ -24,7 +24,7 @@ public class Item {
     private String text;
 
     @Column
-    private byte[] picture;
+    private String imgName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "item")
     private List<Answer> answers;
@@ -44,15 +44,15 @@ public class Item {
         this.answers = new ArrayList<>();
     }
 
-    public Item(String text, byte[] picture) {
+    public Item(String text, String imgName) {
         this.text = text;
-        this.picture = picture;
+        this.imgName = imgName;
         this.answers = new ArrayList<>();
     }
 
-    public Item(String text, byte[] picture, List<Answer> answers) {
+    public Item(String text, String imgName, List<Answer> answers) {
         this.text = text;
-        this.picture = picture;
+        this.imgName = imgName;
         this.answers = answers;
         this.answers.forEach(a -> a.setItem(this)); // testing
     }
@@ -77,12 +77,12 @@ public class Item {
         this.text = text;
     }
 
-    public byte[] getPicture() {
-        return this.picture;
+    public String getImgName() {
+        return this.imgName;
     }
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
     }
 
     public List<Answer> getAnswers() {

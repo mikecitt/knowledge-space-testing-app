@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ItemAnswers, StudentItem } from 'src/app/core/models';
 import { AuthService } from 'src/app/core/service/auth.service';
 import { TestingService } from 'src/app/core/service/testing.service';
+import { IMG_BASE } from 'src/app/core/constants/url.constants';
 
 @Component({
   selector: 'app-working-test',
@@ -12,6 +13,7 @@ export class WorkingTestComponent implements OnInit {
 
   public currentItem: StudentItem | null = null;
   public loading: boolean = false;
+  public IMG_BASE = IMG_BASE;
 
   constructor(private testingService: TestingService, private authService: AuthService) { }
 
