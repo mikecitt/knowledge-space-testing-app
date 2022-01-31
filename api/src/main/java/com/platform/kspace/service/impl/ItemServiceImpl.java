@@ -6,8 +6,10 @@ import com.platform.kspace.dto.ItemDTO;
 import com.platform.kspace.helper.ImageHandler;
 import com.platform.kspace.mapper.AnswerMapper;
 import com.platform.kspace.mapper.ItemMapper;
+import com.platform.kspace.model.Answer;
 import com.platform.kspace.model.Item;
 import com.platform.kspace.model.Section;
+import com.platform.kspace.repository.AnswerRepository;
 import com.platform.kspace.repository.ItemRepository;
 import com.platform.kspace.repository.SectionRepository;
 import com.platform.kspace.service.ItemService;
@@ -23,6 +25,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private SectionRepository sectionRepository;
+
+    @Autowired
+    private AnswerRepository answerRepository;
 
     private final ItemMapper itemMapper;
 
@@ -71,12 +76,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO updateItem(ItemDTO dto, Integer itemId) throws Exception {
-        Item i = itemRepository.getById(itemId);
+        Item i = itemRepository.findById(itemId).orElse(null);
         if(i == null)
             throw new Exception("Section doesn't exist.");
         i.setText(dto.getText());
+        answerRepository.deleteAllInBatch(i.getAnswers());
         i.setAnswers(answerMapper.toEntityList(dto.getAnswers()));
         i.fixAnswers();
+        if(dto.getImgName() != null)
+            i.setImgName(ImageHandler.saveImage("src\\\\main\\\\images\\\\", dto.getImgName()));
         return itemMapper.toDto(itemRepository.save(i));
     }
     
