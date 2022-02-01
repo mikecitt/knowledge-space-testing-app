@@ -67,6 +67,10 @@ public class DomainProblem {
         this.items.add(item);
     }
 
+    public void removeItem(Item item) {
+        this.items.remove(item);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

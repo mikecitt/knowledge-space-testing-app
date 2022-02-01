@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { API_BASE } from '../constants/url.constants';
-import { PagedEntity } from '../models';
+import { ItemProblem, PagedEntity } from '../models';
 import { ITest } from '../models/test';
 
 @Injectable({
@@ -109,5 +109,13 @@ export class ItemService {
         testId: testId,
       },
     });
+  }
+
+  updateTestDomain(testId: number, domainId: number): Observable<void> {
+    return this.http.put<void>(`${API_BASE}/test/${testId}/domain-update?domainId=${domainId}`, {});
+  }
+
+  assignItemsToKSpace(itemProblems: ItemProblem[]): Observable<void> {
+    return this.http.put<void>(`${API_BASE}/test/assign-items`, itemProblems);
   }
 }

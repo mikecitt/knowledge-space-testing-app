@@ -163,4 +163,30 @@ public class TestController {
             return new ResponseEntity<>(kse.getMessage(), kse.getHttpStatus());
         }
     }
+
+    @PutMapping("/{id}/domain-update")
+    public ResponseEntity<?> updateTestDomain(@RequestParam Integer domainId, @PathVariable("id") Integer id) {
+        try {
+            testService.updateTestDomain(id, domainId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException nfex) {
+            return new ResponseEntity<>(nfex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/assign-items")
+    public ResponseEntity<?> assignProblemsToItems(@RequestBody List<ItemProblemDTO> itemProblems) {
+        try {
+            testService.assignProblemsToItems(itemProblems);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NotFoundException nfex) {
+            return new ResponseEntity<>(nfex.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

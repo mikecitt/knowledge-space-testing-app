@@ -1,9 +1,6 @@
 package com.platform.kspace.service.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import com.platform.kspace.dto.*;
 import com.platform.kspace.exceptions.KSpaceException;
@@ -22,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javassist.NotFoundException;
+
+import javax.transaction.Transactional;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -43,6 +42,12 @@ public class TestServiceImpl implements TestService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private DomainRepository domainRepository;
+
+    @Autowired
+    private DomainProblemRepository domainProblemRepository;
 
     private final WorkingTestMapper workingTestMapper;
 
@@ -208,6 +213,39 @@ public class TestServiceImpl implements TestService {
         }
 
         takenTestRepository.save(takenTest);
+    }
+
+    @Override
+    public void updateTestDomain(Integer testId, Integer domainId) throws NotFoundException {
+        Optional<Test> test = testRepository.findById(testId);
+        Optional<Domain> domain = domainRepository.findById(domainId);
+
+        if (test.isEmpty() || domain.isEmpty()) {
+            throw new NotFoundException("Test or domain were not found.");
+        }
+
+        test.get().setDomain(domain.get());
+        test.get().getSections()
+                .forEach(section -> section.getItems()
+                        .forEach(Item::removeDomainProblem));
+        testRepository.save(test.get());
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public void assignProblemsToItems(List<ItemProblemDTO> itemProblems) throws NotFoundException {
+        for (ItemProblemDTO itemProblem : itemProblems) {
+            Optional<DomainProblem> domainProblem = domainProblemRepository
+                    .findById(itemProblem.getDomainProblemId());
+            Optional<Item> item = itemRepository.findById(itemProblem.getItemId());
+
+            if (domainProblem.isEmpty() || item.isEmpty()) {
+                throw new NotFoundException("Domain problem or item were not found.");
+            }
+
+            item.get().setDomainProblem(domainProblem.get());
+            itemRepository.save(item.get());
+        }
     }
 
     @Override

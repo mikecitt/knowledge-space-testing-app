@@ -102,6 +102,18 @@ public class Item {
         this.answers.forEach(a -> a.setItem(this));
     }
 
+    public DomainProblem getDomainProblem() {
+        return domainProblem;
+    }
+
+    public void setDomainProblem(DomainProblem domainProblem) {
+        this.domainProblem = domainProblem;
+    }
+
+    public void removeDomainProblem() {
+        this.domainProblem = null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

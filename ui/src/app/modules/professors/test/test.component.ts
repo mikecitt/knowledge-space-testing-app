@@ -74,6 +74,7 @@ export class TestComponent implements OnInit {
           this.loadItemProblems(space.id, this.test.id);
         } else {
           this.graphData = {};
+          this.itemProblems = [];
         }
         this.loadGraph(this.graphData);
       });
@@ -189,7 +190,7 @@ export class TestComponent implements OnInit {
       (res) => {
         console.log(res);
         this.sections = res;
-        for(let section of this.sections) {
+        for (let section of this.sections) {
           this.allItems.push(...section.items);
         }
         console.log(this.allItems);
@@ -310,17 +311,30 @@ export class TestComponent implements OnInit {
 
   onSpaceChange(source: MatSelectChange): void {
     this.loadKnowledgeSpace(source.value.id);
+    this.test.domain = source.value;
+    this.itemControl.setValue('');
+    this.itemControl.disable();
+    this.selectedProblemId = "";
   }
 
   onItemChange(source: MatSelectChange): void {
+    let ind = false;
     for (let itemProblem of this.itemProblems) {
       if (itemProblem.domainProblemId == this.selectedProblemId) {
         itemProblem.itemId = source.value.id;
+        ind = true;
         continue;
       }
       if (itemProblem.itemId == source.value.id) {
         itemProblem.itemId = -1;
+        ind = true;
       }
+    }
+    if (!ind) {
+      this.itemProblems.push({
+        domainProblemId: this.selectedProblemId,
+        itemId: source.value.id
+      });
     }
 
     console.log(this.itemProblems);
@@ -352,5 +366,24 @@ export class TestComponent implements OnInit {
         );
       }
     });
+  }
+
+  saveKnowledgeSpace(): void {
+    this.itemService.updateTestDomain(this.test.id, this.test.domain.id).subscribe(
+      data => {
+        console.log(data);
+        this.itemService.assignItemsToKSpace(this.itemProblems).subscribe(
+          data => {
+            console.log(data)
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 }

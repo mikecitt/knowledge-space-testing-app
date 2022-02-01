@@ -66,7 +66,4 @@ public class KnowledgeSpaceController {
     public ResponseEntity<List<ItemProblemDTO>> getAssignedProblems(@RequestParam Integer kSpaceId, @RequestParam Integer testId) {
         return ResponseEntity.ok(knowledgeSpaceService.getAllDomainProblemsFromKSpace(kSpaceId, testId));
     }
-
-    //@PatchMapping("/domain-assignment")
-
 }
