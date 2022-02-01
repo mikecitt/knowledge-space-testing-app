@@ -31,14 +31,7 @@ export class ItemFormComponent implements OnInit {
   @ViewChild('testForm')
   private testForm!: NgForm;
 
-  rows: FormArray = this.formBuilder.array(
-    this.answers.map((answer) =>
-      this.formBuilder.group({
-        text: [answer.text],
-        points: [answer.points],
-      })
-    )
-  );
+  rows: FormArray;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -48,17 +41,18 @@ export class ItemFormComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) {
     if (this.data.answers != undefined) this.answers = this.data.answers;
+    this.rows = this.formBuilder.array(
+      this.answers.map((answer) =>
+        this.formBuilder.group({
+          text: [answer.text],
+          points: [answer.points],
+        })
+      )
+    )
     this.form = this.formBuilder.group({
       text: [data.text, Validators.required],
       imgName: [],
-      answers: this.formBuilder.array(
-        this.answers.map((answer) =>
-          this.formBuilder.group({
-            text: [answer.text],
-            points: [answer.points],
-          })
-        )
-      ),
+      answers: this.rows,
     });
   }
 
@@ -83,7 +77,7 @@ export class ItemFormComponent implements OnInit {
   }
 
   addQuestion() {
-    // this.answers.push({"text":"a", "points": 5});
+    // this.answers.push({"text":'', "points": null});
     // this.form.get('answers')?.patchValue({"text":"D", "points": 20});
     const row = this.formBuilder.group({
       text: '',
