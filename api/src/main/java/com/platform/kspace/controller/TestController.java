@@ -127,6 +127,8 @@ public class TestController {
         try {
             return ResponseEntity.ok(testService.getNextQuestion(
                     userService.findUserByEmail(principal.getName()).getId(), itemId));
+        } catch (KSpaceException ex) {
+            return new ResponseEntity<>(ex.getHttpStatus());
         } catch (Exception ex) {
             ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

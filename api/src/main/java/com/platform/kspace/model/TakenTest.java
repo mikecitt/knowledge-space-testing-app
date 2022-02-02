@@ -48,6 +48,10 @@ public class TakenTest {
         return end;
     }
 
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
     public Student getTakenBy() {
         return takenBy;
     }

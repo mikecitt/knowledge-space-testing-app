@@ -1,7 +1,9 @@
 package com.platform.kspace.service.impl;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import ch.qos.logback.core.net.QueueFactory;
 import com.platform.kspace.dto.*;
 import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.mapper.StudentItemMapper;
@@ -19,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javassist.NotFoundException;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 import javax.transaction.Transactional;
 
@@ -61,6 +64,36 @@ public class TestServiceImpl implements TestService {
         Calendar now = Calendar.getInstance();
         return test.getValidFrom().before(now.getTime()) &&
                 test.getValidUntil().after(now.getTime());
+    }
+
+    private List<DomainProblem> getDomainProblemSequence(KnowledgeSpace ks) throws KSpaceException {
+        DomainProblem root = domainProblemRepository.findRootProblem(ks.getId());
+
+        LinkedList<DomainProblem> problems = new LinkedList<>();
+        Edge startEdge = ks.getEdges().stream().filter(x -> x.getFrom().equals(root)).findAny().orElse(null);
+        if (startEdge == null)
+            throw new KSpaceException(HttpStatus.BAD_REQUEST, "Something went wrong.");
+
+        Queue<Edge> edgeQueue = new LinkedList<>();
+        edgeQueue.add(startEdge);
+
+        while(!edgeQueue.isEmpty()) {
+            Edge e = edgeQueue.poll();
+            if (!problems.contains(e.getFrom()))
+                problems.add(e.getFrom());
+            if (!problems.contains(e.getTo()))
+                problems.add(e.getTo());
+            ks.getEdges()
+                    .stream()
+                    .filter(x -> x.getFrom().equals(e.getTo()))
+                    .forEach(edgeQueue::add);
+        }
+        return problems;
+    }
+
+    private void finishTest(TakenTest test) {
+        test.setEnd(new Date());
+        takenTestRepository.save(test);
     }
 
     public TestServiceImpl() {
@@ -136,36 +169,58 @@ public class TestServiceImpl implements TestService {
     @Override
     public StudentItemDTO getNextQuestion(UUID studentId, Integer currentItemId) throws KSpaceException {
         TakenTest takenTest = takenTestRepository.getUnfinishedTest(studentId);
-
+        Item retVal;
         if (takenTest == null)
             throw new KSpaceException(HttpStatus.NOT_FOUND, "There is no taken test at the moment.");
 
-        List<Item> items = itemRepository.findAllTestItems(takenTest.getTest().getId());
-        if(currentItemId == null) {
-            if(items.size() == 0) {
-                return null;
+        Optional<KnowledgeSpace> real = takenTest.getTest()
+                .getDomain().getKnowledgeSpaces().stream().filter(KnowledgeSpace::isIsReal).findAny();
+
+        if (real.isEmpty()) {
+            Optional<KnowledgeSpace> ks = takenTest.getTest()
+                    .getDomain().getKnowledgeSpaces().stream().findFirst();
+
+            if (ks.isEmpty())
+                throw new KSpaceException(HttpStatus.BAD_REQUEST, "Test does not contain valid knowledge space.");
+
+            List<DomainProblem> problemSequence = getDomainProblemSequence(ks.get());
+
+            if(currentItemId == null) {
+                DomainProblem root = domainProblemRepository.findRootProblem(ks.get().getId());
+                retVal = root.getItems().stream()
+                        .filter(x -> x.getSection()
+                                .getTest()
+                                .getId()
+                                .equals(takenTest.getTest().getId())).findAny().get();
+                StudentItemDTO itemDto = itemMapper.toDto(retVal);
+                itemDto.getAnswers().forEach(answer -> answer.setSelected(
+                        takenTest.containsAnswer(answer.getId()))
+                );
+                return itemDto;
             }
-            StudentItemDTO item = itemMapper.toDto(items.get(0));
-            item.getAnswers().forEach(answer -> answer.setSelected(
-                    takenTest.containsAnswer(answer.getId()))
-            );
-            return item;
+            Optional<Item> item = itemRepository.findById(currentItemId);
+            if (item.isEmpty())
+                throw new KSpaceException(HttpStatus.BAD_REQUEST, "Test does not contain that item.");
+
+            int index = problemSequence.indexOf(item.get().getDomainProblem());
+            if (index + 1 == problemSequence.size()) {
+                finishTest(takenTest);
+                return null;
+            } else {
+                retVal = problemSequence.get(index + 1).getItems().stream()
+                        .filter(x -> x.getSection()
+                                .getTest()
+                                .getId()
+                                .equals(takenTest.getTest().getId())).findAny().get();
+                StudentItemDTO itemDto = itemMapper.toDto(retVal);
+                itemDto.getAnswers().forEach(answer -> answer.setSelected(
+                        takenTest.containsAnswer(answer.getId()))
+                );
+                return itemDto;
+            }
         } else {
-            try {
-                for(Item i : items) {
-                    if(i.getId().equals(currentItemId)) {
-                        int index = items.indexOf(i);
-                        StudentItemDTO item = itemMapper.toDto(items.get(index + 1));
-                        item.getAnswers().forEach(answer -> answer.setSelected(
-                                takenTest.containsAnswer(answer.getId()))
-                        );
-                        return item;
-                    }
-                }
-                throw new NotFoundException("Item not in current test");
-            } catch (IndexOutOfBoundsException | NotFoundException ex) {
-                return null;
-            }
+            // TODO: add real space
+            return null;
         }
     }
 
@@ -246,6 +301,41 @@ public class TestServiceImpl implements TestService {
             item.get().setDomainProblem(domainProblem.get());
             itemRepository.save(item.get());
         }
+    }
+
+    @Override
+    public void exportResultsToITA(Integer testId) {
+        Test test = testRepository.getById(testId);
+        List<Item> items = itemRepository.findAllTestItems(test.getId());
+        List<TakenTest> takenTests = takenTestRepository.findAllByTest(test);
+        ResultsDTO resultsDTO = new ResultsDTO();
+
+        for(TakenTest takenTest : takenTests) {
+            List<Byte> answers = new ArrayList<>();
+            TreeMap<Integer, List<Answer>> groupedAnswers = new TreeMap<>();
+            for (Item item : items) {
+                groupedAnswers.put(item.getId(), new ArrayList<>());
+            }
+
+            for(Answer answer : takenTest.getAnswers()) {
+                groupedAnswers.get(answer.getId()).add(answer);
+            }
+
+            for (Integer key : groupedAnswers.keySet()) {
+                double positive = groupedAnswers.get(key).stream().filter(x -> x.getPoints() >= 0).mapToDouble(Answer::getPoints).sum();
+                double sumed = groupedAnswers.get(key).stream().mapToDouble(Answer::getPoints).sum();
+
+                if (positive / 2 > sumed) {
+                    answers.add((byte) 1);
+                } else {
+                    answers.add((byte) 0);
+                }
+            }
+            Byte[] bytes = answers.toArray(new Byte[0]);
+            resultsDTO.getResults().put(takenTest.getTakenBy().getId(), bytes);
+        }
+
+        //TODO : to send to ita
     }
 
     @Override

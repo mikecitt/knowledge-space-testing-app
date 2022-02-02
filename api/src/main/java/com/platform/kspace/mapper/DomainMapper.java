@@ -20,6 +20,9 @@ public class DomainMapper implements MapperInterface<Domain, DomainDTO> {
 
     @Override
     public DomainDTO toDto(Domain entity) {
+        if (entity == null) {
+            return null;
+        }
         return new DomainDTO(entity.getId(), entity.getName());
     }
 

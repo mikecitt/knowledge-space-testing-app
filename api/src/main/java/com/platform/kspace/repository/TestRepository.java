@@ -13,10 +13,25 @@ import java.util.UUID;
 
 public interface TestRepository extends JpaRepository<Test, Integer> {
     @Query(
-            value = "SELECT * FROM TEST WHERE NAME LIKE %?1% AND ID NOT IN" +
-                    " (SELECT TEST_ID FROM TAKEN_TEST WHERE TAKEN_BY_ID = ?2)",
-            countQuery = "SELECT * FROM TEST WHERE NAME LIKE %?1% AND ID NOT " +
-                    " (SELECT TEST_ID FROM TAKEN_TEST WHERE TAKEN_BY_ID = ?2)",
+            value = "SELECT DISTINCT t.* FROM TEST t " +
+                    "JOIN DOMAIN d ON d.ID = t.DOMAIN_ID " +
+                    "JOIN KNOWLEDGE_SPACE ks ON ks.DOMAIN_ID = d.ID " +
+                    "JOIN EDGE e ON e.KNOWLEDGE_SPACE_ID = ks.ID " +
+                    "JOIN DOMAIN_PROBLEM dp ON dp.ID = e.FROM_ID OR dp.ID = e.TO_ID " +
+                    "JOIN ITEM i ON i.DOMAIN_PROBLEM_ID = dp.ID " +
+                    "WHERE t.NAME LIKE %?1% " +
+                    "AND t.ID NOT IN " +
+                    "(SELECT TEST_ID FROM TAKEN_TEST WHERE TAKEN_BY_ID = ?2) " +
+                    "ORDER BY t.ID ASC",
+            countQuery =  "SELECT DISTINCT t.* FROM TEST t " +
+                    "JOIN DOMAIN d ON d.ID = t.DOMAIN_ID " +
+                    "JOIN KNOWLEDGE_SPACE ks ON ks.DOMAIN_ID = d.ID " +
+                    "JOIN EDGE e ON e.KNOWLEDGE_SPACE_ID = ks.ID " +
+                    "JOIN DOMAIN_PROBLEM dp ON dp.ID = e.FROM_ID OR dp.ID = e.TO_ID " +
+                    "JOIN ITEM i ON i.DOMAIN_PROBLEM_ID = dp.ID " +
+                    "WHERE t.NAME LIKE %?1% " +
+                    "AND t.ID NOT IN " +
+                    "(SELECT TEST_ID FROM TAKEN_TEST WHERE TAKEN_BY_ID = ?2)",
             nativeQuery = true
     )
     Page<Test> searchTests(String searchKeyword, UUID studentId, Pageable pageable);

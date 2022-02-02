@@ -23,7 +23,12 @@ export class WorkingTestComponent implements OnInit {
         .subscribe(
           response => {
             this.currentItem = response;
-            console.log(this.currentItem)
+            if (this.currentItem == null) {
+              this.authService.getRouter().navigate(['/students']);
+            }
+          },
+          error => {
+            this.authService.getRouter().navigate(['/students']);
           });
     } catch (err) {
       console.log(err);
@@ -53,6 +58,9 @@ export class WorkingTestComponent implements OnInit {
                 setTimeout(() => {
                   this.loading = false;
                   this.currentItem = response;
+                  if (this.currentItem == null) {
+                    this.authService.getRouter().navigate(['/students']);
+                  }
                 }, 500)
               },
               error => {
