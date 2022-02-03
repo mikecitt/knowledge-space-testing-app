@@ -1,6 +1,8 @@
 package com.service.kspace.service;
 
 import net.minidev.json.JSONObject;
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
@@ -11,10 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SparqlService {
@@ -23,18 +22,39 @@ public class SparqlService {
         UpdateRequest request;
         UpdateProcessor qe;
         String queryString;
+        Random random = new Random();
 
         queryString =
-                "PREFIX base: <http://ftn.uns.ac.rs/> "
-                        + "PREFIX student: <http://ftn.uns.ac.rs/student/> "
-                        + "PREFIX domain: <http://ftn.uns.ac.rs/domain/> "
-                        + "PREFIX domainproblem: <http://ftn.uns.ac.rs/domain-problem/> "
-                        + "PREFIX test: <http://ftn.uns.ac.rs/test/> "
-                        + "PREFIX section: <http://ftn.uns.ac.rs/section/> "
-                        + "PREFIX item: <http://ftn.uns.ac.rs/item/> "
-                        + "PREFIX answer: <http://ftn.uns.ac.rs/answer/> "
-                        + "PREFIX takentest: <http://ftn.uns.ac.rs/taken-test/> "
-                        + "PREFIX knowledgespace: <http://ftn.uns.ac.rs/knowledge-space/> "
+                "SELECT ?subject ?predicate ?object " +
+                        "WHERE { " +
+                        "  ?subject ?predicate <http://purl.org/vocab/aiiso/schema#Course>. " +
+                        "}";
+        QueryExecution queryExecution = QueryExecutionFactory.sparqlService(
+                "http://localhost:3030/knowledge/query",
+                queryString
+        );
+        ResultSet rs = queryExecution.execSelect();
+        List<RDFNode> courses = new ArrayList<>();
+        Collections.shuffle(courses);
+        while(rs.hasNext()) {
+            QuerySolution qs = rs.nextSolution();
+            if (qs.get("subject").toString()
+                    .startsWith("http://www.knowledge-space-testing.com")) {
+                courses.add(qs.get("subject"));
+            }
+        }
+
+        queryString =
+                "PREFIX base: <http://www.knowledge-space-testing.com/> "
+                        + "PREFIX student: <http://www.knowledge-space-testing.com/student/> "
+                        + "PREFIX domain: <http://www.knowledge-space-testing.com/domain/> "
+                        + "PREFIX domainproblem: <http://www.knowledge-space-testing.com/domain-problem/> "
+                        + "PREFIX test: <http://www.knowledge-space-testing.com/test/> "
+                        + "PREFIX section: <http://www.knowledge-space-testing.com/section/> "
+                        + "PREFIX item: <http://www.knowledge-space-testing.com/item/> "
+                        + "PREFIX answer: <http://www.knowledge-space-testing.com/answer/> "
+                        + "PREFIX takentest: <http://www.knowledge-space-testing.com/taken-test/> "
+                        + "PREFIX knowledgespace: <http://www.knowledge-space-testing.com/knowledge-space/> "
                         + "INSERT DATA{";
         List<?> entities = (List<?>) responseEntity.getBody().get("STUDENT");
         for(int i = 0; i < entities.size(); i++) {
@@ -101,7 +121,8 @@ public class SparqlService {
                     + "base:length \"" + entity.get("TIMER")  + "\" ; "
                     + "base:valid_from \"" + sdf.format(date) + "\" ; "
                     + "base:valid_until \"" + sdf.format(date2) + "\" ; "
-                    + "base:belong domain:" + entity.get("DOMAIN_ID") + " . ";
+                    + "base:belong domain:" + entity.get("DOMAIN_ID") + " ; "
+                    + "base:part_of <" + courses.get(random.nextInt(courses.size())) + "> . ";
         }
 
         entities = (List<?>) responseEntity.getBody().get("SECTION");
@@ -164,6 +185,7 @@ public class SparqlService {
         request = UpdateFactory.create(queryString);
         qe = UpdateExecutionFactory.createRemote(request,
                 "http://localhost:3030/knowledge/update");
+
         qe.execute();
 
         return queryString;
