@@ -1,0 +1,24 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?name ?test_name ?total
+WHERE {
+  ?student <http://www.knowledge-space-testing.com/had> ?taken_test .
+  ?student <http://www.knowledge-space-testing.com/name> ?name .
+  ?taken_test <http://www.knowledge-space-testing.com/from> ?test .
+  ?test <http://www.knowledge-space-testing.com/name> ?test_name
+  filter contains(str(?student),"/student")
+  {
+    SELECT ?taken_test (SUM(xsd:float(?score)) AS ?total)
+    WHERE {
+      ?taken_test <http://www.knowledge-space-testing.com/answered> ?answer .
+      {
+        SELECT DISTINCT ?answer ?score
+        WHERE {
+          ?answer <http://www.knowledge-space-testing.com/scores> ?score
+        }
+      }
+    }
+    GROUP BY(?taken_test)
+  }
+}
+ORDER BY DESC(?total)

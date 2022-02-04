@@ -1,0 +1,20 @@
+SELECT ?title (COUNT(?taken_test) AS ?count)
+WHERE {
+  ?taken_test <http://www.knowledge-space-testing.com/from> ?test .
+  {
+    SELECT $test $course
+    WHERE {
+      ?test <http://www.knowledge-space-testing.com/part_of> ?course .
+      filter contains(str(?course),"/course")
+    }
+  }
+  {
+    SELECT ?course ?title
+    WHERE {
+      ?course <http://purl.org/dc/terms/title> ?title
+      filter contains(str(?course),"/course")
+    }
+  }
+}
+GROUP BY ?title
+ORDER BY DESC(?count)

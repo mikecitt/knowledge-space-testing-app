@@ -1,0 +1,26 @@
+mat-card {
+    margin-top: 4%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+table {
+    width: 100%;
+  }
+  mat-header-cell, mat-cell {
+    justify-content: left;
+  }
+  .left-text {
+    text-align: left;
+  }
+
+mat-card {
+  margin: 10px;
+}
+
+.query-selector {
+    width: 40%;
+    mat-form-field {
+        width: 100%;
+    }
+}

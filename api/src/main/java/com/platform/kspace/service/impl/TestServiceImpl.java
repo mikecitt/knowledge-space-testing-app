@@ -262,7 +262,7 @@ public class TestServiceImpl implements TestService {
         }
 
         takenTest.clearAnswersOfItem(itemAnswersDTO.getItemId());
-        takenTestRepository.deleteAnswersOfItem(itemAnswersDTO.getItemId());
+        takenTestRepository.deleteAnswersOfItem(itemAnswersDTO.getItemId(), takenTest.getId());
         for(Integer answerId : itemAnswersDTO.getSelectedAnswers()) {
             takenTest.addAnswer(answerRepository.getById(answerId));
         }

@@ -1,16 +1,15 @@
 package com.service.kspace.controller;
 
 import com.service.kspace.service.SparqlService;
+import net.minidev.json.parser.ParseException;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
 import org.apache.jena.update.UpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashMap;
@@ -34,5 +33,15 @@ public class SparqlController {
     public ResponseEntity<?> viewData() {
         ResponseEntity<Map> responseEntity = new RestTemplate().getForEntity("http://localhost:8080/api/export", Map.class);
         return responseEntity;
+    }
+
+    @GetMapping("query")
+    public ResponseEntity<?> selectData(@RequestParam Integer id) {
+        try {
+            return ResponseEntity.ok(sparqlService.selectFromJena(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

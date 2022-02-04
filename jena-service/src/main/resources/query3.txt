@@ -1,0 +1,13 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?test_name (AVG(seconds(?y)) AS ?average_duration)
+WHERE {
+  ?taken_test <http://www.knowledge-space-testing.com/start> ?start .
+  ?taken_test <http://www.knowledge-space-testing.com/end> ?end .
+  ?taken_test <http://www.knowledge-space-testing.com/from> ?test .
+  ?test <http://www.knowledge-space-testing.com/name> ?test_name .
+  bind((xsd:dateTime(?end)) - (xsd:dateTime(?start)) as ?x)
+  BIND("00:00:00"^^xsd:time + ?x as ?y)
+}
+GROUP BY ?test_name
+ORDER BY DESC(?average_duration)

@@ -16,3 +16,4 @@ export { DomainProblem } from './domain-problem';
 export { KnowledgeSpace } from './knowledge-space';
 export { Edge } from './edge';
 export { ItemProblem } from './item-problem';
+export { Result } from './result';

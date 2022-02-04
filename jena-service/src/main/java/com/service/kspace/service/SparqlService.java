@@ -1,8 +1,12 @@
 package com.service.kspace.service;
 
+import com.service.kspace.dto.Result;
 import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.sparql.engine.http.HttpQuery;
 import org.apache.jena.update.UpdateExecutionFactory;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateProcessor;
@@ -11,6 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -43,6 +52,7 @@ public class SparqlService {
                 courses.add(qs.get("subject"));
             }
         }
+        Collections.shuffle(courses);
 
         queryString =
                 "PREFIX base: <http://www.knowledge-space-testing.com/> "
@@ -163,7 +173,7 @@ public class SparqlService {
             Date date2 = new Date();
             date.setTime((long)entity.get("START"));
             date2.setTime((long)entity.get("END"));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             queryString
                     +="takentest:" + entity.get("ID") +" "
                     + "base:start \"" + sdf.format(date) + "\" ; "
@@ -189,5 +199,57 @@ public class SparqlService {
         qe.execute();
 
         return queryString;
+    }
+
+    public Result selectFromJena(Integer queryId) throws Exception {
+        String queryString = "query";
+
+        InputStream is = getClass().getClassLoader().getResourceAsStream(queryString + queryId + ".txt");
+
+        if (is == null) {
+            throw new Exception("There is no known query.");
+        }
+
+        StringBuilder query = new StringBuilder();
+        try (InputStreamReader streamReader =
+                     new InputStreamReader(is, StandardCharsets.UTF_8);
+             BufferedReader reader = new BufferedReader(streamReader)) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                query.append(line + " ");
+            }
+
+        }
+        queryString = query.toString();
+        QueryExecution queryExecution = QueryExecutionFactory.sparqlService(
+                "http://localhost:3030/knowledge/query",
+                queryString
+        );
+        ResultSet rs = queryExecution.execSelect();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        ResultSetFormatter.outputAsJSON(outputStream, rs);
+        String stringToParse = outputStream.toString();
+
+        JSONParser jsonParser = new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(stringToParse);
+        List<JSONObject> entities = (List<JSONObject>) ((JSONObject)jsonObject.get("results")).get("bindings");
+        List<HashMap<String, String>> finalEntities = new ArrayList<>();
+        Result res = new Result();
+        if (entities.size() > 0) {
+            res.setColumns(entities.get(0).keySet().toArray(new String[0]));
+            entities.forEach(x -> {
+                HashMap<String, String> entity = new HashMap<>();
+                for(String key : x.keySet()) {
+                    entity.put(key, ((JSONObject)x.get(key)).get("value").toString());
+                }
+                finalEntities.add(entity);
+            });
+            res.setData(finalEntities);
+        }
+
+        queryExecution.close();
+        return res;
     }
 }

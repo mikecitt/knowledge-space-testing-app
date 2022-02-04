@@ -20,7 +20,7 @@ public interface TakenTestRepository extends JpaRepository<TakenTest, Integer> {
     TakenTest getUnfinishedTest(UUID userId);
 
     @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END FROM TAKEN_TEST" +
-            " WHERE TAKEN_BY_ID = ?1",
+            " WHERE TAKEN_BY_ID = ?1 AND END IS NULL",
             nativeQuery = true
     )
     boolean checkIfTestIsAlreadyTaken(UUID userId);
@@ -38,9 +38,9 @@ public interface TakenTestRepository extends JpaRepository<TakenTest, Integer> {
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM TAKEN_TEST_ANSWERS WHERE ANSWERS_ID IN " +
-            "(SELECT ID FROM ANSWER WHERE ITEM_ID = ?1)",
+            "(SELECT ID FROM ANSWER WHERE ITEM_ID = ?1) AND TAKEN_TEST_ID = ?2",
             nativeQuery = true
     )
-    void deleteAnswersOfItem(Integer itemId);
+    void deleteAnswersOfItem(Integer itemId, Integer takenTestId);
     List<TakenTest> findAllByTest(Test test);
 }

@@ -1,0 +1,7 @@
+SELECT ?professor_name (COUNT(?course) AS ?number_of_courses)
+WHERE {
+	?professor <http://www.knowledge-space-testing.com/schema#holds> ?course .
+  	?professor <http://purl.org/dc/terms/title> ?professor_name
+}
+GROUP BY ?professor_name
+ORDER BY DESC(?number_of_courses)

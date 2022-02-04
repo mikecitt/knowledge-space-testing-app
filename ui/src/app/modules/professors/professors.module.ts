@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { ProfessorsRoutingModule } from './professors-routing.module';
 import { TestsTableComponent } from './tests-table/tests-table.component';
@@ -17,6 +17,7 @@ import { DomainComponent } from './domain/domain.component';
 import { KnowledgeSpaceComponent } from './knowledge-space/knowledge-space.component';
 import { DomainFormComponent } from './domain-form/domain-form.component';
 import { KnowledgeSpaceFormComponent } from './knowledge-space-form/knowledge-space-form.component';
+import { QueryComponent } from './query/query.component';
 
 
 @NgModule({
@@ -33,13 +34,15 @@ import { KnowledgeSpaceFormComponent } from './knowledge-space-form/knowledge-sp
     DomainComponent,
     KnowledgeSpaceComponent,
     DomainFormComponent,
-    KnowledgeSpaceFormComponent
+    KnowledgeSpaceFormComponent,
+    QueryComponent
   ],
   imports: [
     CommonModule,
     ProfessorsRoutingModule,
     MaterialModule,
     SharedModule
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class ProfessorsModule { }
