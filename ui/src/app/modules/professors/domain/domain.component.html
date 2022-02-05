@@ -21,6 +21,7 @@
                 <td mat-cell *matCellDef="let element" class="left-text">
                     <button mat-raised-button color="warn" (click)="startDomainDeletion(element)">Delete</button>
                     <button mat-raised-button color="primary" (click)="editDomain(element)">Edit</button>
+                    <button mat-raised-button color="accent" [routerLink]="['/professors/knowledge-space-comparison', element.id]">Knowledge spaces</button>
                 </td>
             </ng-container>
 

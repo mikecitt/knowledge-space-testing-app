@@ -43,7 +43,6 @@ export class DomainComponent implements OnInit {
   refresh() {
     this.domainService.getDomains().subscribe(
       (res) => {
-        console.log(res);
         this.dataArray = res;
         this.dataSource = new MatTableDataSource<Domain>(this.dataArray);
         this.dataSource.paginator = this.paginator;
