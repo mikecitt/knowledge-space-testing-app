@@ -12,11 +12,25 @@ public class KnowledgeSpaceComparisonDTO {
     }
 
     public void addNode(UUID domainProblemId, String domainProblemText, SpaceType spaceType) {
-        this.nodes.put(domainProblemId, new Node(domainProblemId, domainProblemText, this.nodes.get(domainProblemId) != null ? SpaceType.BOTH : spaceType));
+        SpaceType temp = null;
+        if(this.nodes.get(domainProblemId) == null)
+            temp = spaceType;
+        else if(this.nodes.get(domainProblemId).spaceType == spaceType)
+            return;
+        else
+            temp = SpaceType.BOTH;
+        this.nodes.put(domainProblemId, new Node(domainProblemId, domainProblemText, temp));
     }
 
     public void addEdge(UUID from, UUID to, SpaceType spaceType) {
-        this.edges.put(new CustomKey(from, to), new Edge(from, to, this.edges.get(new CustomKey(from, to)) != null ? SpaceType.BOTH : spaceType));
+        SpaceType temp = null;
+        if(this.edges.get(new CustomKey(from, to)) == null)
+            temp = spaceType;
+        else if(this.edges.get(new CustomKey(from, to)).spaceType == spaceType)
+            return;
+        else
+            temp = SpaceType.BOTH;
+        this.edges.put(new CustomKey(from, to), new Edge(from, to, temp));
     }
 
     public Collection<Edge> getEdges() {
@@ -83,9 +97,13 @@ class CustomKey {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Map)) return false;
-        CustomKey map = (CustomKey) o;
-        return x.equals(map.x) && y.equals(map.y);
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomKey customKey = (CustomKey) o;
+        return x.equals(customKey.x) && y.equals(customKey.y);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
 }

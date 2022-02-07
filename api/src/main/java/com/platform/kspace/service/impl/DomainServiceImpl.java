@@ -1,5 +1,6 @@
 package com.platform.kspace.service.impl;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +91,8 @@ public class DomainServiceImpl implements DomainService {
             throw new KSpaceException(HttpStatus.NOT_FOUND, "Domain doesn't have both expected and real knowledge space.");
 
         KnowledgeSpaceComparisonDTO result = new KnowledgeSpaceComparisonDTO();
-        KnowledgeSpace first = domain.get().getKnowledgeSpaces().iterator().next();
+        Iterator<KnowledgeSpace> it = domain.get().getKnowledgeSpaces().iterator();
+        KnowledgeSpace first = it.next();
         SpaceType type = SpaceType.EXPECTED;
         if(first.getIsReal())
             type = SpaceType.REAL;
@@ -104,7 +106,7 @@ public class DomainServiceImpl implements DomainService {
             type = SpaceType.REAL;
         else
             type = SpaceType.EXPECTED;
-        KnowledgeSpace second = domain.get().getKnowledgeSpaces().iterator().next();
+        KnowledgeSpace second = it.next();
         for(Edge e : second.getEdges()) {
             result.addNode(e.getFrom().getId(), e.getFrom().getName(), type);
             result.addNode(e.getTo().getId(), e.getTo().getName(), type);
