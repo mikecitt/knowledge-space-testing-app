@@ -17,10 +17,14 @@ import com.platform.kspace.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import javassist.NotFoundException;
+import org.springframework.web.client.RestTemplate;
 import org.yaml.snakeyaml.util.ArrayUtils;
 
 import javax.transaction.Transactional;
@@ -94,6 +98,10 @@ public class TestServiceImpl implements TestService {
     private void finishTest(TakenTest test) {
         test.setEnd(new Date());
         takenTestRepository.save(test);
+        Integer domainId = test.getTest().getDomain().getId();
+        if (takenTestRepository.countTakenTestsForDomain(domainId) > 3) {
+            exportResultsToITA(domainId);
+        }
     }
 
     public TestServiceImpl() {
@@ -304,28 +312,27 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void exportResultsToITA(Integer testId) {
-        Test test = testRepository.getById(testId);
-        List<Item> items = itemRepository.findAllTestItems(test.getId());
-        List<TakenTest> takenTests = takenTestRepository.findAllByTest(test);
+    public void exportResultsToITA(Integer domainId) {
+        List<TakenTest> takenTests = takenTestRepository.findAllByDomainId(domainId);
         ResultsDTO resultsDTO = new ResultsDTO();
 
         for(TakenTest takenTest : takenTests) {
+            List<Item> items = itemRepository.findAllByTestAndDomain(takenTest.getTest().getId(), domainId);
             List<Byte> answers = new ArrayList<>();
-            TreeMap<Integer, List<Answer>> groupedAnswers = new TreeMap<>();
+            Map<Integer, List<Answer>> groupedAnswers = items.stream()
+                    .collect(Collectors.toMap(Item::getId, x -> new ArrayList<>()));
+            takenTest.getAnswers()
+                    .forEach(x -> groupedAnswers.get(x.getItem().getId()).add(x));
+
             for (Item item : items) {
-                groupedAnswers.put(item.getId(), new ArrayList<>());
-            }
+                double positive = item.getAnswers()
+                        .stream()
+                        .filter(x -> x.getPoints() >= 0).mapToDouble(Answer::getPoints).sum();
+                double summed = groupedAnswers.get(item.getId())
+                        .stream()
+                        .mapToDouble(Answer::getPoints).sum();
 
-            for(Answer answer : takenTest.getAnswers()) {
-                groupedAnswers.get(answer.getId()).add(answer);
-            }
-
-            for (Integer key : groupedAnswers.keySet()) {
-                double positive = groupedAnswers.get(key).stream().filter(x -> x.getPoints() >= 0).mapToDouble(Answer::getPoints).sum();
-                double sumed = groupedAnswers.get(key).stream().mapToDouble(Answer::getPoints).sum();
-
-                if (positive / 2 > sumed) {
+                if (summed >= (3 * positive) / 4 ) {
                     answers.add((byte) 1);
                 } else {
                     answers.add((byte) 0);
@@ -335,7 +342,15 @@ public class TestServiceImpl implements TestService {
             resultsDTO.getResults().put(takenTest.getTakenBy().getId(), bytes);
         }
 
-        //TODO : to send to ita
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<ResultsDTO> request =
+                new HttpEntity<>(resultsDTO, headers);
+        int[][] diff = restTemplate.postForObject("http://localhost:5000/ita", request, int[][].class);
+        for(int[] d : diff) {
+            System.out.println(d[0] + " " + d[1]);
+        }
     }
 
     @Override

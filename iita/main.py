@@ -20,10 +20,10 @@ def to_dict(df: DataFrame):
   return my_dict
 
 @app.post("/ita")
-def submit(df: DataFrame):
-  data_frame = pd.DataFrame(to_dict(df))
+def submit(df: dict):
+  print(df)
+  data_frame = pd.DataFrame(df['results'])
   response = iita(data_frame, v=1)
   response['diff']=response['diff'].tolist()
-  return {
-    "data": response
-  }
+  print(response)
+  return response['implications']

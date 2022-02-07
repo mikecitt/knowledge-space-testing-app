@@ -28,5 +28,5 @@ public interface TestService {
     void answerOnItem(UUID studentId, ItemAnswersDTO itemAnswersDTO) throws NotFoundException;
     void updateTestDomain(Integer testId, Integer domainId) throws NotFoundException;
     void assignProblemsToItems(List<ItemProblemDTO> itemProblems) throws NotFoundException;
-    void exportResultsToITA(Integer testId);
+    void exportResultsToITA(Integer domainId);
 }

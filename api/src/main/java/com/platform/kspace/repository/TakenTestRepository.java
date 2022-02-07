@@ -37,10 +37,27 @@ public interface TakenTestRepository extends JpaRepository<TakenTest, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM TAKEN_TEST_ANSWERS WHERE ANSWERS_ID IN " +
-            "(SELECT ID FROM ANSWER WHERE ITEM_ID = ?1) AND TAKEN_TEST_ID = ?2",
+    @Query(
+            value = "DELETE FROM TAKEN_TEST_ANSWERS WHERE ANSWERS_ID IN " +
+                    "(SELECT ID FROM ANSWER WHERE ITEM_ID = ?1) AND TAKEN_TEST_ID = ?2",
             nativeQuery = true
     )
     void deleteAnswersOfItem(Integer itemId, Integer takenTestId);
     List<TakenTest> findAllByTest(Test test);
+    @Query(
+            value = "SELECT DISTINCT tt.* FROM TAKEN_TEST tt " +
+                    "JOIN TEST t ON tt.TEST_ID = t.ID " +
+                    "JOIN DOMAIN d ON d.ID = t.DOMAIN_ID " +
+                    "WHERE d.ID = ?1",
+            nativeQuery = true
+    )
+    List<TakenTest> findAllByDomainId(Integer domainId);
+    @Query(
+            value = "SELECT COUNT(*) FROM TAKEN_TEST tt " +
+                    "JOIN TEST t ON tt.TEST_ID = t.ID " +
+                    "JOIN DOMAIN d ON d.ID = t.DOMAIN_ID " +
+                    "WHERE d.ID = ?1",
+            nativeQuery = true
+    )
+    int countTakenTestsForDomain(Integer domainId);
 }
