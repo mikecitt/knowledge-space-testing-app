@@ -42,4 +42,8 @@ export class DomainService {
   deleteDomain(domainId: number): Observable<void> {
     return this.http.delete<void>(`${API_BASE}/domain/${domainId}`);
   }
+  
+  getDomainKnowledgeSpaceComparison(domainId: any): Observable<any> {
+    return this.http.get<any[]>(`${API_BASE}/domain/knowledge-space-comparison/${domainId}`);
+  }
 }

@@ -19,6 +19,7 @@ import { DomainFormComponent } from './domain-form/domain-form.component';
 import { KnowledgeSpaceFormComponent } from './knowledge-space-form/knowledge-space-form.component';
 import { QueryComponent } from './query/query.component';
 import { KnowledgeSpaceComparisonComponent } from './knowledge-space-comparison/knowledge-space-comparison.component';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { KnowledgeSpaceComparisonComponent } from './knowledge-space-comparison/
     CommonModule,
     ProfessorsRoutingModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    NgxGraphModule
   ],
   providers: [DatePipe]
 })
