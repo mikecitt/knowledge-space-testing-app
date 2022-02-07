@@ -12,7 +12,7 @@ public class KnowledgeSpace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -25,6 +25,7 @@ public class KnowledgeSpace {
     private List<Edge> edges;
 
     public KnowledgeSpace() {
+        this.edges = new ArrayList<>();
     }
 
     public KnowledgeSpace(String name, Boolean isReal) {

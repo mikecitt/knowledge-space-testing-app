@@ -21,7 +21,8 @@ public interface DomainProblemRepository extends JpaRepository<DomainProblem, In
     @Query(
             value = "SELECT dp.* FROM DOMAIN_PROBLEM dp " +
                     "WHERE dp.ID IN (SELECT FROM_ID FROM EDGE e WHERE e.KNOWLEDGE_SPACE_ID = ?1) " +
-                    "AND dp.ID NOT IN (SELECT TO_ID FROM EDGE e WHERE e.KNOWLEDGE_SPACE_ID = ?1)",
+                    "AND dp.ID NOT IN (SELECT TO_ID FROM EDGE e WHERE e.KNOWLEDGE_SPACE_ID = ?1) " +
+                    "ORDER BY dp.ID ASC",
             nativeQuery = true
     )
     DomainProblem findRootProblem(Integer knowledgeSpaceId);

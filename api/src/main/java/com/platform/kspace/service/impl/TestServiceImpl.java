@@ -56,6 +56,9 @@ public class TestServiceImpl implements TestService {
     @Autowired
     private DomainProblemRepository domainProblemRepository;
 
+    @Autowired
+    private KnowledgeSpaceRepository knowledgeSpaceRepository;
+
     private final WorkingTestMapper workingTestMapper;
 
     private final TestMapper testMapper;
@@ -99,8 +102,14 @@ public class TestServiceImpl implements TestService {
         test.setEnd(new Date());
         takenTestRepository.save(test);
         Integer domainId = test.getTest().getDomain().getId();
-        if (takenTestRepository.countTakenTestsForDomain(domainId) > 3) {
-            exportResultsToITA(domainId);
+        List<Item> items = itemRepository.findAllTestItems(test.getTest().getId());
+        if (takenTestRepository.countTakenTestsForDomain(domainId) >= items.size()) {
+            try {
+                exportResultsToITA(domainId);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                //System.out.println(ex.getMessage());
+            }
         }
     }
 
@@ -184,7 +193,7 @@ public class TestServiceImpl implements TestService {
         Optional<KnowledgeSpace> real = takenTest.getTest()
                 .getDomain().getKnowledgeSpaces().stream().filter(KnowledgeSpace::isIsReal).findAny();
 
-        if (real.isEmpty()) {
+        if (real.isEmpty() || real.isPresent()) {
             Optional<KnowledgeSpace> ks = takenTest.getTest()
                     .getDomain().getKnowledgeSpaces().stream().findFirst();
 
@@ -312,10 +321,10 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void exportResultsToITA(Integer domainId) {
+    public void exportResultsToITA(Integer domainId) throws Exception {
         List<TakenTest> takenTests = takenTestRepository.findAllByDomainId(domainId);
         ResultsDTO resultsDTO = new ResultsDTO();
-
+        Integer ksExpId = -1;
         for(TakenTest takenTest : takenTests) {
             List<Item> items = itemRepository.findAllByTestAndDomain(takenTest.getTest().getId(), domainId);
             List<Byte> answers = new ArrayList<>();
@@ -348,9 +357,25 @@ public class TestServiceImpl implements TestService {
         HttpEntity<ResultsDTO> request =
                 new HttpEntity<>(resultsDTO, headers);
         int[][] diff = restTemplate.postForObject("http://localhost:5000/ita", request, int[][].class);
-        for(int[] d : diff) {
-            System.out.println(d[0] + " " + d[1]);
+
+        Domain d = domainRepository.getById(domainId);
+        KnowledgeSpace realKs = new KnowledgeSpace();
+        realKs.setIsReal(true);
+        realKs.setName("Real1");
+        realKs.setDomain(d);
+        Optional<KnowledgeSpace> expKs = knowledgeSpaceRepository.findByIsRealAndDomain(false, d);
+
+        if (expKs.isEmpty())
+            throw new Exception("Something went wrong...");
+
+        List<DomainProblem> domainProblems = domainProblemRepository.findKnowledgeSpaceDomainProblems(expKs.get().getId());
+        for(int[] newEdge : diff) {
+            Edge edge = new Edge(domainProblems.get(newEdge[0]), domainProblems.get(newEdge[1]));
+            edge.setKnowledgeSpace(realKs);
+            realKs.addEdge(edge);
         }
+
+        knowledgeSpaceRepository.save(realKs);
     }
 
     @Override

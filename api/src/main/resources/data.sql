@@ -164,7 +164,7 @@ INSERT INTO edge (from_id, to_id, knowledge_space_id) VALUES
 
 INSERT INTO test (id, name , timer, valid_from, valid_until, created_by_id, domain_id) VALUES
     (1, 'Introduction to web programming', 60.0, CURRENT_DATE(), CURRENT_DATE() + INTERVAL 5 DAY, 'c3b0c97ba5a8450cb6aa49bd3a4a52d6', 1),
-    (2, 'Computer usage 1', 120.0, CURRENT_DATE() + INTERVAL 10 DAY, CURRENT_DATE() + INTERVAL 14 DAY, 'c3b0c97ba5a8450cb6aa49bd3a4a52d6', 2),
+    (2, 'Computer usage 1', 120.0, CURRENT_DATE(), CURRENT_DATE() + INTERVAL 14 DAY, 'c3b0c97ba5a8450cb6aa49bd3a4a52d6', 2),
 	(3, 'Computer usage 2', 120.0, CURRENT_DATE() + INTERVAL 10 DAY, CURRENT_DATE() + INTERVAL 14 DAY, 'c3b0c97ba5a8450cb6aa49bd3a4a52d6', 2);
 
 INSERT INTO section VALUES
