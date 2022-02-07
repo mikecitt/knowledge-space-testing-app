@@ -138,7 +138,8 @@ INSERT INTO domain (id, name) VALUES
 
 INSERT INTO knowledge_space (id, is_real, name, domain_id) VALUES
 	(1, false, 'Expected1', 1),
-	(2, false, 'Expected2', 2);
+	(2, false, 'Expected2', 2),
+	(3, true, 'Real1', 1);
 
 INSERT INTO domain_problem (id, name) VALUES
 	('7f91b07ce0184b4b9825ecff1256cba4', 'HTTP'),
@@ -156,6 +157,10 @@ INSERT INTO edge (from_id, to_id, knowledge_space_id) VALUES
 	('5706e487af22425c898a8d0d9d74b125', '34b6c73e29704609a7e94e2528dd8779', 1),
 	('9440fe067efa46c587c6cd4656b96b45', 'c1edd78975be4ab0b59899e75bdbec3f', 1),
 	('34b6c73e29704609a7e94e2528dd8779', 'c1edd78975be4ab0b59899e75bdbec3f', 1),
+    ('5706e487af22425c898a8d0d9d74b125', '9440fe067efa46c587c6cd4656b96b45', 3),
+    ('5706e487af22425c898a8d0d9d74b125', '34b6c73e29704609a7e94e2528dd8779', 3),
+    ('9440fe067efa46c587c6cd4656b96b45', 'c1edd78975be4ab0b59899e75bdbec3f', 3),
+    ('34b6c73e29704609a7e94e2528dd8779', 'c1edd78975be4ab0b59899e75bdbec3f', 3),
 	('cffb6d7eb11f42a5ab8598961ba9e744', '3c02e26072494f62baee852ede19dad8', 2),
 	('3c02e26072494f62baee852ede19dad8', '29c2109a90a24e37929e2578420dc6df', 2);
 

@@ -3,6 +3,7 @@ package com.platform.kspace.service;
 import java.util.List;
 
 import com.platform.kspace.dto.DomainDTO;
+import com.platform.kspace.dto.KnowledgeSpaceComparisonDTO;
 import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.model.Domain;
 
@@ -14,4 +15,5 @@ public interface DomainService {
     List<Domain> findAll();
     List<DomainDTO> getDomains();
     List<DomainDTO> getUnassignedDomains();
+    KnowledgeSpaceComparisonDTO getDomainKnowledgeSpaceComparison(Integer id) throws KSpaceException;
 }

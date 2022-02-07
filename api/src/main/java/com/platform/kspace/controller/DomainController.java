@@ -3,6 +3,7 @@ package com.platform.kspace.controller;
 import java.util.List;
 
 import com.platform.kspace.dto.DomainDTO;
+import com.platform.kspace.dto.KnowledgeSpaceComparisonDTO;
 import com.platform.kspace.exceptions.KSpaceException;
 import com.platform.kspace.service.DomainService;
 
@@ -59,5 +60,16 @@ public class DomainController {
     @GetMapping("/unassigned")
     public ResponseEntity<List<DomainDTO>> getUnassignedDomains() {
         return ResponseEntity.ok(domainService.getUnassignedDomains());
+    }
+
+    @GetMapping("/knowledge-space-comparison/{domainId}")
+    public ResponseEntity<KnowledgeSpaceComparisonDTO> getDomainKnowledgeSpaceComparison(@PathVariable("domainId") Integer domainId) {
+        try {
+            return ResponseEntity.ok(domainService.getDomainKnowledgeSpaceComparison(domainId));
+        } catch (KSpaceException ex) {
+            return new ResponseEntity<>(ex.getHttpStatus());
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

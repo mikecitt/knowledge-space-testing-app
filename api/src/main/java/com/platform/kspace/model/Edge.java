@@ -22,6 +22,7 @@ public class Edge {
     private DomainProblem to;
 
     @ManyToOne
+    @MapsId("knowledgeSpaceId")
     private KnowledgeSpace knowledgeSpace;
 
     public Edge() {
@@ -90,6 +91,8 @@ class EdgeKey implements Serializable {
     @Column(name = "to_id")
     UUID toId;
 
+    @Column(name = "knowledgeSpace_id")
+    Integer knowledgeSpaceId;
 
     public UUID getFromId() {
         return this.fromId;

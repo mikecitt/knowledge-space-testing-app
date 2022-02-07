@@ -1,5 +1,6 @@
 package com.platform.kspace.dto;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class DomainProblemDTO {
@@ -27,5 +28,13 @@ public class DomainProblemDTO {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DomainProblemDTO that = (DomainProblemDTO) o;
+        return id.equals(that.id);
     }
 }
