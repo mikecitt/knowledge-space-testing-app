@@ -409,6 +409,54 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
+    public String testToXml(Integer id) throws KSpaceException {
+        Optional<Test> test = testRepository.findById(id);
+
+        if (test.isEmpty()) {
+            throw new KSpaceException(HttpStatus.NOT_FOUND, "Knowledge space not found with given id.");
+        }
+
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+                "<qti-assessment-test\r\n" +
+                "	xmlns=\"http://www.imsglobal.org/xsd/imsqti_v3p0\" \r\n" +
+                "	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n" +
+                "	identifier=\"" + test.get().getId() + "\"\r\n" +
+                "	title=\"" + test.get().getName() +"\"\r\n" +
+                "	xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsqti_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/xsd/imsqti_asiv3p0_v1p0.xsd\"\r\n" +
+                "	xml:lang=\"en-US\" >";
+//                domainProblemsParts(test.getProblems(), filePath) +
+        for(Section s : test.get().getSections()) {
+            xml += "<qti-assessment-section identifier=\"" + s.getId() + "\" title=\"" + s.getName() +"\" visible=\"true\">";
+            for(Item i : s.getItems()) {
+                xml += "<qti-assessment-item identifier=\"" + i.getId() + "\" item-dependent=\"false\">";
+                    xml += "<qti-response-declaration base-type=\"identifier\" cardinality=\"single\" identifier=\"RESPONSE\">\r\n" +
+                            "    <qti-correct-response>\r\n";
+                    for(Answer a : i.getAnswers()) {
+                        if(a.getPoints() > 0)
+                            xml += "<qti-value>" + a.getId() + "</qti-value>\r\n";
+                    }
+                        xml += "</qti-correct-response>\r\n";
+                    xml += "</qti-response-declaration>\r\n";
+                xml += "<qti-item-body>\r\n";
+                xml += "<qti-choice-interaction max-choices=\"" + i.getAnswers().size() + "\" shuffle=\"false\" response-identifier=\"RESPONSE\">\r\n";
+                xml += "<qti-prompt>" + i.getText() + "</qti-prompt>";
+                for(Answer a : i.getAnswers()) {
+                    xml += "<qti-simple-choice identifier=\"" + a.getId() + "\">" + a.getText() + "</qti-simple-choice>\r\n";
+                }
+                xml += "</qti-choice-interaction>";
+                xml += "</qti-item-body>";
+                xml += "<qti-response-processing template=\"https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct\"/>\r\n";
+                xml += "</qti-assessment-item>";
+            }
+            xml += "</qti-assessment-section>";
+        }
+        xml += "\r\n" +
+        "</qti-assessment-test>";
+
+        return xml;
+    }
+
+    @Override
     public List<TestDTO> getTests() {
         return testMapper.toDtoList(testRepository.findAll());
     }

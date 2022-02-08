@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomainService } from 'src/app/core/service/domain.service';
-import { Node, Edge, ClusterNode } from '@swimlane/ngx-graph';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-knowledge-space-comparison',
@@ -9,6 +9,8 @@ import { Node, Edge, ClusterNode } from '@swimlane/ngx-graph';
   styleUrls: ['./knowledge-space-comparison.component.scss']
 })
 export class KnowledgeSpaceComparisonComponent implements OnInit {
+
+  center$: Subject<boolean> = new Subject();
 
   id: number | string | null;
   edges: any;

@@ -185,6 +185,10 @@ export class TestComponent implements OnInit {
     );
   }
 
+  exportTest() {
+    window.location.href=`http://localhost:8080/api/test/${this.id}/xml`;
+  }
+
   loadSections() {
     this.itemService.getTestSections(this.id).subscribe(
       (res) => {

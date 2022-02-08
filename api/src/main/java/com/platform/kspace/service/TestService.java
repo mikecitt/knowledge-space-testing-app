@@ -29,4 +29,5 @@ public interface TestService {
     void updateTestDomain(Integer testId, Integer domainId) throws NotFoundException;
     void assignProblemsToItems(List<ItemProblemDTO> itemProblems) throws NotFoundException;
     void exportResultsToITA(Integer domainId) throws Exception;
+    String testToXml(Integer id) throws KSpaceException;
 }
