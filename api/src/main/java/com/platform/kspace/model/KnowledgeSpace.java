@@ -24,20 +24,27 @@ public class KnowledgeSpace {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "knowledgeSpace", orphanRemoval = true)
     private List<Edge> edges;
 
+    @ElementCollection
+    @CollectionTable(name="knowledgeStates")
+    private List<String> knowledgeStates;
+
     public KnowledgeSpace() {
         this.edges = new ArrayList<>();
+        this.knowledgeStates = new ArrayList<>();
     }
 
     public KnowledgeSpace(String name, Boolean isReal) {
         this.name = name;
         this.isReal = isReal;
         this.edges = new ArrayList<>();
+        this.knowledgeStates = new ArrayList<>();
     }
 
     public KnowledgeSpace(String name, Boolean isReal, List<Edge> edges) {
         this.name = name;
         this.isReal = isReal;
         this.edges = edges;
+        this.knowledgeStates = new ArrayList<>();
     }
 
     public void addEdge(Edge edge) {
@@ -87,5 +94,18 @@ public class KnowledgeSpace {
 
     public void setEdges(List<Edge> edges) {
         this.edges = edges;
+    }
+
+    public void addKnowledgeStates(String stateStr) {
+        this.knowledgeStates.add(stateStr);
+    }
+
+    public List<String[]> getKnowledgeStates() {
+        List<String[]> states = new ArrayList<>();
+        for (String stateStr : this.knowledgeStates) {
+            states.add(stateStr.split(","));
+        }
+
+        return states;
     }
 }

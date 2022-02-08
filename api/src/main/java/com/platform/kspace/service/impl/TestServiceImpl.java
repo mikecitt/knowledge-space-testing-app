@@ -21,6 +21,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javassist.NotFoundException;
@@ -104,11 +105,40 @@ public class TestServiceImpl implements TestService {
         Integer domainId = test.getTest().getDomain().getId();
         List<Item> items = itemRepository.findAllTestItems(test.getTest().getId());
         if (takenTestRepository.countTakenTestsForDomain(domainId) >= items.size()) {
+            Optional<KnowledgeSpace> realKs = knowledgeSpaceRepository
+                    .findByIsRealAndDomain(true, test.getTest().getDomain());
+            if (realKs.isPresent()) {
+                return;
+            }
             try {
                 exportResultsToITA(domainId);
             } catch (Exception ex) {
-                ex.printStackTrace();
-                //System.out.println(ex.getMessage());
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    private void generateKnowledgeStates(KnowledgeSpace realKs) {
+        DomainProblem root = domainProblemRepository
+                .findRootProblem(realKs.getId());
+
+        String states = "";
+        recursiveStateChecks(root, realKs, states);
+        knowledgeSpaceRepository.save(realKs);
+    }
+
+    private void recursiveStateChecks(DomainProblem node, KnowledgeSpace realKs, String states) {
+        List<Edge> edges = realKs.getEdges();
+        List<Edge> nodeEdges = edges.stream().filter(x -> x.getFrom()
+                        .equals(node))
+                .collect(Collectors.toList());
+        states += node.getId();
+        if (nodeEdges.isEmpty()) {
+            realKs.addKnowledgeStates(states);
+        } else {
+            states += ",";
+            for (Edge edge : nodeEdges) {
+                recursiveStateChecks(edge.getTo(), realKs, states);
             }
         }
     }
@@ -193,7 +223,7 @@ public class TestServiceImpl implements TestService {
         Optional<KnowledgeSpace> real = takenTest.getTest()
                 .getDomain().getKnowledgeSpaces().stream().filter(KnowledgeSpace::isIsReal).findAny();
 
-        if (real.isEmpty() || real.isPresent()) {
+        if (real.isEmpty()) {
             Optional<KnowledgeSpace> ks = takenTest.getTest()
                     .getDomain().getKnowledgeSpaces().stream().findFirst();
 
@@ -236,7 +266,6 @@ public class TestServiceImpl implements TestService {
                 return itemDto;
             }
         } else {
-            // TODO: add real space
             return null;
         }
     }
@@ -375,7 +404,8 @@ public class TestServiceImpl implements TestService {
             realKs.addEdge(edge);
         }
 
-        knowledgeSpaceRepository.save(realKs);
+        realKs = knowledgeSpaceRepository.save(realKs);
+        generateKnowledgeStates(realKs);
     }
 
     @Override
