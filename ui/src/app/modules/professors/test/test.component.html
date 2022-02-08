@@ -10,6 +10,9 @@
       <p>Valid until: {{ test.validUntil | date: "fullDate" }}</p>
     </mat-card-content>
     <mat-card-actions align="end">
+      <button mat-raised-button color="accent" (click)="exportTest()">
+        Export Test to XML
+      </button>
       <button mat-raised-button color="primary" (click)="editTest()" [disabled]="checkDatePassed(test.validFrom)">
         Edit Test
       </button>

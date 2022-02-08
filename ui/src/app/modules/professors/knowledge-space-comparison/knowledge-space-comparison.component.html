@@ -5,10 +5,12 @@
   <mat-card-content>
     <ngx-graph
       class="chart-container"
-      [view]="[800, 550]"
       [links]="edges"
       [nodes]="nodes"
-      layout="dagreCluster"
+      layout="dagre"
+      [center$]="center$"
+      [autoCenter]="true"
+      [draggingEnabled]="false"
     >
       <ng-template #defsTemplate>
         <svg:marker

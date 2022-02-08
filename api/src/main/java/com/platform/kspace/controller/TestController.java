@@ -11,7 +11,9 @@ import com.platform.kspace.service.UserService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +55,19 @@ public class TestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTest(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(this.testService.deleteTest(id));
+    }
+
+    @RequestMapping(value = "/{id}/xml", method = RequestMethod.GET, produces = {"application/xml"})
+    public ResponseEntity<String> exportToQti(@PathVariable("id") Integer id) {
+        final HttpHeaders httpHeaders= new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_XML);
+        try {
+            return new ResponseEntity<>(testService.testToXml(id), httpHeaders, HttpStatus.OK);
+        } catch (KSpaceException ex) {
+            return new ResponseEntity<>(ex.getHttpStatus());
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")

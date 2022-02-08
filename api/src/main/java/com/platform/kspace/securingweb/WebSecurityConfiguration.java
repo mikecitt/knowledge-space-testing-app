@@ -55,6 +55,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/test/*/xml").permitAll()
                 .antMatchers("/api/export").permitAll()    // for export purposes, temporary
                 .antMatchers("/h2-console/**").permitAll() // only while using h2 console
                 .antMatchers("/images/**").permitAll()
